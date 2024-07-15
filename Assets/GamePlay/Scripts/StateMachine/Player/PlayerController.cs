@@ -33,7 +33,6 @@ namespace StateMachineNP
 
         public override void ChangeFromStateToState(State fromState)
         {
-            base.ChangeFromStateToState(fromState);
             if (fromState == playerIdleState)
             {
                 if (GetMoveDirection() != Vector2.zero)

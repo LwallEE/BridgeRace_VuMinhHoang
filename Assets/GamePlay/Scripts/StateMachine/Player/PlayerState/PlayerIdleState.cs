@@ -18,7 +18,7 @@ namespace StateMachineNP
         public override void Enter()
         {
             base.Enter();
-            playerController.SetVelocity(Vector3.zero);
+            playerController.SetVelocityWithoutRotate(Vector3.zero);
         }
     }
 }

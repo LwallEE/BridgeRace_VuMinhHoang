@@ -16,4 +16,8 @@ MonoBehaviour:
   checkGroundDistance: 1
   layerOfGrounded:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 64
+  checkBridgeDistance: 0.5
+  layerOfBridge:
+    serializedVersion: 2
+    m_Bits: 128

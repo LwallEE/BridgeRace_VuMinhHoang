@@ -11,4 +11,8 @@ public class CharacterData : ScriptableObject
     public float checkGroundDistance;
 
     public LayerMask layerOfGrounded;
+    [Header("Check Bridge")]
+    public float checkBridgeDistance;
+
+    public LayerMask layerOfBridge;
 }

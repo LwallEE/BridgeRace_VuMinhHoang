@@ -23,7 +23,22 @@ namespace StateMachineNP
 
         void HandleMove()
         {
+            
             var direction = playerController.GetProjectedDirectionOnPlane(Ultility.ConvertFrom2DVectorTo3DPlane(playerController.GetMoveDirection()));
+            
+            if (playerController.CheckBridgeCollide())
+            {
+                var bridge = playerController.GetBridgeCollide();
+                if (!bridge.isAllowedGoingThrough)
+                {
+                    playerController.UpdateRotation(direction);
+                    direction.z = 0f;
+                    direction.y = 0f;
+                    playerController.SetVelocityWithoutRotate(direction*_entityData.moveSpeed);
+                    return;
+                }
+            }
+           
             playerController.SetVelocity(direction*_entityData.moveSpeed);
         }
     }
