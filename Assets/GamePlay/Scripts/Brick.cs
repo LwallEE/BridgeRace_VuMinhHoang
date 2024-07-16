@@ -7,11 +7,7 @@ public class Brick : MonoBehaviour
 {
     [SerializeField] private ColorData colorData;
     [SerializeField] private MeshRenderer meshRenderer;
-
-    private void Start()
-    {
-        SetColor(colorData);
-    }
+    
 
     public bool CanCollect(BrickColor pickerColor)
     {
@@ -28,5 +24,11 @@ public class Brick : MonoBehaviour
     {
         colorData = data;
         meshRenderer.material.color = data.brickColor;
+    }
+
+    public void Init(BrickColor color, Vector3 position)
+    {
+        transform.position = position;
+        SetColor(GameAssets.Instance.GetColorData(color));
     }
 }
