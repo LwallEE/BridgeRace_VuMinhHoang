@@ -9,15 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16761fbdeb4281e4b9f7a361cc0ff347, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: 806f16698f1ab7a46952001263bb00ec, type: 3}
+  m_Name: Green
   m_EditorClassIdentifier: 
-  moveSpeed: 7
-  checkGroundDistance: 1
-  layerOfGrounded:
-    serializedVersion: 2
-    m_Bits: 64
-  checkBridgeDistance: 0.5
-  layerOfBridge:
-    serializedVersion: 2
-    m_Bits: 128
+  brickColorE: 3
+  characterColor: {r: 0, g: 1, b: 0.41568628, a: 1}
+  brickColor: {r: 0, g: 1, b: 0.41568628, a: 1}

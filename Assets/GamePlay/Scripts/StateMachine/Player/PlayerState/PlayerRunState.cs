@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace StateMachineNP
@@ -29,13 +30,25 @@ namespace StateMachineNP
             if (playerController.CheckBridgeCollide())
             {
                 var bridge = playerController.GetBridgeCollide();
-                if (!bridge.isAllowedGoingThrough)
+                if (!bridge.CanGoingThroughBridge(playerController.GetColor()))
                 {
-                    playerController.UpdateRotation(direction);
-                    direction.z = 0f;
-                    direction.y = 0f;
-                    playerController.SetVelocityWithoutRotate(direction*_entityData.moveSpeed);
-                    return;
+                    //try to fill the bridge with color
+                    if (playerController.CanFillTheBridge())
+                    {
+                        bridge.SetColor(playerController.GetColor());
+                        playerController.RemoveBrick();
+                        
+                    }
+                    else
+                    {
+                        //prevent player going through bridge
+                        playerController.UpdateRotation(direction);
+                        direction.z = 0f;
+                        direction.y = 0f;
+                        playerController.SetVelocityWithoutRotate(direction*_entityData.moveSpeed);
+                        return;
+                    }
+                   
                 }
             }
            

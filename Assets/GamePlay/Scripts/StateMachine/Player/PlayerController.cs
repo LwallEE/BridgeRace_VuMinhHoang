@@ -29,6 +29,7 @@ namespace StateMachineNP
         {
             base.Start();
             StateMachine.Initialize(playerIdleState);
+            SetColor(Constants.PLAYER_BRICK_COLOR);
         }
 
         public override void ChangeFromStateToState(State fromState)
