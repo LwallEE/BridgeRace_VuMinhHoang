@@ -7,13 +7,14 @@ public class Brick : MonoBehaviour
 {
     [SerializeField] private ColorData colorData;
     [SerializeField] private MeshRenderer meshRenderer;
-    
+    public bool HasCollect { get; private set; }
 
     public bool CanCollect(BrickColor pickerColor)
     {
         if (pickerColor == colorData.brickColorE)
         {
             gameObject.SetActive(false);
+            HasCollect = true;
             return true;
         }
 
@@ -30,5 +31,10 @@ public class Brick : MonoBehaviour
     {
         transform.position = position;
         SetColor(GameAssets.Instance.GetColorData(color));
+    }
+
+    public bool IsMatchColor(BrickColor color)
+    {
+        return colorData.brickColorE == color;
     }
 }

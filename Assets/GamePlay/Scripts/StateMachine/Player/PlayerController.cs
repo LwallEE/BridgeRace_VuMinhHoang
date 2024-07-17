@@ -57,6 +57,44 @@ namespace StateMachineNP
         {
             return joyStickInput.Direction;
         }
+        public void SetVelocity(Vector3 velocity)
+        {
+            RigidbodyObj.velocity = velocity;
+          
+            UpdateRotation();
+        }
+
+        public void SetVelocityWithoutYAxis(Vector2 velocity)
+        {
+            RigidbodyObj.velocity = new Vector3(velocity.x, RigidbodyObj.velocity.y, velocity.y);
+            UpdateRotation();
+        }
+
+        public void SetVelocityWithoutRotate(Vector3 velocity)
+        {
+            RigidbodyObj.velocity = velocity;
+        }
+
+        public void UpdateRotation(Vector3 rotation)
+        {
+            transform.forward = new Vector3(rotation.x, 0, rotation.z);
+        }
+        
+        public void UpdateRotation()
+        {
+            transform.forward = new Vector3(RigidbodyObj.velocity.x, 0, RigidbodyObj.velocity.z);
+        }
+        
+        
+        //Get the projected direction when move on plane: slope, ground
+        public Vector3 GetProjectedDirectionOnPlane(Vector3 moveDirection)
+        {
+            Physics.Raycast(checkGroundPoint.position, Vector3.down, out hitGround, data.checkGroundDistance,
+                data.layerOfGrounded);
+            if (hitGround.collider == null) return Vector3.zero;
+            return Vector3.ProjectOnPlane(moveDirection, hitGround.normal).normalized;
+        }
+
 
         private void OnDrawGizmos()
         {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bridge : MonoBehaviour
+public class BridgeSlot : MonoBehaviour
 {
   private ColorData currentBridgeColor;
   [SerializeField] private MeshRenderer meshRenderer;
@@ -23,5 +23,10 @@ public class Bridge : MonoBehaviour
   {
     if (this.currentBridgeColor.brickColorE == BrickColor.None) return false;
     return color == this.currentBridgeColor.brickColorE;
+  }
+
+  public bool IsMatchColor(BrickColor color)
+  {
+    return currentBridgeColor.brickColorE == color;
   }
 }

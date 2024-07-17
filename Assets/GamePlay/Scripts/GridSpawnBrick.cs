@@ -63,4 +63,25 @@ public class GridSpawnBrick : MonoBehaviour
     {
         return brickColorToSpawn[Random.Range(0, brickColorToSpawn.Count)];
     }
+
+    public Brick GetBrickOfColorCanCollect(BrickColor color,Vector3 position)
+    {
+        float dis = 9999999f;
+        Brick result = null;
+        if (brickSpawnList == null) return null;
+        foreach (var item in brickSpawnList)
+        {
+            if (item.IsMatchColor(color) && !item.HasCollect)
+            {
+                float distance = Vector3.SqrMagnitude(position - item.transform.position);
+                if (distance < dis)
+                {
+                    result = item;
+                    dis = distance;
+                }
+            }
+        }
+
+        return result;
+    }
 }

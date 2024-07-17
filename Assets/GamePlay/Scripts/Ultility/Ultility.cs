@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,4 +14,10 @@ public static class Ultility
     {
         return new Vector3(Mathf.Round(vector.x), Mathf.Round(vector.y), Mathf.Round(vector.z));
     }
+
+    public static bool CheckEqualFloat(float a, float b,float threshold)
+    {
+        return Math.Abs(a - b) <= threshold;
+    }
+
 }
