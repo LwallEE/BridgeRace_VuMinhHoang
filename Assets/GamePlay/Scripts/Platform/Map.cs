@@ -7,6 +7,7 @@ public class Map : MonoBehaviour
 {
     public static Map Instance { get; private set; }
     [SerializeField] private List<Stage> stages;
+    [SerializeField] private Transform winPos;
     private void Awake()
     {
         Instance = this;
@@ -20,5 +21,10 @@ public class Map : MonoBehaviour
         }
 
         return null;
+    }
+
+    public Vector3 GetWinPosition()
+    {
+        return winPos.position;
     }
 }

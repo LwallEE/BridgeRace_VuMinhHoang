@@ -65,7 +65,8 @@ namespace StateMachineNP
 
         protected void AddBrick()
         {
-            var brickVisual = Instantiate(GameAssets.Instance.brickVisual, brickContainer).GetComponent<BrickVisual>();
+            var brickVisual = LazyPool.Instance.GetObj<BrickVisual>(GameAssets.Instance.brickVisual);
+            brickVisual.transform.SetParent(brickContainer);
             if (brickList == null)
             {
                 brickList = new List<BrickVisual>();
@@ -88,7 +89,7 @@ namespace StateMachineNP
         {
             if (brickList.Count > 0)
             {
-                Destroy(brickList[brickList.Count-1].gameObject);
+                LazyPool.Instance.AddObjectToPool(brickList[brickList.Count-1].gameObject);
                 brickList.RemoveAt(brickList.Count-1);
             }
         }
@@ -126,7 +127,7 @@ namespace StateMachineNP
       
         protected virtual void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.name);
+//            Debug.Log(other.name);
             if (other.CompareTag(Constants.BRICK_TAG))
             {
                 var brick = other.GetComponent<Brick>();

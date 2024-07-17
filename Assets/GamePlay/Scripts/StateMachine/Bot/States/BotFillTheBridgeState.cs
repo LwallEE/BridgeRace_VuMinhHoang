@@ -11,7 +11,8 @@ namespace StateMachineNP
             GoToTheBridge,
             GoToTheBridgeSlot,
             FailToFillTheBridge,
-            FinishTheBridge
+            GoToNextStage,
+            GoToWinStage
         }
         private Bot bot;
         private Bridge bridgeTarget;
@@ -34,17 +35,19 @@ namespace StateMachineNP
 
         void EnterGoToTheBridgeState()
         {
-            currentState = EBotFillTheBridgeSubState.GoToTheBridge;
+           
             bridgeTarget = bot.FindOptimalBridge();
             bot.MoveToTarget(bridgeTarget.GetTheInitialPositionOfBridge());
+            currentState = EBotFillTheBridgeSubState.GoToTheBridge;
         }
 
         void EnterGoToTheBridgeSlotState()
         {
-            currentState = EBotFillTheBridgeSubState.GoToTheBridgeSlot;
+           
             currentBridgeIndex = 0;
             bridgeSlotTarget = bridgeTarget.GetBridgeIndex(currentBridgeIndex);
             bot.MoveToTarget(bridgeSlotTarget.transform.position);
+            currentState = EBotFillTheBridgeSubState.GoToTheBridgeSlot;
         }
 
         public bool IsInState(EBotFillTheBridgeSubState state)
@@ -74,17 +77,25 @@ namespace StateMachineNP
 
         void SetNextBridgeSlot()
         {
-            
+            //move to the next bridge slot
             currentBridgeIndex++;
             bridgeSlotTarget = bridgeTarget.GetBridgeIndex(currentBridgeIndex);
+            //if not reach the final slot yet
             if (bridgeSlotTarget != null)
             {
                 bot.MoveToTarget(bridgeSlotTarget.transform.position);
                 currentState = EBotFillTheBridgeSubState.GoToTheBridgeSlot;
             }
-            else
+            else //if reach final slot, check if is exist the next stage
             {
-                currentState = EBotFillTheBridgeSubState.FinishTheBridge;
+                if (bot.NextStage())
+                {
+                    currentState = EBotFillTheBridgeSubState.GoToNextStage;
+                }
+                else
+                {
+                    currentState = EBotFillTheBridgeSubState.GoToWinStage;
+                }
             }
            
         }

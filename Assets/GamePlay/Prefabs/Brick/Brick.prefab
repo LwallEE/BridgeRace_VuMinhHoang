@@ -96,8 +96,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2, y: 1.2966697, z: 3}
+  m_Center: {x: 0.052928686, y: 0, z: 0.10414294}
 --- !u!114 &6084188085333818259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,3 +112,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorData: {fileID: 11400000, guid: 7a26bbb779303d94d8c55d9a96351c28, type: 2}
   meshRenderer: {fileID: 1297932172086978112}
+  collider: {fileID: 1297932172086976959}

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace StateMachineNP
 {
+    //Friendly Bot: focus on collect enough brick to go through each stage, doesn't want to kick player
     public class FriendlyBot : Bot
     {
 
@@ -80,10 +81,10 @@ namespace StateMachineNP
                     StateMachine.ChangeState(botCollectBridgeState);
                     return;
                 }
-
-                if (botFillTheBridgeState.IsInState(BotFillTheBridgeState.EBotFillTheBridgeSubState.FinishTheBridge))
+                
+                if (botFillTheBridgeState.IsInState(BotFillTheBridgeState.EBotFillTheBridgeSubState.GoToNextStage))
                 {
-                    StateMachine.ChangeState(botIdleState);
+                    StateMachine.ChangeState(botCollectBridgeState);
                     return;
                 }
             }

@@ -11,10 +11,13 @@ namespace StateMachineNP
         protected NavMeshAgent agent;
         protected Stage currentStage;
         protected int currentStageIndex;
+        [SerializeField] protected BotWinState botWinState;
+        
         public override void Awake()
         {
             base.Awake();
             agent = GetComponent<NavMeshAgent>();
+            botWinState.OnInit(this, StateMachine,data, this);
 
         }
 
@@ -35,10 +38,30 @@ namespace StateMachineNP
         {
             this.currentStage = stage;
         }
+        
+        //return if has next stage, also set the next stage
+        public bool NextStage()
+        {
+            currentStageIndex++;
+            SetStage(Map.Instance.GetStage(currentStageIndex));
+            if (currentStage == null)
+            {
+                ChangeToWinState();
+                return false;
+            }
 
+            return true;
+        }
+        
+        //specific bot will override this method to make different behaviour
         public virtual bool CheckEnoughBrickToFill()
         {
             return false;
+        }
+
+        public virtual void ChangeToWinState()
+        {
+            StateMachine.ChangeState(botWinState);
         }
         public Brick FindNearestBrickWithColor()
         {
@@ -75,6 +98,11 @@ namespace StateMachineNP
         {
 //            Debug.Log(agent.remainingDistance);
             return Ultility.CheckEqualFloat(agent.remainingDistance, 0f,0.1f);
+        }
+
+        public Vector3 GetWinPos()
+        {
+            return Map.Instance.GetWinPosition();
         }
 
         public void StayIdle()

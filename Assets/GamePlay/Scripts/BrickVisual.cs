@@ -10,6 +10,7 @@ public class BrickVisual : MonoBehaviour
    public void UpdateVisual(ColorData color,float yPos)
    {
       this.color = color;
+      transform.localRotation = Quaternion.identity;
       meshRenderer.material.color = this.color.brickColor;
       transform.localPosition = new Vector3(0, yPos, 0);
    }
