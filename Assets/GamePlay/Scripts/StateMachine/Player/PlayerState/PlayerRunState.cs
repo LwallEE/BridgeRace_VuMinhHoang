@@ -32,6 +32,7 @@ namespace StateMachineNP
                 var bridge = playerController.GetBridgeCollide();
                 if (!bridge.CanGoingThroughBridge(playerController.GetColor()))
                 {
+                   
                     //try to fill the bridge with color
                     if (playerController.CanFillTheBridge())
                     {
@@ -41,6 +42,7 @@ namespace StateMachineNP
                     }
                     else
                     {
+                        Debug.Log("not going through bridge");
                         //prevent player going through bridge
                         playerController.UpdateRotation(direction);
                         direction.z = 0f;

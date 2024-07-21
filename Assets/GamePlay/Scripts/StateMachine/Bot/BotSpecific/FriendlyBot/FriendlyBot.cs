@@ -66,6 +66,11 @@ namespace StateMachineNP
 
             if (fromState == botIdleState)
             {
+                if (CheckEnoughBrickToFill())
+                {
+                    StateMachine.ChangeState(botFillTheBridgeState);
+                    return;
+                }
                 if (IsExistBrickWithColor())
                 {
                     StateMachine.ChangeState(botCollectBridgeState);
@@ -88,11 +93,21 @@ namespace StateMachineNP
                     return;
                 }
             }
+
+            if (fromState == fallState)
+            {
+                if (fallState.IsAnimationFinish())
+                {
+                    //Debug.Log("Exxxit");
+                    StateMachine.ChangeState(botCollectBridgeState);
+                    return;
+                }
+            }
         }
 
         public override bool CheckEnoughBrickToFill()
         {
-            return GetNumberOfCurrentBrick() >= currentStage.GetMinimumBridgeSlotOfBridge();
+            return GetNumberOfCurrentBrick() >= currentStage.GetMinimumBridgeSlotOfBridgeToFinish(GetColor());
         }
     }
 }

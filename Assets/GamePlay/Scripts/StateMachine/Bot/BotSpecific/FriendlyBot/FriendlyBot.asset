@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16761fbdeb4281e4b9f7a361cc0ff347, type: 3}
   m_Name: FriendlyBot
   m_EditorClassIdentifier: 
-  moveSpeed: 8
+  moveSpeed: 7
+  forceFall: 3
   checkGroundDistance: 1
   layerOfGrounded:
     serializedVersion: 2

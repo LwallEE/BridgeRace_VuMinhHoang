@@ -10,7 +10,7 @@ public class GridSpawnBrick : MonoBehaviour
 
     [SerializeField] private int numberOfColumn;
 
-    [SerializeField] private GameObject brickPrefab;
+    
     [SerializeField] private float distanceBetweenBrick;
     
     public int TotalOfBrick => numberOfColumn * numberOfRow;
@@ -45,7 +45,7 @@ public class GridSpawnBrick : MonoBehaviour
         {
             for (int j = 0; j < numberOfColumn; j++)
             {
-                var brick = LazyPool.Instance.GetObj<Brick>(brickPrefab);
+                var brick = LazyPool.Instance.GetObj<Brick>(GameAssets.Instance.brickPrefab);
                 int indexColor = Random.Range(0, listColorToSpawn.Count);
                 brick.InitBrickStatic(listColorToSpawn[indexColor], GetPositionInGrid(i, j));
                 brickSpawnList.Add(brick);

@@ -51,6 +51,15 @@ namespace StateMachineNP
                     return;
                 }
             }
+
+            if (fromState == fallState)
+            {
+                if (fallState.IsAnimationFinish())
+                {
+                    StateMachine.ChangeState(playerIdleState);
+                    return;
+                }
+            }
         }
 
         public Vector2 GetMoveDirection()
@@ -102,6 +111,14 @@ namespace StateMachineNP
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawLine(checkGroundPoint.position, checkGroundPoint.position + Vector3.down*data.checkGroundDistance);
             #endif
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.gameObject.CompareTag(Constants.CHARACTER_TAG))
+            {
+                Debug.Log(other.gameObject.name);
+            }
         }
     }
 }

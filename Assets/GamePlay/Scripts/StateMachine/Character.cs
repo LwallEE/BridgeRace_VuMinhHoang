@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace StateMachineNP
@@ -17,6 +18,9 @@ namespace StateMachineNP
         [SerializeField] private SkinnedMeshRenderer meshRenderer;
         [SerializeField] private Transform brickContainer;
         
+        //Fall State
+        [SerializeField] protected CharacterFallState fallState;
+        
         protected RaycastHit hitGround;
         protected RaycastHit hitBridge;
         protected ColorData characterColor;
@@ -27,6 +31,7 @@ namespace StateMachineNP
             Anim = GetComponentInChildren<Animator>();
             RigidbodyObj = GetComponent<Rigidbody>();
             StateMachine = new StateMachine();
+            fallState.OnInit(this, StateMachine, data);
         }
 
         protected virtual void Start()
@@ -99,6 +104,17 @@ namespace StateMachineNP
             return brickList?.Count ?? 0;
         }
 
+        private void RemoveAllBrick()
+        {
+            if (brickList == null) return;
+            foreach (var item in brickList)
+            {
+                LazyPool.Instance.AddObjectToPool(item.gameObject);
+            }
+            brickList.Clear();
+            UpdateBrickVisual();
+        }
+
         #endregion
 
         #region HandleBridge
@@ -123,7 +139,51 @@ namespace StateMachineNP
         }
         
         #endregion
-        
+
+        public virtual void AddForce(Vector3 direction)
+        {
+//            Debug.Log(gameObject.name + " " +direction);
+            direction.y = Constants.CHARACTER_FALL_HEIGHT_FORCE;
+            RigidbodyObj.AddForce(direction,ForceMode.Impulse);
+        }
+        public Vector3 GetMoveDirection()
+        {
+            return transform.forward;
+        }
+        public virtual void Fall(Vector3 fallDirection)
+        {
+            FallAllBrick();
+            fallState.SetFallDirection(fallDirection);
+            StateMachine.ChangeState(fallState);
+            
+        }
+
+        private void FallAllBrick()
+        {
+            if (brickList == null) return;
+            foreach (var item in brickList)
+            {
+                var brick = LazyPool.Instance.GetObj<Brick>(GameAssets.Instance.brickPrefab);
+                brick.InitBrickDynamic(item.transform.position);
+            }
+            RemoveAllBrick();
+        }
+
+        public void AnimationFinishEvent()
+        {
+            if(StateMachine.CurrentState != null)
+                StateMachine.CurrentState.AnimationFinishTrigger();
+        }
+
+        public bool CanFall()
+        {
+            return StateMachine.CurrentState != fallState;
+        }
+
+        public virtual void BackFromFallToNormal()
+        {
+            
+        }
       
         protected virtual void OnTriggerEnter(Collider other)
         {
@@ -134,6 +194,17 @@ namespace StateMachineNP
                 if (brick.CanCollect(characterColor.brickColorE))
                 {
                     AddBrick();
+                }
+            }
+
+            //Kick
+            if (other.CompareTag(Constants.CHARACTER_TAG))
+            {
+                var character = other.GetComponent<StateMachineNP.Character>();
+                if (character != null &&character.CanFall() &&  GetNumberOfCurrentBrick() > character.GetNumberOfCurrentBrick())
+                {
+                    Debug.Log(gameObject.name + " Kick " + character.gameObject.name );
+                    character.Fall(GetMoveDirection());
                 }
             }
         }

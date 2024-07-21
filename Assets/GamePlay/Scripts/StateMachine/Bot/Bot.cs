@@ -30,6 +30,7 @@ namespace StateMachineNP
         protected virtual void OnInit()
         {
             agent.speed = data.moveSpeed;
+            BackFromFallToNormal();
             currentStageIndex = 0;
             SetStage(Map.Instance.GetStage(currentStageIndex));
         }
@@ -99,7 +100,7 @@ namespace StateMachineNP
 //            Debug.Log(agent.remainingDistance);
             return Ultility.CheckEqualFloat(agent.remainingDistance, 0f,0.1f);
         }
-
+    
         public Vector3 GetWinPos()
         {
             return Map.Instance.GetWinPosition();
@@ -108,6 +109,25 @@ namespace StateMachineNP
         public void StayIdle()
         {
             agent.isStopped = true;
+        }
+
+        public override void Fall(Vector3 fallDirection)
+        {
+            agent.enabled = false;
+            RigidbodyObj.isKinematic = false;
+            base.Fall(fallDirection);
+        }
+
+        public override void AddForce(Vector3 direction)
+        {
+            base.AddForce(direction*Constants.BOT_FALL_FORCE_MULTIPLER);
+        }
+
+        public override void BackFromFallToNormal()
+        {
+            base.BackFromFallToNormal();
+            agent.enabled = true;
+            RigidbodyObj.isKinematic = true;
         }
     }
 }

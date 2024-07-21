@@ -32,4 +32,9 @@ public class Stage : MonoBehaviour
    {
       return bridgeList.Min(x => x.GetNumberOfBridgeSlot());
    }
+
+   public int GetMinimumBridgeSlotOfBridgeToFinish(BrickColor color)
+   {
+      return bridgeList.Min(x => x.GetNumberOfBrickToFinishBridge(color));
+   }
 }

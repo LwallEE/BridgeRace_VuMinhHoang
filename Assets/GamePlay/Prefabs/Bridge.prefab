@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7968321954911140477}
   - component: {fileID: 7968321954911140476}
   - component: {fileID: 7968321954911140479}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7968321955545555251}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Boundaries
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 7968321955664143744}
   - component: {fileID: 7968321955664143747}
   - component: {fileID: 7968321955664143746}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}

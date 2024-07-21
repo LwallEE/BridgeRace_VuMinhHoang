@@ -7,6 +7,8 @@ public class CharacterData : ScriptableObject
 {
     public float moveSpeed;
 
+    [Header("Fall")]
+    public float forceFall;
     [Header("Check Ground")] 
     public float checkGroundDistance;
 

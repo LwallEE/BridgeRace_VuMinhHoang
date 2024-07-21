@@ -113,7 +113,7 @@ namespace StateMachineNP
 
             if (currentState == EBotFillTheBridgeSubState.GoToTheBridgeSlot)
             {
-                if (bot.CheckReachTarget())
+                if (bot.CheckReachTarget() && Vector3.Distance(bot.transform.position, bridgeSlotTarget.transform.position) < 1f)
                 {
                     FillTheBridge();
                 }

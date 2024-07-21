@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameAssets : Singleton<GameAssets>
 {
     public GameObject brickVisual;
-
+    public GameObject brickPrefab;
     [Header("Material")]
 
     #region Material
