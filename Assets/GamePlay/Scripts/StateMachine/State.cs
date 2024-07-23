@@ -36,7 +36,7 @@ namespace StateMachineNP
         public virtual void Enter()
         {
             DoCheck();
-            character.Anim.SetBool(animBoolName, true);
+            character.PlayAnimation(animBoolName, true);
             startTime = Time.time;
             isAnimationFinish = false;
             
@@ -45,7 +45,7 @@ namespace StateMachineNP
         public virtual void Exit()
         {
             if(!string.IsNullOrEmpty(animBoolName))
-                character.Anim.SetBool(animBoolName, false);
+                character.PlayAnimation(animBoolName, false);
             isAnimationFinish = false;
         }
     

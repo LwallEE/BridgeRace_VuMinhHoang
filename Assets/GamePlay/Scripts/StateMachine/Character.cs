@@ -26,6 +26,8 @@ namespace StateMachineNP
         protected ColorData characterColor;
 
         protected List<BrickVisual> brickList;
+
+        protected string previousAnimName;
         public virtual void Awake()
         {
             Anim = GetComponentInChildren<Animator>();
@@ -45,7 +47,7 @@ namespace StateMachineNP
                 StateMachine.CurrentState.LogicUpdate();
         }
 
-        protected void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             if(StateMachine.CurrentState != null)
                 StateMachine.CurrentState.PhysicsUpdate();
@@ -54,6 +56,16 @@ namespace StateMachineNP
         public virtual void ChangeFromStateToState(State fromState)
         {
             
+        }
+
+        public virtual void PlayAnimation(string animName, bool value)
+        {
+            
+            Anim.SetBool(animName, value);
+            if (value)
+            {
+                this.previousAnimName = animName;
+            }
         }
 
         public BrickColor GetColor()

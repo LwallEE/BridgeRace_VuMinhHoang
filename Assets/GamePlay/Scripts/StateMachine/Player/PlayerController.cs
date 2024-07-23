@@ -12,8 +12,8 @@ namespace StateMachineNP
         
         #region States
 
-        [SerializeField] private PlayerIdleState playerIdleState;
-        [SerializeField] private PlayerRunState playerRunState;
+        [SerializeField] protected PlayerIdleState playerIdleState;
+        [SerializeField] protected PlayerRunState playerRunState;
         #endregion
 
         
