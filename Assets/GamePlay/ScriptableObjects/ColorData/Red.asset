@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 806f16698f1ab7a46952001263bb00ec, type: 3}
+  m_Name: Red
+  m_EditorClassIdentifier: 
+  brickColorE: 5
+  characterColor: {r: 0.9647059, g: 0.20784314, b: 0.11372549, a: 1}
+  brickColor: {r: 0.9647059, g: 0.20784314, b: 0.11372549, a: 1}

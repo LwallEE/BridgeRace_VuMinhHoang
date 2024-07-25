@@ -2,12 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BrickColor
+public interface IDispose
 {
-    None,
-    Grey,
-    Blue,
-    Green,
-    Orange,
-    Red
+   public void Dispose();
 }

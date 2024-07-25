@@ -4,29 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-
+public enum EBrickState
+{
+    BrickStatic,
+    BrickDynamic
+}
 public class Brick : MonoBehaviour
 {
-    [SerializeField] private ColorData colorData;
-    [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private Collider collider;
+    [SerializeField] protected ColorData colorData;
+    [SerializeField] protected MeshRenderer meshRenderer;
+    [SerializeField] protected BoxCollider collider;
 
-    private Rigidbody m_rigibody;
+    protected Rigidbody m_rigibody;
     private float currentTimeToRespawn;
-    private bool canCollect;
-    private float currentTimeCoolDownToCollect;
-    public enum EBrickState
-    {
-        BrickStatic,
-        BrickDynamic
-    }
+    protected bool canCollect;
+    protected float currentTimeCoolDownToCollect;
+    
 
     private void Awake()
     {
         m_rigibody = GetComponent<Rigidbody>();
     }
 
-    private EBrickState brickState;
+    protected EBrickState brickState;
     public bool HasCollect { get; private set; }
 
     public bool CanCollect(BrickColor pickerColor)
@@ -35,15 +35,23 @@ public class Brick : MonoBehaviour
         if (pickerColor == colorData.brickColorE || colorData.brickColorE == BrickColor.Grey)
         {
             //collect brick
-            Active(false);
-            currentTimeToRespawn = Constants.TIME_TO_BRICK_RESPAWN;
             return true;
         }
 
         return false;
     }
 
-    private void Update()
+    public void CollectBrick()
+    {
+        Active(false);
+        currentTimeToRespawn = Constants.TIME_TO_BRICK_RESPAWN;
+        if (brickState == EBrickState.BrickDynamic)
+        {
+            LazyPool.Instance.AddObjectToPool(this.gameObject);
+        }
+    }
+
+    protected virtual void Update()
     {
         if (HasCollect && brickState == EBrickState.BrickStatic)
         {
@@ -70,7 +78,7 @@ public class Brick : MonoBehaviour
         }
     }
 
-    private void SetColor(ColorData data)
+    protected void SetColor(ColorData data)
     {
         colorData = data;
         meshRenderer.material.color = data.brickColor;
@@ -95,6 +103,7 @@ public class Brick : MonoBehaviour
         Active(true);
         m_rigibody.AddForce(moveDirection * Constants.BRICK_MOVE_FORCE,ForceMode.Impulse);
         SetColor(GameAssets.Instance.GetColorData(BrickColor.Grey));
+        //time wait for collect
         currentTimeCoolDownToCollect = Constants.BRICK_COOLDOWN_TIME_TO_COLLECT;
 
     }

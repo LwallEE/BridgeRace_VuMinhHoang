@@ -8,7 +8,7 @@ public class BridgeSlot : MonoBehaviour
   private ColorData currentBridgeColor;
   [SerializeField] private MeshRenderer meshRenderer;
 
-  private void Start()
+  protected virtual void Start()
   {
     SetColor(Constants.BRIDGE_INITIAL_COLOR);
   }

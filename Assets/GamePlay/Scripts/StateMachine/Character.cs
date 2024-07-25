@@ -205,6 +205,7 @@ namespace StateMachineNP
                 var brick = other.GetComponent<Brick>();
                 if (brick.CanCollect(characterColor.brickColorE))
                 {
+                    brick.CollectBrick();
                     AddBrick();
                 }
             }

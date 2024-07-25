@@ -18,6 +18,9 @@ namespace MyGame.Schema {
 
 		[Type(2, "float32")]
 		public float yRotation = default(float);
+		
+		[Type(3, "ref", typeof(BoxColliderData))]
+		public BoxColliderData boxCollider = new BoxColliderData();
 
 		/*
 		 * Support for individual property change callbacks below...

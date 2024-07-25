@@ -10,7 +10,12 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
     
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private CameraFollow cameraFollow;
+    [SerializeField] private MapNetwork mapGenerate;
     [field:SerializeField] public float LerpPlayerSpeed { get; private set; }
+
+    [SerializeField] private float timeAttempSend = 0.15f;
+
+    [SerializeField] private float multiplierDelaySend = 1f;
     // Start is called before the first frame update
     private PlayerNetworkController player;
 
@@ -18,6 +23,7 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
 
     private readonly float sendInterval = 100 / 1000f;
     private float sendTimer = 0f;
+    private List<IDispose> elementToDispose = new List<IDispose>();
 
     private void Start()
     {
@@ -38,6 +44,11 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
     {
         this.client = client;
         gameObject.SetActive(true);
+    }
+
+    public void AddToDisposeList(IDispose item)
+    {
+        this.elementToDispose.Add(item);
     }
     public void SetMainPlayer(PlayerData data)
     {
@@ -67,49 +78,46 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
         }
         return null;
     }
+
+    public void GenerateMap(MapData data)
+    {
+        mapGenerate.InitMap(data);
+    }
+
+    public void Dispose()
+    {
+        foreach (var item in elementToDispose)
+        {
+            item.Dispose();
+        }
+        elementToDispose.Clear();
+        mapGenerate.Dispose();
+        if (player != null)
+        {
+            Destroy(player.gameObject);
+            player = null;
+        }
+
+        if (otherPlayers != null)
+        {
+            foreach (var item in otherPlayers)
+            {
+                Destroy(item.Value.gameObject);
+            }
+            otherPlayers.Clear();
+        }
+       
+    }
     
-    #region CallBackToSyncGame
-    public void UpdatePositionOfPlayer(string key, Vect3 position)
-    {
-        var playerr = GetPlayer(key);
-        if (playerr == null)
-        {
-            Debug.LogError("players doesn't contain player with same key");
-            return;
-        }
-        
-        playerr.SetDestination(position);
-    }
-
-    public void UpdateRotationOfPlayer(string key, float yRotation)
-    {
-        var playerr = GetPlayer(key);
-        if (playerr == null)
-        {
-            Debug.LogError("players doesn't contain player with same key "+key);
-            return;
-        }
-        playerr.SetYRotation(yRotation);
-    }
-
-    public void UpdateAnimNameOfPlayer(string key, string newValue, string previousValue)
-    {
-        var playerr = GetPlayer(key);
-        if (playerr == null)
-        {
-            Debug.LogError("players doesn't contain player with same key " + key);
-            return;
-        }
-        playerr.SetAnimName(newValue, previousValue);
-    }
-    #endregion
+    
 
     #region MessageSendToServer
     public void UpdatePositionRotationOfPlayerToServer()
     {
-        if (player == null) return;
+        if (player == null || client == null || !client.IsConnect || !client.CheckRoomAvailable()) return;
         //Compare the last player data's position and current's position
         //if not change return
+       
         Vect3 previousPlayerPosition = client.GetPlayerData(player.Id).position;
         bool check = NetworkUltilityHelper.ConvertFromVect3ToVector3(previousPlayerPosition) !=
                      player.transform.position;
@@ -122,18 +130,27 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
         };
        
        
-        if (client != null)
-        {
+        
            
-            client.SendUpdatePosition(message);
-        }
+            client.SendMessageToServer(CommandFromClient.COMMAND_UPDATE_PLAYER_POSITION_ROTATION,message);
+        
     }
 
     public void UpdateAnimationOfPlayerToServer(string newState)
     {
-        if (player == null || client == null) return;
-        client.SendMessage<string>(CommandFromClient.COMMAND_UPDATE_PLAYER_ANIMATION, newState);
+        if (player == null || client == null || !client.IsConnect) return;
+        client.SendMessageToServer(CommandFromClient.COMMAND_UPDATE_PLAYER_ANIMATION, newState);
     }
+
+    public void RequestCollectBrick(string brickId)
+    {
+        if (player == null || client == null || !client.IsConnect) return;
+        //client.SendMessage<string>(CommandFromClient.COMMAND_PLAYER_COLLECT_BRICK, brickId);
+        Debug.Log("colelct brick");
+        client.SendMessageToServer(CommandFromClient.COMMAND_PLAYER_COLLECT_BRICK, brickId, sendInterval*multiplierDelaySend);
+    }
+
+   
     
 
     #endregion

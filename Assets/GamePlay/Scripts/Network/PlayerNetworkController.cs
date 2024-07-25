@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -5,8 +6,10 @@ using MyGame.Schema;
 using StateMachineNP;
 using UnityEngine;
 
-public class PlayerNetworkController : PlayerController
+public class PlayerNetworkController : PlayerController,IDispose
 {
+    [SerializeField] private BoxCollider boxCollider;
+    private NetworkEventHandler networkEventHandler = new NetworkEventHandler();
     public bool IsMine { get; private set; }
     public string Id { get; private set; }
     private Vector3 destinationPosition;
@@ -44,7 +47,12 @@ public class PlayerNetworkController : PlayerController
 
     protected override void OnTriggerEnter(Collider other)
     {
-       
+        if (!IsMine) return;
+        if (other.CompareTag("Brick"))
+        {
+            var brick = other.GetComponent<BrickNetwork>();
+            GameNetworkManager.Instance.RequestCollectBrick(brick.Id);
+        }
     }
 
     public override void PlayAnimation(string animName, bool value)
@@ -60,8 +68,37 @@ public class PlayerNetworkController : PlayerController
     {
         this.IsMine = isMine;
         transform.position = NetworkUltilityHelper.ConvertFromVect3ToVector3(data.position);
+        SetColor((BrickColor)data.color);
         this.destinationPosition = transform.position;
         Id = data.entityId;
+        boxCollider.center = NetworkUltilityHelper.ConvertFromVect3ToVector3(data.boxCollider.centerPosition);
+        boxCollider.size = NetworkUltilityHelper.ConvertFromVect3ToVector3(data.boxCollider.size);
+        if (!isMine)
+        {
+            networkEventHandler.InitEventRegister(RegisterEventSync(data));;
+            GameNetworkManager.Instance.AddToDisposeList(this);
+        }
+            
+    }
+
+    private List<Action> RegisterEventSync(PlayerData player)
+    {
+        List<Action> returnActions = new List<Action>();
+        returnActions.Add(player.OnPositionChange(delegate(Vect3 value, Vect3 previousValue)
+        {
+//                Debug.Log("position change " + NetworkUltilityHelper.ConvertFromVect3ToVector3(value));
+            SetDestination(value);
+        }));
+        returnActions.Add(player.OnYRotationChange((value, previousValue) =>
+        {
+            SetYRotation(value);
+        }));
+        returnActions.Add( player.OnAnimNameChange((value, previousValue) =>
+        {
+            //Debug.Log("animName change " + value + " "+previousValue);
+            SetAnimName(value, previousValue);
+        }));
+        return returnActions;
     }
 
     public void SetDestination(Vect3 destination)
@@ -81,5 +118,10 @@ public class PlayerNetworkController : PlayerController
             Anim.SetBool(newValue, true);
         if(!string.IsNullOrEmpty(previousValue))
             Anim.SetBool(previousValue, false);
+    }
+
+    public void Dispose()
+    {
+        networkEventHandler.UnRegister();
     }
 }

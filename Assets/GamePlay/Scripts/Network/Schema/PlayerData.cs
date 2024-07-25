@@ -11,16 +11,16 @@ using Action = System.Action;
 
 namespace MyGame.Schema {
 	public partial class PlayerData : EntityData {
-		[Type(3, "string")]
+		[Type(4, "string")]
 		public string name = default(string);
 
-		[Type(4, "uint8")]
+		[Type(5, "uint8")]
 		public byte color = default(byte);
 
-		[Type(5, "uint16")]
+		[Type(6, "uint16")]
 		public ushort numberOfBrick = default(ushort);
 		
-		[Type(6, "string")]
+		[Type(7, "string")]
 		public string animName = default(string);
 
 		/*
