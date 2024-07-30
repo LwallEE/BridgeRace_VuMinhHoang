@@ -23,6 +23,8 @@ namespace MyGame.Schema {
 		[Type(7, "string")]
 		public string animName = default(string);
 
+		[Type(8, "boolean")] public bool isFall = default(bool);
+
 		/*
 		 * Support for individual property change callbacks below...
 		 */
@@ -74,6 +76,17 @@ namespace MyGame.Schema {
 				__animNameChange -= __handler;
 			};
 		}
+		protected event PropertyChangeHandler<bool> __isFallChange;
+		public Action OnIsFallChange(PropertyChangeHandler<bool> __handler, bool __immediate = true) {
+			if (__callbacks == null) { __callbacks = new SchemaCallbacks(); }
+			__callbacks.AddPropertyCallback(nameof(this.isFall));
+			__isFallChange += __handler;
+			if (__immediate && this.isFall != default(bool)) { __handler(this.isFall, default(bool)); }
+			return () => {
+				__callbacks.RemovePropertyCallback(nameof(this.isFall));
+				__isFallChange -= __handler;
+			};
+		}
 
 		protected override void TriggerFieldChange(DataChange change) {
 			
@@ -86,6 +99,8 @@ namespace MyGame.Schema {
 				case nameof(color): __colorChange?.Invoke((byte) change.Value, (byte) change.PreviousValue); break;
 				case nameof(numberOfBrick): __numberOfBrickChange?.Invoke((ushort) change.Value, (ushort) change.PreviousValue); break;
 				case nameof(animName): __animNameChange?.Invoke((string)change.Value, (string)change.PreviousValue);
+					break;
+				case nameof(isFall): __isFallChange?.Invoke((bool)change.Value, (bool)change.PreviousValue);
 					break;
 				default: break;
 			}

@@ -182,6 +182,7 @@ MonoBehaviour:
   fallState: {fileID: 1416371436675231628}
   playerIdleState: {fileID: 1416371437355893188}
   playerRunState: {fileID: 1416371436970671887}
+  isAutomaticMove: 0
   boxCollider: {fileID: 375770783713743248}
 --- !u!65 &375770783713743248
 BoxCollider:
@@ -275,6 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animBoolName: run
+  isTest: 0
 --- !u!1 &1416371437104543281
 GameObject:
   m_ObjectHideFlags: 0

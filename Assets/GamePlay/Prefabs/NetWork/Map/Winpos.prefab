@@ -41951,9 +41951,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3536140307375494565}
-  m_Layer: 6
+  - component: {fileID: 5899309953688211030}
+  m_Layer: 0
   m_Name: WinPosition
-  m_TagString: Untagged
+  m_TagString: WinPos
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41973,6 +41974,19 @@ Transform:
   m_Father: {fileID: 7762834950277230424}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5899309953688211030
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7959823312144820998}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.041038, y: 1.9229507, z: 1}
+  m_Center: {x: 0.13081312, y: 0.46147537, z: 0}
 --- !u!1 &8023602178374879476
 GameObject:
   m_ObjectHideFlags: 0

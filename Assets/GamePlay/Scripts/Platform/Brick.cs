@@ -93,7 +93,7 @@ public class Brick : MonoBehaviour
         Active(true);
     }
 
-    public void InitBrickDynamic(Vector3 position)
+    public virtual void InitBrickDynamic(Vector3 position)
     {
         transform.position = position;
         brickState = EBrickState.BrickDynamic;
@@ -108,11 +108,11 @@ public class Brick : MonoBehaviour
 
     }
 
-    private void ActiveRigibody(bool isActive)
+    protected void ActiveRigibody(bool isActive)
     {
         m_rigibody.isKinematic = !isActive;
     }
-    private void Active(bool isActive)
+    protected void Active(bool isActive)
     {
         HasCollect = !isActive;
         meshRenderer.enabled = isActive;

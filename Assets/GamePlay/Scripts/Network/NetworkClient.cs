@@ -50,7 +50,7 @@ public class NetworkClient : MonoBehaviour
         roomReconnectionToken = gameRoom.ReconnectionToken;
         RegisterEventFromServer();
         IsConnect = true;
-        StartCoroutine(GetPingFromServer());
+        //StartCoroutine(GetPingFromServer());
         
     }
 
@@ -70,6 +70,21 @@ public class NetworkClient : MonoBehaviour
         gameRoom.OnMessage<string>("check-collide-result",message =>
         {
             Debug.Log(message);
+        });
+        gameRoom.OnMessage<Vect3>("fix-position", message =>
+        {
+            Debug.Log("fix player position");
+            GameNetworkManager.Instance.FixPlayerPosition(message);
+        });
+        gameRoom.OnMessage<Vect3>("fall-player", message =>
+        {
+            Debug.Log("player fall " + NetworkUltilityHelper.ConvertFromVect3ToVector3(message));
+            GameNetworkManager.Instance.PlayerFall(message);
+        });
+        gameRoom.State.OnGameStateChange((value, previousValue) =>
+        {
+            
+            GameNetworkManager.Instance.SetGameState((GameNetworkStateEnum)value);
         });
         gameRoom.State.players.OnAdd(OnAddPlayer);
         gameRoom.State.map.OnChange(OnMapChange);
@@ -161,6 +176,11 @@ public class NetworkClient : MonoBehaviour
         }
     }
 
+    public string GetSessionId()
+    {
+        if (gameRoom == null) return "";
+        return gameRoom.SessionId;
+    }
     public bool CheckRoomAvailable()
     {
         return gameRoom != null;
@@ -238,7 +258,7 @@ public class NetworkClient : MonoBehaviour
 
     #region Other
 
-    public PlayerData GetPlayerData(string key)
+    private PlayerData GetPlayerData(string key)
     {
         PlayerData result;
         if (gameRoom.State.players.TryGetValue(key, out result))
@@ -247,6 +267,38 @@ public class NetworkClient : MonoBehaviour
         }
 
         return null;
+    }
+
+    private BrickData GetGreyBrickData(string key)
+    {
+        BrickData result;
+        if (gameRoom.State.map.greyBricks.TryGetValue(key, out result))
+        {
+            return result;
+        }
+
+        return null;
+    }
+    public bool IsChangePosition(string key, Vector3 position)
+    {
+        Vect3 previousPlayerPosition = GetEntityData(key).position;
+        return NetworkUltilityHelper.ConvertFromVect3ToVector3(previousPlayerPosition) != position;
+    }
+
+    private EntityData GetEntityData(string key)
+    {
+        EntityData result = null;
+        result = GetPlayerData(key);
+        if (result != null) return result;
+        result = GetGreyBrickData(key);
+        if (result != null) return result;
+        return null;
+    }
+
+    public PlayerData GetWinPlayerData()
+    {
+        if (gameRoom == null) return null;
+        return gameRoom.State.winPlayer;
     }
     
 

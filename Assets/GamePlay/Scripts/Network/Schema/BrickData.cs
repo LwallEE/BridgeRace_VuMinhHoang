@@ -6,6 +6,7 @@
 // 
 
 using Colyseus.Schema;
+using UnityEngine;
 using Action = System.Action;
 
 namespace MyGame.Schema {
@@ -76,6 +77,8 @@ namespace MyGame.Schema {
 
 		protected override void TriggerFieldChange(DataChange change) {
 			switch (change.Field) {
+				case nameof(position): InvokePositionChange((Vect3)change.Value, (Vect3)change.PreviousValue);
+					break;
 				case nameof(isActive): __isActiveChange?.Invoke((bool) change.Value, (bool) change.PreviousValue); break;
 				case nameof(color): __colorChange?.Invoke((byte) change.Value, (byte) change.PreviousValue); break;
 				case nameof(ownerId): __ownerIdChange?.Invoke((string) change.Value, (string) change.PreviousValue); break;

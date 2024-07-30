@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MyGame.Schema;
@@ -7,4 +8,16 @@ public class PlayerInputMessage
 {
     public Vect3 position;
     public float yRotation;
+}
+
+public class GreyBrickPositionMessage
+{
+    public List<BrickPositionMessage> brickChanges;
+}
+
+[Serializable]
+public class BrickPositionMessage
+{
+    public string key;
+    public Vect3 position;
 }

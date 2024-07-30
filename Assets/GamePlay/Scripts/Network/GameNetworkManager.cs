@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameNetworkManager : Singleton<GameNetworkManager>
 {
-    private NetworkClient client;
+    public NetworkClient Client { get; private set; }
     
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private CameraFollow cameraFollow;
@@ -24,6 +24,8 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
     private readonly float sendInterval = 100 / 1000f;
     private float sendTimer = 0f;
     private List<IDispose> elementToDispose = new List<IDispose>();
+    private bool isFreezingSending;
+    private GameNetworkStateEnum gameState;
 
     private void Start()
     {
@@ -32,17 +34,19 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
 
     private void Update()
     {
+        if (!IsInGameState(GameNetworkStateEnum.GameLoop)) return;
         sendTimer += Time.deltaTime;
         if (sendTimer >= sendInterval)
         {
             sendTimer = 0f;
             UpdatePositionRotationOfPlayerToServer();
+            UpdateGreyBrickPosition();
         }
     }
 
     public void OnInit(NetworkClient client)
     {
-        this.client = client;
+        this.Client = client;
         gameObject.SetActive(true);
     }
 
@@ -50,6 +54,8 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
     {
         this.elementToDispose.Add(item);
     }
+
+    #region CallBackFromServer
     public void SetMainPlayer(PlayerData data)
     {
         this.player = Instantiate(playerPrefab).GetComponent<PlayerNetworkController>();
@@ -69,6 +75,39 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
         otherPlayers.TryAdd(data.entityId, otherPlayer);
     }
 
+    public void FixPlayerPosition(Vect3 position)
+    {
+        if (player != null)
+        {
+            player.transform.position = NetworkUltilityHelper.ConvertFromVect3ToVector3(position);
+        }
+    }
+
+    public void PlayerFall(Vect3 direction)
+    {
+        if (player != null)
+        {
+            player.Fall(NetworkUltilityHelper.ConvertFromVect3ToVector3(direction));
+        }
+    }
+
+    public void SetGameState(GameNetworkStateEnum state)
+    {
+        if (state == this.gameState) return;
+        this.gameState = state;
+        Debug.Log("Change game state " + state);
+        if (this.gameState == GameNetworkStateEnum.GameEnd)
+        {
+            //Show win panel here
+            var winPlayer = Client.GetWinPlayerData();
+            if (winPlayer == null) return;
+            Debug.Log("game end " + winPlayer.entityId);
+        }
+    }
+    
+
+    #endregion
+    
     private PlayerNetworkController GetPlayer(string key)
     {
         PlayerNetworkController playerr ;
@@ -108,20 +147,20 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
         }
        
     }
-    
-    
+
+    public bool IsInGameState(GameNetworkStateEnum state)
+    {
+        return this.gameState == state;
+    }
 
     #region MessageSendToServer
     public void UpdatePositionRotationOfPlayerToServer()
     {
-        if (player == null || client == null || !client.IsConnect || !client.CheckRoomAvailable()) return;
+        if (player == null || Client == null || !Client.IsConnect || !Client.CheckRoomAvailable()) return;
         //Compare the last player data's position and current's position
         //if not change return
-       
-        Vect3 previousPlayerPosition = client.GetPlayerData(player.Id).position;
-        bool check = NetworkUltilityHelper.ConvertFromVect3ToVector3(previousPlayerPosition) !=
-                     player.transform.position;
-        if (!check) return;
+        
+        if (!Client.IsChangePosition(player.Id, player.transform.position)) return;
         
         PlayerInputMessage message = new PlayerInputMessage()
         {
@@ -132,27 +171,65 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
        
         
            
-            client.SendMessageToServer(CommandFromClient.COMMAND_UPDATE_PLAYER_POSITION_ROTATION,message);
+        Client.SendMessageToServer(CommandFromClient.COMMAND_UPDATE_PLAYER_POSITION_ROTATION,message);
         
+    }
+
+    public void UpdateGreyBrickPosition()
+    {
+        if (mapGenerate == null || Client == null || !Client.IsConnect) return;
+        var message = mapGenerate.GetGreyBrickMessage();
+        if (message.brickChanges == null || message.brickChanges.Count <= 0) return;
+        Debug.Log("update grey brick");
+        Client.SendMessageToServer(CommandFromClient.COMMAND_UPDATE_GREY_BRICK, message);
     }
 
     public void UpdateAnimationOfPlayerToServer(string newState)
     {
-        if (player == null || client == null || !client.IsConnect) return;
-        client.SendMessageToServer(CommandFromClient.COMMAND_UPDATE_PLAYER_ANIMATION, newState);
+        if (player == null || Client == null || !Client.IsConnect) return;
+        Client.SendMessageToServer(CommandFromClient.COMMAND_UPDATE_PLAYER_ANIMATION, newState);
     }
 
     public void RequestCollectBrick(string brickId)
     {
-        if (player == null || client == null || !client.IsConnect) return;
-        //client.SendMessage<string>(CommandFromClient.COMMAND_PLAYER_COLLECT_BRICK, brickId);
-        Debug.Log("colelct brick");
-        client.SendMessageToServer(CommandFromClient.COMMAND_PLAYER_COLLECT_BRICK, brickId, sendInterval*multiplierDelaySend);
+        if (player == null || Client == null || !Client.IsConnect) return;
+        Client.SendMessageToServer(CommandFromClient.COMMAND_PLAYER_COLLECT_BRICK, brickId, sendInterval*multiplierDelaySend);
     }
 
-   
+    public void RequestBuildTheBridge(string bridgeSlotId)
+    {
+        if (player == null || Client == null || !Client.IsConnect) return;
+        if (!isFreezingSending)
+        {
+            Debug.Log("send fill bridge");
+            isFreezingSending = true;
+            Client.SendMessageToServer(CommandFromClient.COMMAND_PLAYER_BUILD_BRIDGE, bridgeSlotId);
+            Invoke(nameof(ResetFreezingSending), sendInterval);
+        }
+    }
+
+    public void RequestKickTheOtherPlayer(Vector3 moveDirection, string otherPlayerId,Vector3 otherPosition)
+    {
+        if (player == null || Client == null || !Client.IsConnect) return;
+        Debug.Log("kick player");
+        var message = new { direction = NetworkUltilityHelper.ConvertFromVector3ToVect3(moveDirection),
+            otherplayerId = otherPlayerId,
+            otherPlayerPosition = NetworkUltilityHelper.ConvertFromVector3ToVect3(otherPosition)};
+        Client.SendMessageToServer(CommandFromClient.COMMAND_PLAYER_KICK_OTHER_PLAYER, message, sendInterval * multiplierDelaySend);
+    }
+
+    public void RequestCheckPlayerWin()
+    {
+        if (player == null || Client == null || !Client.IsConnect) return;
+        Debug.Log("Check player win");
+        Client.SendMessageToServer(CommandFromClient.COMMAND_CHECK_PLAYER_WIN,null);
+    }
     
 
     #endregion
-   
+
+    private void ResetFreezingSending()
+    {
+        isFreezingSending = false;
+    }
 }

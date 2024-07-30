@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MyGame.Schema;
@@ -19,7 +20,18 @@ public class BridgeSlotNetwork : BridgeSlot,IDispose
         SetColor((BrickColor)data.color);
         
         //event and dispose
+        RegisterEventNetwork(data);
         GameNetworkManager.Instance.AddToDisposeList(this);
+    }
+
+    private List<Action> RegisterEventNetwork(BridgeSlotData data)
+    {
+        List<Action> returnList = new List<Action>();
+        returnList.Add(data.OnColorChange((value, previousValue) =>
+        {
+            SetColor((BrickColor)value);
+        }));
+        return returnList;
     }
 
     public void Dispose()

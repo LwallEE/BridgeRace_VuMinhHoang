@@ -10,7 +10,6 @@ public class NetworkEventHandler
 
     public void InitEventRegister(List<Action> actions)
     {
-        eventRegister = new List<Action>();
         foreach (var action in actions)
         {
             eventRegister.Add(action);

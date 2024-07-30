@@ -11,10 +11,12 @@ public class PlayerNetworkController : PlayerController,IDispose
     [SerializeField] private BoxCollider boxCollider;
     private NetworkEventHandler networkEventHandler = new NetworkEventHandler();
     public bool IsMine { get; private set; }
+    public bool IsFall { get; private set; }
     public string Id { get; private set; }
     private Vector3 destinationPosition;
     private float yRotationDestination;
     private float lerpSpeed;
+    
     protected override void Start()
     {
         StateMachine.Initialize(playerIdleState);
@@ -23,6 +25,7 @@ public class PlayerNetworkController : PlayerController,IDispose
 
     protected override void Update()
     {
+        if (!GameNetworkManager.Instance.IsInGameState(GameNetworkStateEnum.GameLoop)) return;
         if (IsMine)
         {
             base.Update();
@@ -32,6 +35,7 @@ public class PlayerNetworkController : PlayerController,IDispose
 
     protected override void FixedUpdate()
     {
+        if (!GameNetworkManager.Instance.IsInGameState(GameNetworkStateEnum.GameLoop)) return;
         if (IsMine) 
         {
             base.FixedUpdate();
@@ -45,19 +49,54 @@ public class PlayerNetworkController : PlayerController,IDispose
         }
     }
 
+    public override bool HandleFillTheBridge(BridgeSlot bridge, Vector3 direction)
+    {
+        if (CanFillTheBridge() && IsMine)
+        {
+            string id = (bridge as BridgeSlotNetwork).Id;
+            if (id != null)
+            {
+                GameNetworkManager.Instance.RequestBuildTheBridge(id);
+            }
+        }
+        
+        UpdateRotation(direction);
+        direction.z = 0f;
+        direction.y = 0f;
+        SetVelocityWithoutRotate(direction*data.moveSpeed);
+        return false;
+    }
+
     protected override void OnTriggerEnter(Collider other)
     {
         if (!IsMine) return;
-        if (other.CompareTag("Brick"))
+        if (other.CompareTag(Constants.BRICK_TAG))
         {
             var brick = other.GetComponent<BrickNetwork>();
-            GameNetworkManager.Instance.RequestCollectBrick(brick.Id);
+            if(brick.CanCollect(characterColor.brickColorE))
+                GameNetworkManager.Instance.RequestCollectBrick(brick.Id);
+        }
+
+        if (other.CompareTag(Constants.CHARACTER_TAG))
+        {
+            var otherPlayer = other.GetComponent<PlayerNetworkController>();
+            if (otherPlayer != null && !otherPlayer.IsFall &&
+                GetNumberOfCurrentBrick() > otherPlayer.GetNumberOfCurrentBrick())
+            {
+                //send message to kick other player
+                GameNetworkManager.Instance.RequestKickTheOtherPlayer(GetMoveDirection(), otherPlayer.Id,otherPlayer.transform.position);
+            }
+        }
+
+        if (other.CompareTag(Constants.WINPOS_TAG))
+        {
+            GameNetworkManager.Instance.RequestCheckPlayerWin();
         }
     }
 
     public override void PlayAnimation(string animName, bool value)
     {
-        if (value && animName != previousAnimName)
+        if (IsMine && value && animName != previousAnimName)
         {
             GameNetworkManager.Instance.UpdateAnimationOfPlayerToServer(animName);
         }
@@ -71,34 +110,75 @@ public class PlayerNetworkController : PlayerController,IDispose
         SetColor((BrickColor)data.color);
         this.destinationPosition = transform.position;
         Id = data.entityId;
+        IsFall = data.isFall;
         boxCollider.center = NetworkUltilityHelper.ConvertFromVect3ToVector3(data.boxCollider.centerPosition);
         boxCollider.size = NetworkUltilityHelper.ConvertFromVect3ToVector3(data.boxCollider.size);
         if (!isMine)
         {
-            networkEventHandler.InitEventRegister(RegisterEventSync(data));;
-            GameNetworkManager.Instance.AddToDisposeList(this);
+            RigidbodyObj.useGravity = false;
         }
+        
+        networkEventHandler.InitEventRegister(RegisterEventSync(data));;
+        GameNetworkManager.Instance.AddToDisposeList(this);
+        
             
     }
 
     private List<Action> RegisterEventSync(PlayerData player)
     {
         List<Action> returnActions = new List<Action>();
-        returnActions.Add(player.OnPositionChange(delegate(Vect3 value, Vect3 previousValue)
+        if (!IsMine)
         {
+            returnActions.Add(player.OnPositionChange(delegate(Vect3 value, Vect3 previousValue)
+            {
 //                Debug.Log("position change " + NetworkUltilityHelper.ConvertFromVect3ToVector3(value));
-            SetDestination(value);
-        }));
-        returnActions.Add(player.OnYRotationChange((value, previousValue) =>
+                SetDestination(value);
+            }));
+            returnActions.Add(player.OnYRotationChange((value, previousValue) =>
+            {
+                SetYRotation(value);
+            }));
+            returnActions.Add( player.OnAnimNameChange((value, previousValue) =>
+            {
+                //Debug.Log("animName change " + value + " "+previousValue);
+                SetAnimName(value, previousValue);
+            }));
+
+        }
+      
+        returnActions.Add(player.OnNumberOfBrickChange((value, previousValue) =>
         {
-            SetYRotation(value);
+//            Debug.Log("change brick from " + previousValue + " to " + value );
+            int changeBrickNum = value - previousValue;
+            if (changeBrickNum != 0)
+            {
+                UpdateBrickNumber(changeBrickNum);
+            }
         }));
-        returnActions.Add( player.OnAnimNameChange((value, previousValue) =>
+        returnActions.Add(player.OnIsFallChange((value, previousValue) =>
         {
-            //Debug.Log("animName change " + value + " "+previousValue);
-            SetAnimName(value, previousValue);
-        }));
+            IsFall = value;
+        } ));
         return returnActions;
+    }
+    
+
+    #region Network Event CallBack
+    private void UpdateBrickNumber(int number)
+    {
+        bool isRemove = number < 0;
+        for (int i = 0; i < Mathf.Abs(number); i++)
+        {
+            if (isRemove)
+            {
+                RemoveBrick();
+            }
+            else
+            {
+                AddBrick();
+            }
+        }
+        UpdateBrickVisual();
     }
 
     public void SetDestination(Vect3 destination)
@@ -120,6 +200,14 @@ public class PlayerNetworkController : PlayerController,IDispose
             Anim.SetBool(previousValue, false);
     }
 
+    public override void Fall(Vector3 fallDirection)
+    {
+        fallState.SetFallDirection(fallDirection);
+        StateMachine.ChangeState(fallState);
+    }
+
+    #endregion
+   
     public void Dispose()
     {
         networkEventHandler.UnRegister();

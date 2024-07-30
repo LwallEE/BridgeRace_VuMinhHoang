@@ -15,6 +15,9 @@ namespace MyGame.Schema {
 		
 		[Type(1,"ref",typeof(Vect3))]
 		public Vect3 winPosition = new Vect3();
+		
+		[Type(2, "map", typeof(MapSchema<BrickData>))]
+		public MapSchema<BrickData> greyBricks = new MapSchema<BrickData>();
 
 		/*
 		 * Support for individual property change callbacks below...

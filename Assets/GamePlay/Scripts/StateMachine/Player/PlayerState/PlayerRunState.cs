@@ -8,7 +8,7 @@ namespace StateMachineNP
     public class PlayerRunState : State
     {
         private PlayerController playerController;
-
+        public bool isTest;
         public void OnInit(Character player, StateMachine stateMachine,
             CharacterData playerData, PlayerController playerController)
         {
@@ -26,7 +26,11 @@ namespace StateMachineNP
         {
             
             var direction = playerController.GetProjectedDirectionOnPlane(Ultility.ConvertFrom2DVectorTo3DPlane(playerController.GetMoveDirection()));
-            
+            if (isTest)
+            {
+                direction = Vector3.forward;
+            }
+            else{
             if (playerController.CheckBridgeCollide())
             {
                 var bridge = playerController.GetBridgeCollide();
@@ -34,26 +38,14 @@ namespace StateMachineNP
                 {
                    
                     //try to fill the bridge with color
-                    if (playerController.CanFillTheBridge())
+                    if (!playerController.HandleFillTheBridge(bridge, direction))
                     {
-                        bridge.SetColor(playerController.GetColor());
-                        playerController.RemoveBrick();
-                        
-                    }
-                    else
-                    {
-                        Debug.Log("not going through bridge");
-                        //prevent player going through bridge
-                        playerController.UpdateRotation(direction);
-                        direction.z = 0f;
-                        direction.y = 0f;
-                        playerController.SetVelocityWithoutRotate(direction*_entityData.moveSpeed);
                         return;
                     }
                    
                 }
             }
-           
+            }
             playerController.SetVelocity(direction*_entityData.moveSpeed);
         }
     }

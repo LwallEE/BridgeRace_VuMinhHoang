@@ -16,7 +16,7 @@ namespace StateMachineNP
         [SerializeField] protected PlayerRunState playerRunState;
         #endregion
 
-        
+        public bool isAutomaticMove;
         public override void Awake()
         {
             base.Awake();
@@ -45,6 +45,7 @@ namespace StateMachineNP
 
             if (fromState == playerRunState)
             {
+                if (isAutomaticMove) return;
                 if (GetMoveDirection() == Vector2.zero)
                 {
                     StateMachine.ChangeState(playerIdleState);
@@ -118,6 +119,27 @@ namespace StateMachineNP
             if (other.gameObject.CompareTag(Constants.CHARACTER_TAG))
             {
                 Debug.Log(other.gameObject.name);
+            }
+        }
+        
+        //return true if can fill, else return false
+        public virtual bool HandleFillTheBridge(BridgeSlot bridge,Vector3 direction)
+        {
+            if (CanFillTheBridge())
+            {
+                bridge.SetColor(GetColor());
+                RemoveBrick();
+                return true;
+            }
+            else
+            {
+                Debug.Log("not going through bridge");
+                //prevent player going through bridge
+                UpdateRotation(direction);
+                direction.z = 0f;
+                direction.y = 0f;
+                SetVelocityWithoutRotate(direction*data.moveSpeed);
+                return false;
             }
         }
     }

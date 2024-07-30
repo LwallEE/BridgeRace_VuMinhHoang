@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3435985573213219480}
   - component: {fileID: 5599264552238258681}
   - component: {fileID: 7277152327020486905}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BridgeSlotNetwork
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -16,6 +16,11 @@ namespace MyGame.Schema {
 		[Type(1, "ref", typeof(MapData))]
 		public MapData map = new MapData();
 
+		[Type(2, "ref", typeof(PlayerData))] public PlayerData winPlayer = new PlayerData();
+		
+		[Type(3, "uint8")]
+		public byte gameState = default(byte);
+
 		/*
 		 * Support for individual property change callbacks below...
 		 */
@@ -43,11 +48,25 @@ namespace MyGame.Schema {
 				__mapChange -= __handler;
 			};
 		}
+		
+		protected event PropertyChangeHandler<byte> __gameStateChange;
+		public Action OnGameStateChange(PropertyChangeHandler<byte> __handler, bool __immediate = true) {
+			if (__callbacks == null) { __callbacks = new SchemaCallbacks(); }
+			__callbacks.AddPropertyCallback(nameof(this.gameState));
+			__gameStateChange += __handler;
+			if (__immediate && this.gameState != default(byte)) { __handler(this.gameState, default(byte)); }
+			return () => {
+				__callbacks.RemovePropertyCallback(nameof(gameState));
+				__gameStateChange -= __handler;
+			};
+		}
 
 		protected override void TriggerFieldChange(DataChange change) {
 			switch (change.Field) {
 				case nameof(players): __playersChange?.Invoke((MapSchema<PlayerData>) change.Value, (MapSchema<PlayerData>) change.PreviousValue); break;
 				case nameof(map): __mapChange?.Invoke((MapData) change.Value, (MapData) change.PreviousValue); break;
+				case nameof(gameState): __gameStateChange?.Invoke((byte)change.Value, (byte) change.PreviousValue);
+					break;
 				default: break;
 			}
 		}

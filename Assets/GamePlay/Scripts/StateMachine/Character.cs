@@ -89,12 +89,13 @@ namespace StateMachineNP
                 brickList = new List<BrickVisual>();
             }
             brickList.Add(brickVisual);
-            UpdateBrickVisual();
+            
         }
 
         protected void UpdateBrickVisual()
         {
             float yPos = 0f;
+            if (brickList == null) return;
             foreach (var brick in brickList)
             {
                brick.UpdateVisual(characterColor, yPos);
@@ -104,7 +105,7 @@ namespace StateMachineNP
 
         public void RemoveBrick()
         {
-            if (brickList.Count > 0)
+            if (brickList != null && brickList.Count > 0)
             {
                 LazyPool.Instance.AddObjectToPool(brickList[brickList.Count-1].gameObject);
                 brickList.RemoveAt(brickList.Count-1);
@@ -207,6 +208,7 @@ namespace StateMachineNP
                 {
                     brick.CollectBrick();
                     AddBrick();
+                    UpdateBrickVisual();
                 }
             }
 
@@ -214,7 +216,7 @@ namespace StateMachineNP
             if (other.CompareTag(Constants.CHARACTER_TAG))
             {
                 var character = other.GetComponent<StateMachineNP.Character>();
-                if (character != null &&character.CanFall() &&  GetNumberOfCurrentBrick() > character.GetNumberOfCurrentBrick())
+                if (character != null && character.CanFall() &&  GetNumberOfCurrentBrick() > character.GetNumberOfCurrentBrick())
                 {
                     Debug.Log(gameObject.name + " Kick " + character.gameObject.name );
                     character.Fall(GetMoveDirection());

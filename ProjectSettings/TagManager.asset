@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Brick
   - Character
+  - WinPos
   layers:
   - Default
   - TransparentFX

@@ -9,6 +9,7 @@ public static class Constants
     public const BrickColor BRIDGE_INITIAL_COLOR = BrickColor.None;
     public const string BRICK_TAG = "Brick";
     public const string CHARACTER_TAG = "Character";
+    public const string WINPOS_TAG = "WinPos";
     public const float TIME_TO_BRICK_RESPAWN = 5f;
     public const float CHARACTER_FALL_FORCE = 3f;
     public const float BOT_FALL_FORCE_MULTIPLER = 3f;
