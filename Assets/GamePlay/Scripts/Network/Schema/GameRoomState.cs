@@ -20,7 +20,15 @@ namespace MyGame.Schema {
 		
 		[Type(3, "uint8")]
 		public byte gameState = default(byte);
+		
+		[Type(4,"map", typeof(MapSchema<NetworkUserData>))]
+		public MapSchema<NetworkUserData> networkUsers = new MapSchema<NetworkUserData>();
 
+		[Type(5, "uint8")]
+		public byte minPlayerToStart = default(byte);
+
+		[Type(6, "uint16")]
+		public ushort countDownTime = default(ushort);
 		/*
 		 * Support for individual property change callbacks below...
 		 */
@@ -60,12 +68,25 @@ namespace MyGame.Schema {
 				__gameStateChange -= __handler;
 			};
 		}
+		protected event PropertyChangeHandler<ushort> __countDownTimeChange;
+		public Action OnCountDownTimeChange(PropertyChangeHandler<ushort> __handler, bool __immediate = true) {
+			if (__callbacks == null) { __callbacks = new SchemaCallbacks(); }
+			__callbacks.AddPropertyCallback(nameof(this.countDownTime));
+			__countDownTimeChange += __handler;
+			if (__immediate && this.countDownTime != default(ushort)) { __handler(this.countDownTime, default(ushort)); }
+			return () => {
+				__callbacks.RemovePropertyCallback(nameof(countDownTime));
+				__countDownTimeChange -= __handler;
+			};
+		}
 
 		protected override void TriggerFieldChange(DataChange change) {
 			switch (change.Field) {
 				case nameof(players): __playersChange?.Invoke((MapSchema<PlayerData>) change.Value, (MapSchema<PlayerData>) change.PreviousValue); break;
 				case nameof(map): __mapChange?.Invoke((MapData) change.Value, (MapData) change.PreviousValue); break;
 				case nameof(gameState): __gameStateChange?.Invoke((byte)change.Value, (byte) change.PreviousValue);
+					break;
+				case nameof(countDownTime): __countDownTimeChange?.Invoke((ushort)change.Value, (ushort)change.PreviousValue);
 					break;
 				default: break;
 			}

@@ -45,7 +45,7 @@ public class BrickNetwork : Brick,IDispose
         }
         else
         {
-            if (data.ownerId == GameNetworkManager.Instance.Client.GetSessionId())
+            if (data.ownerId == GameNetworkManager.Instance.Client.GameRoomNetwork.GetSessionId())
             {
                 IsMine = true;
             }
@@ -64,7 +64,7 @@ public class BrickNetwork : Brick,IDispose
 
     public override void InitBrickDynamic(Vector3 position)
     {
-        if (IsMine)
+        if (IsMine)   //if is mine, the client has the responsibility to simulate the physic of this brick
         {        
             base.InitBrickDynamic(position);
         }

@@ -11,19 +11,14 @@ using UnityEngine;
 public class NetworkClient : MonoBehaviour
 {
     public string roomType = "game_room";
+    public string lobbyRoomName = "lobby";
     public string hostName = "localhost";
     public string portName = "2567";
 
-    [SerializeField] private float timeToCallGetPingFromServer=2f;
-    [SerializeField] private float timeToCheckDisconnect;
+    public bool isTest;
+    [field: SerializeField] public GameRoomNetwork GameRoomNetwork { get; private set; }
     private ColyseusClient client;
-    
-    private ColyseusRoom<GameRoomState> gameRoom;
-
-    private float startTime;
-    private bool isReceivePing;
-    private ReconnectionToken roomReconnectionToken;
-    public bool IsConnect { get; private set; }
+    private ColyseusLobby lobbyRoom;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,281 +28,124 @@ public class NetworkClient : MonoBehaviour
 
     async void Connect()
     {
-        string endpoint = "ws://" + hostName + ":" + portName;
-        client = new ColyseusClient(endpoint);
-        await ConnectToGameRoom();
-        GameNetworkManager.Instance.OnInit(this);
-    }
-
-    async Task ConnectToGameRoom()
-    {
-        gameRoom = await client.JoinOrCreate<GameRoomState>(roomType);
-        InitRoom();
-    }
-
-    void InitRoom()
-    {
-        roomReconnectionToken = gameRoom.ReconnectionToken;
-        RegisterEventFromServer();
-        IsConnect = true;
-        //StartCoroutine(GetPingFromServer());
-        
-    }
-
-    void RegisterEventFromServer()
-    {
-        gameRoom.OnJoin += GameRoomOnJoin;
-        gameRoom.OnError += GameRoomOnError;
-        gameRoom.OnLeave += GameRoomOnLeave;
-        
-        gameRoom.OnMessage<string>("getPing", s =>
-        {
-            float endTime = Time.time;
-            isReceivePing = true;
-            //IsConnect = true;
-            Debug.Log("Ping " + (endTime-startTime)*1000 + " ms");
-        } );
-        gameRoom.OnMessage<string>("check-collide-result",message =>
-        {
-            Debug.Log(message);
-        });
-        gameRoom.OnMessage<Vect3>("fix-position", message =>
-        {
-            Debug.Log("fix player position");
-            GameNetworkManager.Instance.FixPlayerPosition(message);
-        });
-        gameRoom.OnMessage<Vect3>("fall-player", message =>
-        {
-            Debug.Log("player fall " + NetworkUltilityHelper.ConvertFromVect3ToVector3(message));
-            GameNetworkManager.Instance.PlayerFall(message);
-        });
-        gameRoom.State.OnGameStateChange((value, previousValue) =>
-        {
-            
-            GameNetworkManager.Instance.SetGameState((GameNetworkStateEnum)value);
-        });
-        gameRoom.State.players.OnAdd(OnAddPlayer);
-        gameRoom.State.map.OnChange(OnMapChange);
-    }
-
-    private void OnMapChange()
-    {
-        Debug.Log("map change");
-       
-       //To Do: Initialize map here
-       GameNetworkManager.Instance.GenerateMap(gameRoom.State.map);
-    }
-
-
-    #region CallBackFromServer
-    private void OnAddPlayer(string key, PlayerData player)
-    {
-        if (key == gameRoom.SessionId)
-        {
-         
-            GameNetworkManager.Instance.SetMainPlayer(player);
-        }
-        else
-        {
-            GameNetworkManager.Instance.AddOtherPlayer(player);
-
-            
-        }
-    }
-
-    
-
-
-    private async void GameRoomOnLeave(int code)
-    {
-        
-        //throw new System.NotImplementedException();
-        Debug.Log("has leave " + code);
-        if (code >= 4000) return;
-        RoomDispose();
-        await Reconnect();
-        
-    }
-    
-    //dispose room and client here
-    private void RoomDispose()
-    {
-        Debug.Log("dispose");
-        //gameRoom = null;
-        GameNetworkManager.Instance.Dispose();
-        StopAllCoroutines();
-    }
-
-    private void GameRoomOnError(int code, string message)
-    {
-        Debug.LogError(message);
-    }
-
-    private void GameRoomOnJoin()
-    {
-        Debug.Log("has join game");
-    }
-    private void Disconnect()
-    {
-        if (IsConnect)
-        {
-            Debug.Log("disconnect");
-            IsConnect = false;
-            gameRoom.Leave(false);
-            //deal with disconnect here
-        }
-    }
-
-    private async Task<bool> Reconnect()
-    {
         try
         {
-            gameRoom = await client.Reconnect<GameRoomState>(roomReconnectionToken);
-            Debug.Log("joined successfully");
-            InitRoom();
-            //deal with reconnect here
-            return true;
+            string endpoint = "ws://" + hostName + ":" + portName;
+            client = new ColyseusClient(endpoint);
+
+            await ConnectToLobbyRoom();
+            GameNetworkManager.Instance.OnInit(this);
         }
         catch (Exception e)
         {
-            Debug.Log(e);
-            return false;
-            
-        }
-    }
-
-    public string GetSessionId()
-    {
-        if (gameRoom == null) return "";
-        return gameRoom.SessionId;
-    }
-    public bool CheckRoomAvailable()
-    {
-        return gameRoom != null;
-    }
-        #endregion
-        
-    #region ActionFromClient
-    IEnumerator GetPingFromServer()
-    {
-        WaitForSeconds wait = new WaitForSeconds(timeToCallGetPingFromServer);
-        WaitForSeconds checkDisconectTime = new WaitForSeconds(timeToCheckDisconnect);
-        while (true)
-        {
-            GetPing();
-            yield return checkDisconectTime;
-            if (!isReceivePing)
+            UINetworkManager.Instance.OpenPopUpMessage(e.Message, () =>
             {
-                Disconnect();
-            }
-            yield return wait;
+                //<To Do> return the main scene if connection failed
+                Debug.Log("back to main menu");
+                GameNetworkManager.Instance.BackToMainMenuScene();
+            });
         }
-    }
-
-   
-    async void GetPing()
-    {
-        startTime = Time.time;
-        isReceivePing = false;
-        SendMessageToServer("ping",null);
+      
        
     }
 
-   
-
-    public void SendMessageToServer(string type, object message)
+    public async Task ConnectToLobbyRoom()
     {
-        if(gameRoom != null && IsConnect)
-            gameRoom.Send(type, message);
-    }
-
-    public void SendMessageToServer(string type, object message, int attempt,float timeAttempt)
-    {
-        if (gameRoom != null)
+        try
         {
-            StartCoroutine(AttempSend(type, message, attempt,timeAttempt));
+            if (GameRoomNetwork.IsGameRoomConnect())
+            {
+                await GameRoomNetwork.LeaveGameRoom();
+            }
+
+            lobbyRoom = new ColyseusLobby(client, lobbyRoomName);
+
+            await lobbyRoom.Connect();
+            Debug.Log("connect to lobby success");
+            UINetworkManager.Instance.OpenLobbyRoomPanel();
+            lobbyRoom.OnRooms += (rooms) => { UINetworkManager.Instance.GetLobbyPanelUI().InitializeListRoom(rooms); };
+
+            lobbyRoom.OnAddRoom += (roomId, roomInfo) =>
+            {
+                UINetworkManager.Instance.GetLobbyPanelUI().AddOrUpdateRoom(roomInfo);
+            };
+
+            lobbyRoom.OnRemoveRoom += (roomId) => { UINetworkManager.Instance.GetLobbyPanelUI().RemoveRoom(roomId); };
+        }
+        catch (Exception e)
+        {
+            UINetworkManager.Instance.OpenPopUpMessage(e.Message, (() =>
+            {
+                GameNetworkManager.Instance.BackToMainMenuScene();
+            }));
         }
     }
 
-    public void SendMessageToServer(string type, object message, float delay)
+    public void LeaveLobbyRoom()
     {
-        if (gameRoom != null)
+        if (lobbyRoom != null)
         {
-            StartCoroutine(DelaySend(type, message, delay));
+            lobbyRoom.LeaveRoom();
         }
     }
-    IEnumerator AttempSend(string type, object message,int attempt,float timeAttemptSend)
+    public async Task CreateGameRoom(string userName,string roomName)
     {
-        
-        WaitForSeconds wait = new WaitForSeconds(timeAttemptSend);
-        for (int i = 0; i < attempt; i++)
+        try
         {
+            if (lobbyRoom != null)
+            {
+                await lobbyRoom.LeaveRoom();
+            }
             
-            SendMessageToServer(type, message);
-            yield return wait;
+            /*
+            gameRoom = await client.Create<GameRoomState>(roomType, new Dictionary<string, object>()
+            {
+                ["name"] = roomName,
+                ["userName"] = userName
+            });
+            InitRoom();*/
+            GameRoomNetwork.InitGameRoom(this.client, this.roomType);
+            await GameRoomNetwork.CreateGameRoom(userName, roomName);
         }
-    }
-
-    IEnumerator DelaySend(string type, object message, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        SendMessageToServer(type,message);
-    }
-    
-    #endregion
-
-    #region Other
-
-    private PlayerData GetPlayerData(string key)
-    {
-        PlayerData result;
-        if (gameRoom.State.players.TryGetValue(key, out result))
+        catch (Exception e)
         {
-            return result;
+            UINetworkManager.Instance.OpenPopUpMessage(e.Message, (() =>
+            {
+                UINetworkManager.Instance.GetPopUpMessageUI().Close();
+            }));
         }
-
-        return null;
     }
 
-    private BrickData GetGreyBrickData(string key)
+    public async Task JoinGameRoom(string userName, string roomId)
     {
-        BrickData result;
-        if (gameRoom.State.map.greyBricks.TryGetValue(key, out result))
+        try
         {
-            return result;
+            if (lobbyRoom != null)
+            {
+                await lobbyRoom.LeaveRoom();
+            }
+
+            /*
+            gameRoom = await client.JoinById<GameRoomState>(roomId, new Dictionary<string, object>()
+            {
+                ["userName"] = userName,
+            });
+            InitRoom();
+            */
+            GameRoomNetwork.InitGameRoom(this.client, this.roomType);
+            await GameRoomNetwork.JoinGameRoom(userName, roomId);
         }
-
-        return null;
+        catch (Exception e)
+        {
+            UINetworkManager.Instance.OpenPopUpMessage(e.Message, (() =>
+            {
+                UINetworkManager.Instance.GetPopUpMessageUI().Close();
+            }));
+        }
     }
-    public bool IsChangePosition(string key, Vector3 position)
-    {
-        Vect3 previousPlayerPosition = GetEntityData(key).position;
-        return NetworkUltilityHelper.ConvertFromVect3ToVector3(previousPlayerPosition) != position;
-    }
-
-    private EntityData GetEntityData(string key)
-    {
-        EntityData result = null;
-        result = GetPlayerData(key);
-        if (result != null) return result;
-        result = GetGreyBrickData(key);
-        if (result != null) return result;
-        return null;
-    }
-
-    public PlayerData GetWinPlayerData()
-    {
-        if (gameRoom == null) return null;
-        return gameRoom.State.winPlayer;
-    }
-    
-
-    #endregion
-    
-
     void OnApplicationQuit()
     {
-        if(gameRoom != null)
-            gameRoom.Leave(true);
+        if(GameRoomNetwork.IsGameRoomConnect())
+            GameRoomNetwork.LeaveGameRoom();
     }
 }

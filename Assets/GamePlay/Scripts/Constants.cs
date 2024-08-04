@@ -16,4 +16,7 @@ public static class Constants
     public const float CHARACTER_FALL_HEIGHT_FORCE = 5f;
     public const float BRICK_MOVE_FORCE = 3f;
     public const float BRICK_COOLDOWN_TIME_TO_COLLECT = 0.5f;
+
+    public const string MAIN_MENU_SCENE = "MainMenuScene";
+    public const string GAME_ONLINE_SCENE = "MultiplayerScene";
 }

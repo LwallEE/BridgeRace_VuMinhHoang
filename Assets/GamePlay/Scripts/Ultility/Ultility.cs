@@ -21,6 +21,11 @@ public static class Ultility
         return Math.Abs(a - b) <= threshold;
     }
 
-    
+    public static int SafeParseInt(string s, int defaultValue)
+    {
+        int x = defaultValue;
+        int.TryParse(s, out x);
+        return x;
+    }
    
 }

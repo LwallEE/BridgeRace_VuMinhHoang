@@ -57,13 +57,25 @@ public class MapNetwork : MonoBehaviour
     }
     public void Dispose()
     {
-        foreach (var item in stageNetworks)
+        if (stageNetworks != null)
         {
-            Destroy(item.gameObject);
+            foreach (var item in stageNetworks)
+            {
+                Destroy(item.gameObject);
+            }
+            stageNetworks.Clear();
         }
         networkEventHandler.UnRegister();
-        stageNetworks.Clear();
-        Destroy(winPos.gameObject);
+        if(winPos != null)
+            Destroy(winPos.gameObject);
+        if (greyBrickNetwork != null)
+        {
+            foreach (var item in greyBrickNetwork)
+            {
+                Destroy(item.gameObject);
+            }
+            greyBrickNetwork.Clear();
+        }
     }
 
     private BrickNetwork GetGreyBrick(string id)
@@ -85,7 +97,7 @@ public class MapNetwork : MonoBehaviour
         message.brickChanges = new List<BrickPositionMessage>();
         foreach (var brick in greyBrickNetwork)
         {
-            if (brick.IsMine && GameNetworkManager.Instance.Client.IsChangePosition(brick.Id, brick.transform.position))
+            if (brick.IsMine && GameNetworkManager.Instance.Client.GameRoomNetwork.IsChangePosition(brick.Id, brick.transform.position))
             {
                 message.brickChanges.Add(new BrickPositionMessage()
                 {

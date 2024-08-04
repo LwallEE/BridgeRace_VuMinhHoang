@@ -4,7 +4,9 @@ using UnityEngine;
 
 public enum GameNetworkStateEnum 
 {
+    None,
     Waiting,
+    CountDown,
     GameLoop,
     GameEnd
 }

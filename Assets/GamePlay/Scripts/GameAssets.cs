@@ -13,6 +13,9 @@ public class GameAssets : Singleton<GameAssets>
     public List<ColorData> colorData;
     #endregion
 
+    [Header("Sprite")]
+    public List<Sprite> roomAvatarBgSprites;
+    public List<Sprite> roomAvatarIconSprites;
     public ColorData GetColorData(BrickColor color)
     {
         foreach (var item in colorData)

@@ -9,6 +9,9 @@ using UnityEngine;
 public class PlayerNetworkController : PlayerController,IDispose
 {
     [SerializeField] private BoxCollider boxCollider;
+    [SerializeField] private GameObject playerNameFollowPrefab;
+
+    private PlayerNameFollow playerNameFollow;
     private NetworkEventHandler networkEventHandler = new NetworkEventHandler();
     public bool IsMine { get; private set; }
     public bool IsFall { get; private set; }
@@ -117,6 +120,9 @@ public class PlayerNetworkController : PlayerController,IDispose
         {
             RigidbodyObj.useGravity = false;
         }
+        //apply name
+        playerNameFollow = LazyPool.Instance.GetObj<PlayerNameFollow>(playerNameFollowPrefab);
+        playerNameFollow.SetTarget(transform,data.name, characterColor.characterColor);
         
         networkEventHandler.InitEventRegister(RegisterEventSync(data));;
         GameNetworkManager.Instance.AddToDisposeList(this);
@@ -149,7 +155,7 @@ public class PlayerNetworkController : PlayerController,IDispose
         returnActions.Add(player.OnNumberOfBrickChange((value, previousValue) =>
         {
 //            Debug.Log("change brick from " + previousValue + " to " + value );
-            int changeBrickNum = value - previousValue;
+            int changeBrickNum = value - GetNumberOfCurrentBrick();
             if (changeBrickNum != 0)
             {
                 UpdateBrickNumber(changeBrickNum);
@@ -210,6 +216,7 @@ public class PlayerNetworkController : PlayerController,IDispose
    
     public void Dispose()
     {
+        LazyPool.Instance.AddObjectToPool(playerNameFollow.gameObject);
         networkEventHandler.UnRegister();
     }
 }

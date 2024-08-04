@@ -24,7 +24,7 @@ namespace MyGame.Schema {
 		public string animName = default(string);
 
 		[Type(8, "boolean")] public bool isFall = default(bool);
-
+		
 		/*
 		 * Support for individual property change callbacks below...
 		 */

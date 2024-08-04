@@ -21,3 +21,11 @@ public class BrickPositionMessage
     public string key;
     public Vect3 position;
 }
+
+[Serializable]
+public class ResultGameResponse
+{
+    public string winUserId;
+    public bool isWin;
+    public int scoreBonusResult;
+}

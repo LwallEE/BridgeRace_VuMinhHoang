@@ -37,4 +37,13 @@ public class LazyPool : Singleton<LazyPool>
         obj.transform.SetParent(transform); 
         obj.SetActive(false);
     }
+
+    public void ReleaseAll()
+    {
+        _poolObjt.Clear();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+    }
 }

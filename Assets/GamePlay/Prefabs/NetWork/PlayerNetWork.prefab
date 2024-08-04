@@ -184,6 +184,7 @@ MonoBehaviour:
   playerRunState: {fileID: 1416371436970671887}
   isAutomaticMove: 0
   boxCollider: {fileID: 375770783713743248}
+  playerNameFollowPrefab: {fileID: 6013473973890424191, guid: fd74c186463446c4a914ece56ecf2be5, type: 3}
 --- !u!65 &375770783713743248
 BoxCollider:
   m_ObjectHideFlags: 0
