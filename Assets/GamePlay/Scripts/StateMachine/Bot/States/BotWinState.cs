@@ -50,7 +50,7 @@ namespace StateMachineNP
 
         void EnterReachWinPos()
         {
-            Debug.Log("Winnnnnn");
+            GameController.Instance.SetGameState(GameState.GameEndLose);
             bot.StayIdle();
             currentState = EBotWinSubState.ReachToWinPos;
             bot.Anim.SetBool(WinAnimBoolName, true);

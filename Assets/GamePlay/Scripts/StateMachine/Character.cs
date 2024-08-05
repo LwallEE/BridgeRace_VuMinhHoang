@@ -166,6 +166,7 @@ namespace StateMachineNP
         public virtual void Fall(Vector3 fallDirection)
         {
             FallAllBrick();
+            //fallDirection.y = 0f;
             fallState.SetFallDirection(fallDirection);
             StateMachine.ChangeState(fallState);
             

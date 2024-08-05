@@ -16,6 +16,11 @@ public class Stage : MonoBehaviour
       {
          if (item.GetNumberOfBrickToFinishBridge(color) < result.GetNumberOfBrickToFinishBridge(color))
          {
+            
+            result = item;
+         }
+         else if (item.GetNumberOfBrickHasColor(BrickColor.None) > result.GetNumberOfBrickHasColor(BrickColor.None))
+         {
             result = item;
          }
       }

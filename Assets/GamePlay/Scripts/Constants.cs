@@ -19,4 +19,5 @@ public static class Constants
 
     public const string MAIN_MENU_SCENE = "MainMenuScene";
     public const string GAME_ONLINE_SCENE = "MultiplayerScene";
+    public const string GAME_OFFLINE_SCENE = "GameplayScene";
 }

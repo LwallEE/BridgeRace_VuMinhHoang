@@ -14,6 +14,7 @@ namespace StateMachineNP
 
         [SerializeField] protected PlayerIdleState playerIdleState;
         [SerializeField] protected PlayerRunState playerRunState;
+        [SerializeField] protected PlayerWinState playerWinState;
         #endregion
 
         public bool isAutomaticMove;
@@ -23,6 +24,7 @@ namespace StateMachineNP
             joyStickInput = FindObjectOfType<FloatingJoystick>();
             playerIdleState.OnInit(this, StateMachine, data, this);
             playerRunState.OnInit(this, StateMachine, data, this);
+            playerWinState.OnInit(this, StateMachine, data, this);
         }
 
         protected override void Start()
@@ -65,6 +67,7 @@ namespace StateMachineNP
 
         public Vector2 GetMoveDirection()
         {
+            if(joyStickInput == null)  return Vector2.zero;
             return joyStickInput.Direction;
         }
         public void SetVelocity(Vector3 velocity)
@@ -141,6 +144,21 @@ namespace StateMachineNP
                 SetVelocityWithoutRotate(direction*data.moveSpeed);
                 return false;
             }
+        }
+
+        protected override void OnTriggerEnter(Collider other)
+        {
+            base.OnTriggerEnter(other);
+            if (other.CompareTag(Constants.WINPOS_TAG))
+            {
+                GameController.Instance.SetGameState(GameState.GameEndWin);
+                StateMachine.ChangeState(playerWinState);
+            }
+        }
+
+        public void InitPlayerReference(FloatingJoystick joystick)
+        {
+            this.joyStickInput = joystick;
         }
     }
 }

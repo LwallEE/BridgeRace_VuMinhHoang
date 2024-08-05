@@ -12,7 +12,7 @@ namespace StateMachineNP
         protected Stage currentStage;
         protected int currentStageIndex;
         [SerializeField] protected BotWinState botWinState;
-        
+        [SerializeField] protected BrickColor botColor;
         public override void Awake()
         {
             base.Awake();
@@ -25,6 +25,18 @@ namespace StateMachineNP
         {
             base.Start();
             OnInit();
+        }
+
+        protected override void Update()
+        {
+            if (!GameController.Instance.IsInState(GameState.GameStart)) return;
+            base.Update();
+        }
+
+        protected override void FixedUpdate()
+        {
+            if (!GameController.Instance.IsInState(GameState.GameStart)) return;
+            base.FixedUpdate();
         }
 
         protected virtual void OnInit()
@@ -85,12 +97,14 @@ namespace StateMachineNP
 
         public void MoveToTarget(Transform target)
         {
+            if (!agent.isOnNavMesh) return;
             agent.isStopped = false;
             agent.SetDestination(target.position);
         }
 
         public void MoveToTarget(Vector3 position)
         {
+            if (!agent.isOnNavMesh) return;
             agent.isStopped = false;
             agent.SetDestination(position);
         }
@@ -98,6 +112,7 @@ namespace StateMachineNP
         public bool CheckReachTarget()
         {
 //            Debug.Log(agent.remainingDistance);
+            if (!agent.isOnNavMesh) return false;
             return Ultility.CheckEqualFloat(agent.remainingDistance, 0f,0.1f);
         }
     
@@ -108,6 +123,7 @@ namespace StateMachineNP
 
         public void StayIdle()
         {
+            if (!agent.isOnNavMesh) return;
             agent.isStopped = true;
         }
 

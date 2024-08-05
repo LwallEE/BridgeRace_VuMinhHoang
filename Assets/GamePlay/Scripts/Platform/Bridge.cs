@@ -20,6 +20,20 @@ public class Bridge : MonoBehaviour
         return result;
     }
 
+    public int GetNumberOfBrickHasColor(BrickColor brickColor)
+    {
+        int result = 0;
+        foreach (var bridge in listBridgeSlot)
+        {
+            if (bridge.IsMatchColor(brickColor))
+            {
+                result++;
+            }
+        }
+
+        return result;
+    }
+
     public BridgeSlot GetBridgeIndex(int id)
     {
         if (id >= 0 && id < listBridgeSlot.Count)

@@ -4,11 +4,9 @@ using UnityEngine;
 
 namespace StateMachineNP
 {
-    //Friendly Bot: focus on collect enough brick to go through each stage, doesn't want to kick player
-    public class FriendlyBot : Bot
+    public class NormalBot : Bot
     {
-
-        #region States
+         #region States
 
         [SerializeField] private BotIdleState botIdleState;
         [SerializeField] private BotFillTheBridgeState botFillTheBridgeState;
@@ -16,6 +14,8 @@ namespace StateMachineNP
 
 
         #endregion
+
+        [SerializeField] private int numberOfBrickToBuildBridge;
 
         public override void Awake()
         {
@@ -67,7 +67,6 @@ namespace StateMachineNP
 
             if (fromState == botIdleState)
             {
-                
                 if (CheckEnoughBrickToFill())
                 {
                     StateMachine.ChangeState(botFillTheBridgeState);
@@ -98,7 +97,7 @@ namespace StateMachineNP
 
             if (fromState == fallState)
             {
-                if (fallState.IsAnimationFinish() && RigidbodyObj.velocity.y <= 0f)
+                if (fallState.IsAnimationFinish())
                 {
                     //Debug.Log("Exxxit");
                     StateMachine.ChangeState(botCollectBridgeState);
@@ -109,7 +108,7 @@ namespace StateMachineNP
 
         public override bool CheckEnoughBrickToFill()
         {
-            return GetNumberOfCurrentBrick() >= currentStage.GetMinimumBridgeSlotOfBridgeToFinish(GetColor());
+            return GetNumberOfCurrentBrick() >= numberOfBrickToBuildBridge;
         }
     }
 }
