@@ -1,4 +1,4 @@
-Description:
+**Description:**
 
 This game is very simple, your main gold is collecting all the bricks and build the bridge to go to the goal. This game support two different modes to play: Offline mode and Online mode. The Online Mode require WIFI to run.
 
