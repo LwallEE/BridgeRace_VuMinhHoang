@@ -241,10 +241,7 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
             position = NetworkUltilityHelper.ConvertFromVector3ToVect3(player.transform.position),
             yRotation = player.transform.eulerAngles.y
         };
-       
-       
         
-           
         Client.GameRoomNetwork.SendMessageToServer(CommandFromClient.COMMAND_UPDATE_PLAYER_POSITION_ROTATION,message);
         
     }
@@ -287,7 +284,9 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
         Debug.Log("kick player");
         var message = new { direction = NetworkUltilityHelper.ConvertFromVector3ToVect3(moveDirection),
             otherplayerId = otherPlayerId,
-            otherPlayerPosition = NetworkUltilityHelper.ConvertFromVector3ToVect3(otherPosition)};
+            otherPlayerPosition = NetworkUltilityHelper.ConvertFromVector3ToVect3(otherPosition),
+            sendTime = (long)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+        };
         Client.GameRoomNetwork.SendMessageToServer(CommandFromClient.COMMAND_PLAYER_KICK_OTHER_PLAYER, message, sendInterval * multiplierDelaySend);
     }
 

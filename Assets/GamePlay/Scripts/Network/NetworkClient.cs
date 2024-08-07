@@ -14,6 +14,7 @@ public class NetworkClient : MonoBehaviour
     public string lobbyRoomName = "lobby";
     public string hostName = "localhost";
     public string portName = "2567";
+    public bool isHttps;
 
     public bool isTest;
     [field: SerializeField] public GameRoomNetwork GameRoomNetwork { get; private set; }
@@ -31,6 +32,14 @@ public class NetworkClient : MonoBehaviour
         try
         {
             string endpoint = "ws://" + hostName + ":" + portName;
+            if (isHttps)
+            {
+                endpoint = "wss://" + hostName + ":" + portName;
+            }
+            /*if(isHttps)
+            {
+                endpoint = "wss://" + hostName + ":" + portName;
+            }*/
             client = new ColyseusClient(endpoint);
 
             await ConnectToLobbyRoom();
@@ -59,7 +68,7 @@ public class NetworkClient : MonoBehaviour
             }
 
             lobbyRoom = new ColyseusLobby(client, lobbyRoomName);
-
+            Debug.Log("try to connect lobby");
             await lobbyRoom.Connect();
             Debug.Log("connect to lobby success");
             UINetworkManager.Instance.OpenLobbyRoomPanel();

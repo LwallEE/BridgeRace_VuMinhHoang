@@ -1796,7 +1796,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &496372465
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1849,6 +1849,8 @@ GameObject:
   - component: {fileID: 505182485}
   - component: {fileID: 505182484}
   - component: {fileID: 505182483}
+  - component: {fileID: 505182487}
+  - component: {fileID: 505182486}
   m_Layer: 5
   m_Name: RoomNameInputField
   m_TagString: Untagged
@@ -2013,6 +2015,47 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505182481}
   m_CullTransparentMesh: 1
+--- !u!114 &505182486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505182481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 505182487}
+          m_TargetAssemblyTypeName: vkEnabler, Assembly-CSharp
+          m_MethodName: ShowVirtualKeyboard
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &505182487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505182481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb65bbfb545d396448d09ed0d229ae06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &581410080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2338,12 +2381,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomType: game_room
   lobbyRoomName: lobby
-  hostName: 103.163.119.57
-  portName: 2567
+  hostName: lwalleprojects.info
+  portName: 443
+  isHttps: 1
   isTest: 0
   <GameRoomNetwork>k__BackingField: {fileID: 2044299332}
-  timeToCallGetPingFromServer: 2
-  timeToCheckDisconnect: 2
 --- !u!4 &637299091
 Transform:
   m_ObjectHideFlags: 0
@@ -3414,7 +3456,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -141.96106, y: 41}
+  m_SizeDelta: {x: -141.96106, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &955325461
 MonoBehaviour:
@@ -4535,6 +4577,8 @@ GameObject:
   - component: {fileID: 1439092621}
   - component: {fileID: 1439092620}
   - component: {fileID: 1439092619}
+  - component: {fileID: 1439092623}
+  - component: {fileID: 1439092622}
   m_Layer: 5
   m_Name: UserNameInputField
   m_TagString: Untagged
@@ -4699,6 +4743,47 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439092617}
   m_CullTransparentMesh: 1
+--- !u!114 &1439092622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439092617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb65bbfb545d396448d09ed0d229ae06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1439092623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439092617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1439092622}
+          m_TargetAssemblyTypeName: vkEnabler, Assembly-CSharp
+          m_MethodName: ShowVirtualKeyboard
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!224 &1446081563 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8170153791668043268, guid: 0d230cc8be529a542a08cb878ab14b18, type: 3}
@@ -5928,6 +6013,99 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8512337228715305792, guid: 966c6331f6ed3f6448b76c7fdf071cf4, type: 3}
   m_PrefabInstance: {fileID: 8512337227191124457}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1868344154
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4261787784887655890, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: targetTxt
+      value: 
+      objectReference: {fileID: 1439092619}
+    - target: {fileID: 4261787784887655891, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_Name
+      value: NonVRVirtualKeyboard
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655891, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 546.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 259.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787785511809763, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787785511809763, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787785511809763, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 151
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261787785631890488, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
 --- !u!1 &1877379316
 GameObject:
   m_ObjectHideFlags: 0
