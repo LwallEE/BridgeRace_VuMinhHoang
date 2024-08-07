@@ -24,6 +24,8 @@ namespace MyGame.Schema {
 		public string animName = default(string);
 
 		[Type(8, "boolean")] public bool isFall = default(bool);
+
+		[Type(9, "float32")] public float speed = default(float);
 		
 		/*
 		 * Support for individual property change callbacks below...
@@ -87,6 +89,17 @@ namespace MyGame.Schema {
 				__isFallChange -= __handler;
 			};
 		}
+		protected event PropertyChangeHandler<float> __speedChange;
+		public Action OnSpeedChange(PropertyChangeHandler<float> __handler, bool __immediate = true) {
+			if (__callbacks == null) { __callbacks = new SchemaCallbacks(); }
+			__callbacks.AddPropertyCallback(nameof(this.speed));
+			__speedChange += __handler;
+			if (__immediate && this.speed != default(float)) { __handler(this.speed, default(float)); }
+			return () => {
+				__callbacks.RemovePropertyCallback(nameof(speed));
+				__speedChange -= __handler;
+			};
+		}
 
 		protected override void TriggerFieldChange(DataChange change) {
 			
@@ -101,6 +114,8 @@ namespace MyGame.Schema {
 				case nameof(animName): __animNameChange?.Invoke((string)change.Value, (string)change.PreviousValue);
 					break;
 				case nameof(isFall): __isFallChange?.Invoke((bool)change.Value, (bool)change.PreviousValue);
+					break;
+				case nameof(speed): __speedChange?.Invoke((float)change.Value, (float)change.PreviousValue);
 					break;
 				default: break;
 			}

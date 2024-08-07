@@ -30,9 +30,11 @@ public class WaitingNetworkUI : UINetworkBase
         Debug.Log("current number of Player " + currentNumberOfPlayer);
         if (currentNumberOfPlayer < listPlayerInfo.Count)
         {
-            listPlayerInfo[currentNumberOfPlayer].Init(data.userName, (int)data.score, currentNumberOfPlayer+1,data.userId);
+            var playerWait = FindPlayerInActive();
+            if (playerWait == null) return;
+            playerWait.Init(data.userName, (int)data.score, currentNumberOfPlayer+1,data.userId);
             currentNumberOfPlayer++;
-            ActivePlayer(currentNumberOfPlayer);
+            playerWait.gameObject.SetActive(true);
             UpdateVisual();
         }
     }
@@ -79,6 +81,18 @@ public class WaitingNetworkUI : UINetworkBase
         UpdateVisual();
     }
 
+    private PlayerWaitingUI FindPlayerInActive()
+    {
+        foreach (var item in listPlayerInfo)
+        {
+            if (!item.gameObject.activeSelf)
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }
     private PlayerWaitingUI FindPlayerWaitingUIWithId(string playerId)
     {
         foreach (var item in listPlayerInfo)
@@ -137,5 +151,6 @@ public class WaitingNetworkUI : UINetworkBase
     {
         Debug.Log("reset current player");
         currentNumberOfPlayer = 0;
+        ActivePlayer(0);
     }
 }

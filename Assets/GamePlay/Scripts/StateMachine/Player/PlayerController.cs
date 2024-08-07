@@ -17,6 +17,7 @@ namespace StateMachineNP
         [SerializeField] protected PlayerWinState playerWinState;
         #endregion
 
+        public float CurrentSpeed { get; protected set; }
         public bool isAutomaticMove;
         public override void Awake()
         {
@@ -31,7 +32,20 @@ namespace StateMachineNP
         {
             base.Start();
             StateMachine.Initialize(playerIdleState);
+            CurrentSpeed = data.moveSpeed;
             SetColor(Constants.PLAYER_BRICK_COLOR);
+        }
+
+        protected override void Update()
+        {
+            if (!GameController.Instance.IsInState(GameState.GameStart)) return;
+            base.Update();
+        }
+
+        protected override void FixedUpdate()
+        {
+            if (!GameController.Instance.IsInState(GameState.GameStart)) return;
+            base.FixedUpdate();
         }
 
         public override void ChangeFromStateToState(State fromState)
@@ -141,7 +155,7 @@ namespace StateMachineNP
                 UpdateRotation(direction);
                 direction.z = 0f;
                 direction.y = 0f;
-                SetVelocityWithoutRotate(direction*data.moveSpeed);
+                SetVelocityWithoutRotate(direction*CurrentSpeed);
                 return false;
             }
         }

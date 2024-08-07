@@ -48,6 +48,10 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
         }
     }
 
+    public PlayerNetworkController GetMainPlayer()
+    {
+        return player;
+    }
     public void OnInit(NetworkClient client)
     {
         this.Client = client;
@@ -164,6 +168,12 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
     public void CountDownTextChange(int value)
     {
         UINetworkManager.Instance.GetGamePlayNetworkUI().UpdateText(value);
+        if (value / 1000 <= 0)
+        {   
+            Debug.Log("Stop loop");
+            SoundManager.Instance.StopLoop(ESound.GameCountDownLoop);
+            SoundManager.Instance.PlayShotOneTime(SoundManager.Instance.GetSoundDataOfType(ESound.GameCountDownEnd,false));
+        }
     }
 
     public void SetGameState(GameNetworkStateEnum state)
@@ -176,11 +186,13 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
         }
         else if (this.gameState == GameNetworkStateEnum.CountDown)
         {
+            SoundManager.Instance.PlayLoop(ESound.GameCountDownLoop);
             UINetworkManager.Instance.OpenGamePlayPanel();
             UINetworkManager.Instance.GetGamePlayNetworkUI().ActiveCountDownText(true);
         }
         else if (this.gameState == GameNetworkStateEnum.GameLoop)
         {
+            SoundManager.Instance.PlayLoop(ESound.GameMusic);
             UINetworkManager.Instance.OpenGamePlayPanel();
             UINetworkManager.Instance.GetGamePlayNetworkUI().ActiveCountDownText(false);
         }
@@ -206,6 +218,16 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
 
     public void GameResult(ResultGameResponse response)
     {
+        SoundManager.Instance.StopLoop(ESound.GameMusic);
+        if (response.isWin)
+        {
+            SoundManager.Instance.PlayShot(SoundManager.Instance.GetSoundDataOfType(ESound.PlayerWin, false));
+        }
+        else
+        {
+            SoundManager.Instance.PlayShot(SoundManager.Instance.GetSoundDataOfType(ESound.PlayerLose, false));
+
+        }
         UINetworkManager.Instance.OpenGameResultPanel(response);
         PlayerSaveData.CurrentAchievement = Mathf.Max(0, PlayerSaveData.CurrentAchievement + response.scoreBonusResult);
     }

@@ -29,6 +29,11 @@ public class BridgeSlotNetwork : BridgeSlot,IDispose
         List<Action> returnList = new List<Action>();
         returnList.Add(data.OnColorChange((value, previousValue) =>
         {
+            if (GameNetworkManager.Instance.GetMainPlayer() != null &&
+                (BrickColor)value == GameNetworkManager.Instance.GetMainPlayer().GetColor())
+            {
+                SoundManager.Instance.PlayShot(SoundManager.Instance.GetSoundDataOfType(ESound.BuildBridge, true));
+            }
             SetColor((BrickColor)value);
         }));
         return returnList;

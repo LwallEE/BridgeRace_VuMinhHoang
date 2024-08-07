@@ -31,7 +31,8 @@ public class PlayerNetworkController : PlayerController,IDispose
         if (!GameNetworkManager.Instance.IsInGameState(GameNetworkStateEnum.GameLoop)) return;
         if (IsMine)
         {
-            base.Update();
+            if(StateMachine.CurrentState != null) 
+                StateMachine.CurrentState.LogicUpdate();
         }
         
     }
@@ -41,7 +42,8 @@ public class PlayerNetworkController : PlayerController,IDispose
         if (!GameNetworkManager.Instance.IsInGameState(GameNetworkStateEnum.GameLoop)) return;
         if (IsMine) 
         {
-            base.FixedUpdate();
+            if(StateMachine.CurrentState != null)
+                StateMachine.CurrentState.PhysicsUpdate();
         }
         else //if not is mine, update rotation and position from server
         {
@@ -66,7 +68,7 @@ public class PlayerNetworkController : PlayerController,IDispose
         UpdateRotation(direction);
         direction.z = 0f;
         direction.y = 0f;
-        SetVelocityWithoutRotate(direction*data.moveSpeed);
+        SetVelocityWithoutRotate(direction*CurrentSpeed);
         return false;
     }
 
@@ -116,6 +118,7 @@ public class PlayerNetworkController : PlayerController,IDispose
         IsFall = data.isFall;
         boxCollider.center = NetworkUltilityHelper.ConvertFromVect3ToVector3(data.boxCollider.centerPosition);
         boxCollider.size = NetworkUltilityHelper.ConvertFromVect3ToVector3(data.boxCollider.size);
+        CurrentSpeed = data.speed;
         if (!isMine)
         {
             RigidbodyObj.useGravity = false;
@@ -137,7 +140,6 @@ public class PlayerNetworkController : PlayerController,IDispose
         {
             returnActions.Add(player.OnPositionChange(delegate(Vect3 value, Vect3 previousValue)
             {
-//                Debug.Log("position change " + NetworkUltilityHelper.ConvertFromVect3ToVector3(value));
                 SetDestination(value);
             }));
             returnActions.Add(player.OnYRotationChange((value, previousValue) =>
@@ -146,12 +148,15 @@ public class PlayerNetworkController : PlayerController,IDispose
             }));
             returnActions.Add( player.OnAnimNameChange((value, previousValue) =>
             {
-                //Debug.Log("animName change " + value + " "+previousValue);
                 SetAnimName(value, previousValue);
             }));
 
         }
-      
+       
+        returnActions.Add(player.OnSpeedChange((value, prevalue) =>
+        {
+            CurrentSpeed = value;
+        }));
         returnActions.Add(player.OnNumberOfBrickChange((value, previousValue) =>
         {
 //            Debug.Log("change brick from " + previousValue + " to " + value );
@@ -184,6 +189,11 @@ public class PlayerNetworkController : PlayerController,IDispose
                 AddBrick();
             }
         }
+
+        if (!isRemove && IsMine)
+        {
+            SoundManager.Instance.PlayShot(SoundManager.Instance.GetSoundDataOfType(ESound.CollectBrick, true));
+        }
         UpdateBrickVisual();
     }
 
@@ -200,6 +210,10 @@ public class PlayerNetworkController : PlayerController,IDispose
 
     public void SetAnimName(string newValue, string previousValue)
     {
+        if (newValue != null && newValue == "fall")
+        {
+            SoundManager.Instance.PlayShot(SoundManager.Instance.GetSoundDataOfType(ESound.PlayerFall, true));
+        }
         if(!string.IsNullOrEmpty(newValue))
             Anim.SetBool(newValue, true);
         if(!string.IsNullOrEmpty(previousValue))
@@ -210,6 +224,7 @@ public class PlayerNetworkController : PlayerController,IDispose
     {
         fallState.SetFallDirection(fallDirection);
         StateMachine.ChangeState(fallState);
+        SoundManager.Instance.PlayShot(SoundManager.Instance.GetSoundDataOfType(ESound.PlayerFall, true));
     }
 
     #endregion

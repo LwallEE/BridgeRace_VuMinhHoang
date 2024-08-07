@@ -19,6 +19,7 @@ public class TNVirtualKeyboard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+	    
         instance = this;
 		HideVirtualKeyboard();
 		

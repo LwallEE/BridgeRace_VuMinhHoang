@@ -46,7 +46,7 @@ namespace StateMachineNP
                 }
             }
             }
-            playerController.SetVelocity(direction*_entityData.moveSpeed);
+            playerController.SetVelocity(direction*playerController.CurrentSpeed);
         }
     }
 
