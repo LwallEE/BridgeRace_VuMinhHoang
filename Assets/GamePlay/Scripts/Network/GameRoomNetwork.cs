@@ -208,6 +208,10 @@ public class GameRoomNetwork : MonoBehaviour
             {
                 GetPing();
                 yield return checkDisconectTime;
+                if (!isReceivePing)
+                {
+                    Disconnect();
+                }
                 yield return wait;
             }
         }
