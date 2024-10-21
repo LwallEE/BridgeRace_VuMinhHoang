@@ -52,7 +52,7 @@ public class GameRoomNetwork : MonoBehaviour
         
         gameRoom.OnMessage<string>("getPing", s =>
         {
-            float endTime = Time.time;
+            float endTime = Time.realtimeSinceStartup;
             isReceivePing = true;
             //IsConnect = true;
             GameNetworkManager.Instance.PingChange((endTime-startTime)*1000);
@@ -219,7 +219,7 @@ public class GameRoomNetwork : MonoBehaviour
    
         async void GetPing()
         {
-            startTime = Time.time;
+            startTime = Time.realtimeSinceStartup;
             isReceivePing = false;
             SendMessageToServer("ping",null);
        

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Colyseus;
@@ -8,7 +9,7 @@ using MyGame.Schema;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class NetworkClient : MonoBehaviour
+public class NetworkClient : Singleton<NetworkClient>
 {
     public string roomType = "game_room";
     public string lobbyRoomName = "lobby";
@@ -20,6 +21,14 @@ public class NetworkClient : MonoBehaviour
     [field: SerializeField] public GameRoomNetwork GameRoomNetwork { get; private set; }
     private ColyseusClient client;
     private ColyseusLobby lobbyRoom;
+    public string HttpEndpoint => (isHttps ? "https://" : "http://") + hostName + ":" + portName;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,9 +50,8 @@ public class NetworkClient : MonoBehaviour
                 endpoint = "wss://" + hostName + ":" + portName;
             }*/
             client = new ColyseusClient(endpoint);
-
-            await ConnectToLobbyRoom();
-            GameNetworkManager.Instance.OnInit(this);
+            
+           
         }
         catch (Exception e)
         {
@@ -58,6 +66,40 @@ public class NetworkClient : MonoBehaviour
        
     }
 
+    public async Task<T> HttpGet<T>(string uriPath,string token = "")
+    {
+        if (client == null) return default(T);
+        client.Http.AuthToken = token;
+       
+        return await client.Http.Get<T>(uriPath);
+    }
+    public async Task<T> HttpPost<T>(string uriPath,object data, string token = ""){
+      
+        if (client == null) return default;
+        Dictionary<string, object> dataDictionary = new Dictionary<string, object>();
+        Type dataType = data.GetType();
+
+        // Get all public fields
+        FieldInfo[] fields = dataType.GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        // Loop through each field and print its name and value
+        foreach (FieldInfo field in fields)
+        {
+            object value = field.GetValue(data);
+            dataDictionary.Add(field.Name, value);
+        }
+
+        client.Http.AuthToken = token;
+        try
+        {
+            return await client.Http.Post<T>(uriPath, dataDictionary);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+            return default;
+        }
+    }
     public async Task ConnectToLobbyRoom()
     {
         try

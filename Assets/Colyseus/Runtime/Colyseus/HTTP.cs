@@ -79,6 +79,7 @@ namespace Colyseus
             {
                 req.method = uriMethod;
                 req.url = GetRequestURL(uriPath);
+                //Debug.Log(req.url);
                 //Debug.Log($"Requesting from URL: {req.url}");
 
                 // Send JSON on request body
@@ -86,11 +87,12 @@ namespace Colyseus
                 {
                     MemoryStream jsonBodyStream = new MemoryStream();
                     Json.Serialize(jsonBody, jsonBodyStream); //TODO: Replace GameDevWare serialization
-
+                    
                     req.uploadHandler = new UploadHandlerRaw(jsonBodyStream.ToArray())
                     {
                         contentType = "application/json"
                     };
+                   
                 }
 
                 foreach (KeyValuePair<string, string> pair in _settings.Headers)
@@ -113,17 +115,19 @@ namespace Colyseus
 
                 req.downloadHandler = new DownloadHandlerBuffer();
                 await req.SendWebRequest();
-
+                
 #if UNITY_2020_1_OR_NEWER
                 if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
 #else
                 if (req.isNetworkError || req.isHttpError)
 #endif
                 {
+                  
                     if (_settings.useSecureProtocol)
                     {
                         //We failed to make this call with a secure protocol, try with non-secure and if that works we'll stick with it
                         _settings.useSecureProtocol = false;
+                        
                         Debug.LogError($"Failed to make request to {req.url} with secure protocol, trying again without!");
                         return await Request(uriMethod, uriPath, jsonBody, headers);
                     }
@@ -134,8 +138,10 @@ namespace Colyseus
                         //
                         // Parse JSON from response
                         //
+                        
                         if (!string.IsNullOrEmpty(req.downloadHandler.text))
 						{
+                           
                             var data = Json.Deserialize<ErrorResponse>(req.downloadHandler.text);
                             if (!string.IsNullOrEmpty(data.error))
 							{
@@ -143,11 +149,11 @@ namespace Colyseus
                                 throw new HttpException((int)req.responseCode, errorMessage);
                             }
 						}
-
+                        
                         throw new HttpException((int)req.responseCode, errorMessage);
                     }
                 }
-
+                
                 return req.downloadHandler.text;
             };
         }

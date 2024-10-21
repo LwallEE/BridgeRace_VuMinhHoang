@@ -33,7 +33,8 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
     // Start is called before the first frame update
     private void Start()
     {
-        gameObject.SetActive(false);
+         NetworkClient.Instance.ConnectToLobbyRoom();
+         OnInit(NetworkClient.Instance);
     }
 
     private void Update()
