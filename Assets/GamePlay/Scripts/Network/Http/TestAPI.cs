@@ -21,6 +21,7 @@ public class TestAPI : MonoBehaviour
     [ContextMenu("loginAPI")]
     public async Task TestLoginApi()
     {
+        Debug.Log("start sending..");
         var result = await NetworkClient.Instance.HttpPost<LoginResponse>("login", new LoginRequest(accountName, passWord));
         Debug.Log(result.token+ " "+result.isSuccess + " " + result.message);
     }

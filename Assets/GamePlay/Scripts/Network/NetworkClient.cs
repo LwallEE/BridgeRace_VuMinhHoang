@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Colyseus;
 using MyGame.Schema;
@@ -13,7 +14,7 @@ public class NetworkClient : Singleton<NetworkClient>
 {
     public string roomType = "game_room";
     public string lobbyRoomName = "lobby";
-    public string hostName = "localhost";
+    public string hostName = "26.53.215.253";
     public string portName = "2567";
     public bool isHttps;
 
@@ -22,6 +23,8 @@ public class NetworkClient : Singleton<NetworkClient>
     private ColyseusClient client;
     private ColyseusLobby lobbyRoom;
     public string HttpEndpoint => (isHttps ? "https://" : "http://") + hostName + ":" + portName;
+
+    public bool IsConnectToServer { get; private set; }
 
     protected override void Awake()
     {
@@ -50,11 +53,12 @@ public class NetworkClient : Singleton<NetworkClient>
                 endpoint = "wss://" + hostName + ":" + portName;
             }*/
             client = new ColyseusClient(endpoint);
-            
-           
+
+            IsConnectToServer = true;
         }
         catch (Exception e)
         {
+            IsConnectToServer = false;
             UINetworkManager.Instance.OpenPopUpMessage(e.Message, () =>
             {
                 //<To Do> return the main scene if connection failed
@@ -198,5 +202,10 @@ public class NetworkClient : Singleton<NetworkClient>
     {
         if(GameRoomNetwork.IsGameRoomConnect())
             GameRoomNetwork.LeaveGameRoom();
+    }
+
+    internal async Task HttpPost<T>(string v, LoginRequest loginRequest, CancellationToken token)
+    {
+        throw new NotImplementedException();
     }
 }

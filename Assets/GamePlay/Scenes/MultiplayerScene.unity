@@ -3247,6 +3247,9 @@ MonoBehaviour:
   - {fileID: 1640994200}
   - {fileID: 1993994735}
   - {fileID: 255111888}
+  sfxAudioSource: {fileID: 0}
+  sfxClips:
+  - {fileID: 8300000, guid: 53cb1abbe9b7aab40889f032a5c2ea58, type: 3}
 --- !u!4 &890536638
 Transform:
   m_ObjectHideFlags: 0

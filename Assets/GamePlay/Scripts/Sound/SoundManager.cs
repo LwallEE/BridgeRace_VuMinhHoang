@@ -135,4 +135,25 @@ public class SoundManager : Singleton<SoundManager>
             }
         }
     }
+
+    [SerializeField] private AudioSource sfxAudioSource;
+    [SerializeField] private AudioClip[] sfxClips;
+
+    public void PlaySfx(SfxType type, float volume = 1)
+    {
+        if (!sfxAudioSource)
+        {
+            GameObject childObject = new GameObject("SfxAudioSource");
+            childObject.transform.SetParent(transform);  
+            childObject.transform.localPosition = Vector3.zero;  
+
+            sfxAudioSource = childObject.AddComponent<AudioSource>();
+        }
+        sfxAudioSource.PlayOneShot(sfxClips[(int)type], volume);
+    }
+}
+
+public enum SfxType
+{
+    ButtonClick = 0,
 }
