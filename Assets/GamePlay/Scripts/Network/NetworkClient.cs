@@ -70,14 +70,22 @@ public class NetworkClient : Singleton<NetworkClient>
        
     }
 
-    public async Task<T> HttpGet<T>(string uriPath,string token = "")
+    public async Task<T> HttpGet<T>(string uriPath,string token = "") where T: GeneralResponse
     {
         if (client == null) return default(T);
         client.Http.AuthToken = token;
-       
-        return await client.Http.Get<T>(uriPath);
+
+        try
+        {
+            return await client.Http.Get<T>(uriPath);
+        }
+        catch (Exception e)
+        {
+            return new GeneralResponse(false, e.Message) as T;
+        }
     }
-    public async Task<T> HttpPost<T>(string uriPath,object data, string token = ""){
+    public async Task<T> HttpPost<T>(string uriPath,object data, string token = "") where T: GeneralResponse
+    {
       
         if (client == null) return default;
         Dictionary<string, object> dataDictionary = new Dictionary<string, object>();
@@ -100,8 +108,7 @@ public class NetworkClient : Singleton<NetworkClient>
         }
         catch (Exception e)
         {
-            Debug.LogError(e);
-            return default;
+            return new GeneralResponse(false, e.Message) as T;
         }
     }
     public async Task ConnectToLobbyRoom()
