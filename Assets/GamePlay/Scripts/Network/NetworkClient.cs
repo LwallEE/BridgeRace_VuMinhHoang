@@ -81,7 +81,7 @@ public class NetworkClient : Singleton<NetworkClient>
         }
         catch (Exception e)
         {
-            return new GeneralResponse(false, e.Message) as T;
+            return (T)Activator.CreateInstance(typeof(T), false, e.Message);;
         }
     }
     public async Task<T> HttpPost<T>(string uriPath,object data, string token = "") where T: GeneralResponse
@@ -108,7 +108,7 @@ public class NetworkClient : Singleton<NetworkClient>
         }
         catch (Exception e)
         {
-            return new GeneralResponse(false, e.Message) as T;
+            return (T)Activator.CreateInstance(typeof(T), false, e.Message);;
         }
     }
     public async Task ConnectToLobbyRoom()

@@ -5,4 +5,6 @@
     public LoginResponse(bool isSuccess, string message) : base(isSuccess, message)
     {
     }
+
+
 }
