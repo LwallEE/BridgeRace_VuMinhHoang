@@ -12,7 +12,8 @@ namespace StateMachineNP
         public Animator Anim { get; private set; }
         public Rigidbody RigidbodyObj { get; private set; }
         public StateMachine StateMachine { get; private set; }
-        
+
+        [SerializeField] protected CharacterVisual characterVisual;
         [SerializeField] protected CharacterData data;
         [SerializeField] protected Transform checkGroundPoint;
         [SerializeField] private SkinnedMeshRenderer meshRenderer;
@@ -76,6 +77,12 @@ namespace StateMachineNP
         {
             this.characterColor = GameAssets.Instance.GetColorData(color);
             this.meshRenderer.material.color = characterColor.characterColor ;
+            characterVisual.SetColor(this.characterColor.characterColor);
+        }
+
+        public void EquipSkin(int hatId, int pantId, int leftHandId)
+        {
+            characterVisual.ChangeAllSkin(hatId, pantId, leftHandId);
         }
 
         #region HandldBrick

@@ -4,15 +4,16 @@ using UnityEngine;
 
 public enum ESound
 {
-    CollectBrick,
-    BuildBridge,
-    PlayerFall,
-    PlayerWin,
-    PlayerLose,
-    GameMusic,
-    GameCountDownStart,
-    GameCountDownLoop,
-    GameCountDownEnd
+    CollectBrick=0,
+    BuildBridge = 1,
+    PlayerFall = 2,
+    PlayerWin = 3,
+    PlayerLose = 4,
+    GameMusic = 5,
+    GameCountDownStart = 6,
+    GameCountDownLoop = 7,
+    GameCountDownEnd = 8,
+    ButtonClick= 9
 }
 
 
@@ -23,6 +24,7 @@ public class SoundManager : Singleton<SoundManager>
     public AudioSourceLoop[] soundLoops;
     public AudioSource[] soundSources;
     private Queue<AudioSource> _queueSources;
+    private Dictionary<ESound, List<SoundSO>> numberOfEachEsoundDict;
     
     protected override void Awake()
     {
@@ -32,37 +34,36 @@ public class SoundManager : Singleton<SoundManager>
 
     public SoundSO GetSoundDataOfType(ESound soundType, bool isRandom)
     {
-        var soundListRandom = new List<SoundSO>();
-        foreach (var sound in soundData)
-        {
-            if (sound.soundType == soundType)
-            {
-                if (isRandom)
-                {
-                    soundListRandom.Add(sound);
-                }
-                else
-                {
-                    return sound;
-                }
-            }
-        }
-
-        if (isRandom)
-        {
-            return soundListRandom[Random.Range(0, soundListRandom.Count)];
-        }
-
-        return null;
+        if (!numberOfEachEsoundDict.ContainsKey(soundType)) return null;
+        var list = numberOfEachEsoundDict[soundType];
+        int endIndex = isRandom ? list.Count : 1;
+        return list[Random.Range(0, endIndex)];
     }
 
     public void OnInit()
     {
         _queueSources = new Queue<AudioSource>(soundSources);
+        InitNumberOfEachSoundDict();
         ChangeSoundVolume();
         ChangeMusicVolume();
     }
 
+    void InitNumberOfEachSoundDict()
+    {
+        numberOfEachEsoundDict = new Dictionary<ESound, List<SoundSO>>();
+        foreach (var item in soundData)
+        {
+            if (numberOfEachEsoundDict.ContainsKey(item.soundType))
+            {
+                numberOfEachEsoundDict[item.soundType].Add(item);
+            }
+            else
+            {
+                var newList = new List<SoundSO>(){item};
+                numberOfEachEsoundDict.Add(item.soundType, newList);
+            }
+        }
+    }
     public void ChangeSoundVolume()
     {
     }

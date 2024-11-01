@@ -13,4 +13,9 @@ public class GeneralResponse
         this.isSuccess = isSuccess;
         this.message = message;
     }
+
+    public GeneralResponse()
+    {
+        isSuccess = false;
+    }
 }

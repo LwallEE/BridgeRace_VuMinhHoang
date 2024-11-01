@@ -18,6 +18,9 @@ public class NetworkClient : Singleton<NetworkClient>
     public string portName = "2567";
     public bool isHttps;
 
+    //use for test only
+    public string token;
+
     public bool isTest;
     [field: SerializeField] public GameRoomNetwork GameRoomNetwork { get; private set; }
     private ColyseusClient client;
@@ -53,7 +56,7 @@ public class NetworkClient : Singleton<NetworkClient>
                 endpoint = "wss://" + hostName + ":" + portName;
             }*/
             client = new ColyseusClient(endpoint);
-
+            client.Auth.Token = token;
             IsConnectToServer = true;
         }
         catch (Exception e)
@@ -108,6 +111,7 @@ public class NetworkClient : Singleton<NetworkClient>
         }
         catch (Exception e)
         {
+            Debug.LogError(e);
             return (T)Activator.CreateInstance(typeof(T), false, e.Message);;
         }
     }

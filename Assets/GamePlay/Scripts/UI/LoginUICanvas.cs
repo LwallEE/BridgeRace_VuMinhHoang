@@ -16,8 +16,9 @@ public class LoginUICanvas : UICanvas
 
     public async void OnLoginButtonClick()
     {
-        SoundManager.Instance.PlaySfx(SfxType.ButtonClick);
-
+        //SoundManager.Instance.PlaySfx(SfxType.ButtonClick);
+        SoundManager.Instance.PlayShotOneTime(SoundManager.Instance.GetSoundDataOfType(ESound.ButtonClick, true));
+        
         int usernameLenght = txtUsername.text.Trim().Length;
         if (usernameLenght < 6 || usernameLenght > 30)
         {
@@ -66,7 +67,8 @@ public class LoginUICanvas : UICanvas
     }
     public void OnClickRegisterButton()
     {
-        SoundManager.Instance.PlaySfx(SfxType.ButtonClick);
+        //SoundManager.Instance.PlaySfx(SfxType.ButtonClick);
+        SoundManager.Instance.PlayShotOneTime(SoundManager.Instance.GetSoundDataOfType(ESound.ButtonClick, true));
         UIManager.Instance.OpenUI<RegisterUICanvas>();
         Close(0);
     }
