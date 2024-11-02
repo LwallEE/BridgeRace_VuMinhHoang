@@ -16,9 +16,9 @@ public class LoginUICanvas : UICanvas
 
     public async void OnLoginButtonClick()
     {
-        //SoundManager.Instance.PlaySfx(SfxType.ButtonClick);
-        SoundManager.Instance.PlayShotOneTime(SoundManager.Instance.GetSoundDataOfType(ESound.ButtonClick, true));
-        
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
+
         int usernameLenght = txtUsername.text.Trim().Length;
         if (usernameLenght < 6 || usernameLenght > 30)
         {
@@ -41,7 +41,7 @@ public class LoginUICanvas : UICanvas
         popupLoading.SetActive(true);
         btnLogin.interactable = false;
         btnRegister.interactable = false;
-        var result = await NetworkClient.Instance.HttpPost<LoginResponse>("login", new LoginRequest(txtUsername.name, txtPassword.text));
+        var result = await NetworkClient.Instance.HttpPost<LoginResponse>("login", new LoginRequest(txtUsername.text.Trim(), txtPassword.text.Trim()));
         if (result.isSuccess)
         {
             SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
@@ -67,8 +67,8 @@ public class LoginUICanvas : UICanvas
     }
     public void OnClickRegisterButton()
     {
-        //SoundManager.Instance.PlaySfx(SfxType.ButtonClick);
-        SoundManager.Instance.PlayShotOneTime(SoundManager.Instance.GetSoundDataOfType(ESound.ButtonClick, true));
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         UIManager.Instance.OpenUI<RegisterUICanvas>();
         Close(0);
     }

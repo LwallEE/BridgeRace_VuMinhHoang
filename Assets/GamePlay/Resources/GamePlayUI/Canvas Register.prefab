@@ -479,7 +479,6 @@ RectTransform:
   m_Children:
   - {fileID: 5565432228071586157}
   - {fileID: 3600930155363460051}
-  - {fileID: 8626483429881478275}
   m_Father: {fileID: 6558657999892890495}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1098,12 +1097,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9041926921850121175}
-  m_Father: {fileID: 5259016153192222644}
-  m_RootOrder: 2
+  m_Father: {fileID: 6558657999892890495}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -55.70044, y: -52}
+  m_AnchoredPosition: {x: -136, y: -422}
   m_SizeDelta: {x: 106.99986, y: 103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4520678642162929445
@@ -1190,7 +1189,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1580919987685545434}
         m_TargetAssemblyTypeName: RegisterUICanvas, Assembly-CSharp
-        m_MethodName: CancelLogin
+        m_MethodName: BackToLogin
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2008,6 +2007,7 @@ RectTransform:
   - {fileID: 6558658000763186501}
   - {fileID: 2027234091400422314}
   - {fileID: 5259016153192222644}
+  - {fileID: 8626483429881478275}
   m_Father: {fileID: 6558658000233405498}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2134,6 +2134,7 @@ MonoBehaviour:
   popupNotice: {fileID: 1855720578005673765}
   popupLoading: {fileID: 1758455248499525840}
   btnSubmit: {fileID: 5222204961978589195}
+  btnBack: {fileID: 0}
   InputAccount: {fileID: 363272802590829273}
   InputUsername: {fileID: 5707620513342259120}
   InputPassword: {fileID: 3129987614034901548}

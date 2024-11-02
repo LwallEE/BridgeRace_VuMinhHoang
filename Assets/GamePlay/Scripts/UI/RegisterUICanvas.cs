@@ -10,7 +10,7 @@ public class RegisterUICanvas : UICanvas
 
     [SerializeField] private PopupNotice popupNotice;
     [SerializeField] private GameObject popupLoading;
-    [SerializeField] private Button btnSubmit;
+    [SerializeField] private Button btnSubmit, btnBack;
     [SerializeField]
     private TMP_InputField
         InputAccount,
@@ -20,7 +20,7 @@ public class RegisterUICanvas : UICanvas
     private string noti;
     public async void OnClickSubmit()
     {
-        SoundManager.Instance.PlaySfx(SfxType.ButtonClick);
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
         if (!CheckInputTextLenght(InputAccount.text, "account name"))
         {
             popupNotice.StartNotice(noti);
@@ -51,6 +51,7 @@ public class RegisterUICanvas : UICanvas
     {
         popupLoading.SetActive(true);
         btnSubmit.interactable = false;
+        btnBack.interactable = false;
 
         var result = await NetworkClient.Instance.HttpPost<GeneralResponse>("sign-up", 
             new SignUpRequest(InputAccount.text, InputPassword.text, InputUsername.text));
@@ -105,5 +106,11 @@ public class RegisterUICanvas : UICanvas
 
         popupLoading?.SetActive(false);
         btnSubmit.interactable = true;
+    }
+    public void BackToLogin()
+    {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        UIManager.Instance.OpenUI<LoginUICanvas>().SetNotice("You already have an account?");
+        CloseDirectly();
     }
 }
