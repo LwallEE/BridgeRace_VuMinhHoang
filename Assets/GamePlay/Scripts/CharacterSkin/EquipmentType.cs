@@ -4,7 +4,9 @@ using UnityEngine;
 
 public enum EquipmentType 
 {
-    Hat,
-    Pant,
-    LeftHand
+    None = 0,
+    Hat = 1,
+    Pant = 2,
+    LeftHand = 3,
+    Wing = 4,
 }

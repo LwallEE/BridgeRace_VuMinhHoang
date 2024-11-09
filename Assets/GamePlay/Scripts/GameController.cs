@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using StateMachineNP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,7 @@ using UnityEngine.SceneManagement;
 public enum GameState
 {
     None,
+    Home,
     GameStart,
     GamePause,
     GameEndWin,
@@ -16,7 +18,7 @@ public enum GameState
 public class GameController : Singleton<GameController>
 {
     [SerializeField] private CameraFollow camera;
-    private GameState currentGameState;
+    [SerializeField] private GameState currentGameState;
     private PlayerController mainPlayer;
     
     private void Start()
@@ -33,9 +35,12 @@ public class GameController : Singleton<GameController>
 
     private void StartGame()
     {
-        LevelManager.Instance.LoadCurrentSaveLevel();
-        SetGameState(GameState.GameStart);
-        SetUpPlayer();
+        if(currentGameState == GameState.None)
+        {
+            LevelManager.Instance.LoadCurrentSaveLevel();
+            SetGameState(GameState.GameStart);
+            SetUpPlayer();
+        }
     }
     
     public void SetGameState(GameState state)
@@ -87,4 +92,19 @@ public class GameController : Singleton<GameController>
     {
         SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
     }
+
+    //---------------------HOME---------------------------
+    public enum CameraState
+    {
+        Home, 
+        Shop,
+    }
+    [SerializeField] Transform[] cameraPos;
+    public void ChangeCameraState(CameraState state)
+    {
+        Transform target = cameraPos[(int)state];
+        Camera.main.transform.DOMove(target.position, .5f);
+        Camera.main.transform.DORotate(target.eulerAngles, .5f);
+    }
+    //----------------------------------------------------
 }
