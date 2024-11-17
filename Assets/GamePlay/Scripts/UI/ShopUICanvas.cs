@@ -27,7 +27,7 @@ public class ShopUICanvas : UICanvas
 
     MiniPool<ItemFrame> miniPool = new MiniPool<ItemFrame>();
     private EquipmentType currentType;
-
+    private ItemFrame currentItem;
     private void Awake()
     {
         miniPool.OnInit(itemFramePrefab, 12, contentPanel);
@@ -35,7 +35,7 @@ public class ShopUICanvas : UICanvas
     }
     private void Start()
     {
-        itemTypeButtons[0].OnSelected();
+        itemTypeButtons[0].Selected();
     }
     public void OnSelecetItemType(EquipmentType type)
     {
@@ -44,11 +44,13 @@ public class ShopUICanvas : UICanvas
             if(currentType != EquipmentType.None)
             {
                 itemTypeButtons[(int)currentType - 1].OnUnselected();
-                Debug.Log(currentType);
             }
             currentType = type;
-            miniPool.Collect();
+            itemTypeButtons[(int)currentType - 1].OnSelected();
 
+            currentItem = null;
+
+            miniPool.Collect();
             InitItemFrames();
         }
 
@@ -76,6 +78,13 @@ public class ShopUICanvas : UICanvas
     }
     public void OnSelectedItem(ItemFrame item)
     {
+        if (item == currentItem) return;
+        if(currentItem != null)
+        {
+            currentItem.OnUnselected();
+        }
+        currentItem = item;
+        currentItem.OnSelected();
         characterVisual.ChangeSkin(currentType, item.itemId);
     }
 }

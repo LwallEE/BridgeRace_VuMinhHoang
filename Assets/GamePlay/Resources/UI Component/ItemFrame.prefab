@@ -221,7 +221,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6164597633274045676}
         m_TargetAssemblyTypeName: ItemFrame, Assembly-CSharp
-        m_MethodName: OnSelected
+        m_MethodName: Selected
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

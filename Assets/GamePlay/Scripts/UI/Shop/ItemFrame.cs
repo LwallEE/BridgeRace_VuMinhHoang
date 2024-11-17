@@ -28,9 +28,16 @@ public class ItemFrame : MonoBehaviour
         cost = data.cost;
         imgIcon.sprite = data.icon;
     }
-
-    public void OnSelected()
+    public void Selected()
     {
         shop.OnSelectedItem(this);
+    }
+    public void OnSelected()
+    {
+        focus.SetActive(true);
+    }
+    public void OnUnselected()
+    {
+        focus.SetActive(false);
     }
 }

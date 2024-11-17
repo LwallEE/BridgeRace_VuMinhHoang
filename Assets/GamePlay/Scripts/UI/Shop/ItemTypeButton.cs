@@ -10,6 +10,9 @@ public class ItemTypeButton : MonoBehaviour
     public void OnSelected()
     {
         imgBg.SetActive(true);
+    }
+    public void Selected()
+    {
         shop.OnSelecetItemType(equipmentType);
     }
     public void OnUnselected()
