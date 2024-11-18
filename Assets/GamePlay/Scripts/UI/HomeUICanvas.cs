@@ -10,18 +10,19 @@ public class HomeUICanvas : UICanvas
 {
     [SerializeField] private TextMeshProUGUI txtHighScoreHightlight;
     [SerializeField] private TextMeshProUGUI txtName, txtHightScore, txtCoin;
+    [SerializeField] CharacterVisual characterVisual;
 
     private void Start()
     {
+        characterVisual = FindAnyObjectByType<CharacterVisual>();
         Sequence sequence = DOTween.Sequence();
         sequence.Append(txtHighScoreHightlight.DOColor(Color.red, 1f));
         sequence.Append(txtHighScoreHightlight.DOColor(Color.white, 1f));
         sequence.SetLoops(-1, LoopType.Restart);
-
     }
-    private void OnEnable()
+    public async Task InitUserData()
     {
-        GetUserData();
+        await GetUserData();
     }
     private async Task GetUserData()
     {
@@ -31,6 +32,8 @@ public class HomeUICanvas : UICanvas
             txtCoin.text = result.currentCoin.ToString();
             txtHightScore.text = result.currentPoint.ToString();
             txtName.text = result.userName;
+
+            characterVisual.ChangeAllSkin(result.hatEquippedId, result.pantEquippedId, result.leftHandEquippedId);
         }
     }
     public void OnPlayOnlineClick()

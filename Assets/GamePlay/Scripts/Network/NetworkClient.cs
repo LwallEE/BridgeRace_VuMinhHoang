@@ -82,6 +82,7 @@ public class NetworkClient : Singleton<NetworkClient>
         }
         catch (Exception e)
         {
+            Debug.LogError(e);
             return (T)Activator.CreateInstance(typeof(T), false, e.Message);;
         }
     }

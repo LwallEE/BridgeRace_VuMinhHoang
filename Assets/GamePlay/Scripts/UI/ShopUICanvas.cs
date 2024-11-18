@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopUICanvas : UICanvas
 {
@@ -22,20 +25,36 @@ public class ShopUICanvas : UICanvas
     [SerializeField] CharacterVisual characterVisual;
     [SerializeField] ItemFrame itemFramePrefab;
     [SerializeField] Transform contentPanel;
+    [SerializeField] GameObject[] buttons;
+    [SerializeField] TextMeshProUGUI txtPrice;
 
     [SerializeField] ItemTypeButton[] itemTypeButtons;
 
     MiniPool<ItemFrame> miniPool = new MiniPool<ItemFrame>();
     private EquipmentType currentType;
     private ItemFrame currentItem;
+    private ItemFrame currentEquippedItem;
+    private UserItemStatus[] itemStatus;
     private void Awake()
     {
         miniPool.OnInit(itemFramePrefab, 12, contentPanel);
         characterVisual = FindAnyObjectByType<CharacterVisual>();
+
     }
-    private void Start()
+    private async void OnEnable()
     {
-        itemTypeButtons[0].Selected();
+        var itemStatusData = await NetworkClient.Instance.HttpGet<AllItemStatusResponse>("shop/user-items");
+        if (itemStatusData.isSuccess)
+        {
+            Debug.Log("lo");
+            itemStatus = itemStatusData.items;
+
+            itemTypeButtons[0].Selected();
+        }
+        else
+        {
+            Debug.Log(itemStatusData.message);
+        }
     }
     public void OnSelecetItemType(EquipmentType type)
     {
@@ -70,10 +89,17 @@ public class ShopUICanvas : UICanvas
                 itemData = data.pants;
                 break;
         }
+        currentEquippedItem = null;
         for(int i = 0; i < itemData.Count; i++)
         {
             ItemFrame item = miniPool.Spawn();
-            item.OnInit(itemData[i], this);
+            UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == itemData[i].itemId);
+
+            item.OnInit(itemData[i],status, this);
+            if (status.isEquip)
+            {
+                currentEquippedItem = item;
+            }
         }
     }
     public void OnSelectedItem(ItemFrame item)
@@ -86,5 +112,69 @@ public class ShopUICanvas : UICanvas
         currentItem = item;
         currentItem.OnSelected();
         characterVisual.ChangeSkin(currentType, item.itemId);
+
+        txtPrice.text = currentItem.cost.ToString();
+        InitButton();
+    }
+    private void InitButton()
+    {
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].SetActive(false);
+        }
+        buttons[(int)currentItem.state].SetActive(true);
+    }
+    public async void OnBuy()
+    {
+        int coin = int.Parse(txtCoin.text);
+        if (coin < currentItem.cost) return;
+
+        var result = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/buy-item",new ShopRequest(currentItem.itemId));
+        if (result.isSuccess)
+        {
+            coin -= currentItem.cost;
+            txtCoin.text = coin.ToString();
+
+            currentItem.OnBought();
+            UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == currentItem.itemId);
+            status.isOwn = true;
+            InitButton();
+        }
+    }
+    public async void OnEquip()
+    {
+        if(currentEquippedItem != null)
+        {
+            var result1 = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/unequip", new ShopRequest(currentEquippedItem.itemId));
+            if (result1.isSuccess)
+            {
+                currentEquippedItem.OnUnequip();
+                UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == currentEquippedItem.itemId);
+                status.isEquip = false;
+                currentEquippedItem = null;
+            }
+        }
+
+
+        var result = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/equip", new ShopRequest(currentItem.itemId));
+        if (result.isSuccess)
+        {
+            currentItem.OnEquipped();
+            currentEquippedItem = currentItem;
+            UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == currentItem.itemId);
+            status.isEquip = true;
+            InitButton();
+        }
+    }
+    public async void OnUnequip()
+    {
+        var result = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/unequip", new ShopRequest(currentItem.itemId));
+        if (result.isSuccess)
+        {
+            currentItem.OnUnequip();
+            UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == currentItem.itemId);
+            status.isEquip = false;
+            InitButton();
+        }
     }
 }

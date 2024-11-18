@@ -97,7 +97,7 @@ public class SoundManager : Singleton<SoundManager>
     }
     public void PlayShotOneTime(ESound type, float volume = 1f)
     {
-        SoundSO so = GetSoundDataOfType(ESound.ButtonClick, false);
+        SoundSO so = GetSoundDataOfType(type, false);
         PlayShotOneTime(so, volume);
     }
     public void PlayShot(SoundSO clip, float volume = 1f)

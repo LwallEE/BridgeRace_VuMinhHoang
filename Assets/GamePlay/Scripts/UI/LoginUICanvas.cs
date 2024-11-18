@@ -44,7 +44,9 @@ public class LoginUICanvas : UICanvas
         var result = await NetworkClient.Instance.HttpPost<LoginResponse>("login", new LoginRequest(txtUsername.text.Trim(), txtPassword.text.Trim()));
         if (result.isSuccess)
         {
-            SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
+            NetworkClient.Instance.SetToken(result.token);
+            //SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
+            await UIManager.Instance.OpenUI<HomeUICanvas>().InitUserData();;
             Close(0);
         }
         else
