@@ -29,7 +29,8 @@ public class TestAPI : MonoBehaviour
     [ContextMenu("TestToken")]
     public async Task TestToken()
     {
-        var result = await NetworkClient.Instance.HttpGet<GeneralResponse>("testlogin", token);
+        NetworkClient.Instance.SetToken(token);
+        var result = await NetworkClient.Instance.HttpGet<GeneralResponse>("login");
         Debug.Log(result.isSuccess + " " + result.message);
     }
    
