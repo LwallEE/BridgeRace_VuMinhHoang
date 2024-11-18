@@ -27,7 +27,7 @@ public class ShopUICanvas : UICanvas
     [SerializeField] Transform contentPanel;
     [SerializeField] GameObject[] buttons;
     [SerializeField] TextMeshProUGUI txtPrice;
-
+    [SerializeField] GameObject panelLoading;
     [SerializeField] ItemTypeButton[] itemTypeButtons;
 
     MiniPool<ItemFrame> miniPool = new MiniPool<ItemFrame>();
@@ -129,9 +129,12 @@ public class ShopUICanvas : UICanvas
         int coin = int.Parse(txtCoin.text);
         if (coin < currentItem.cost) return;
 
+        panelLoading.SetActive(true);
         var result = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/buy-item",new ShopRequest(currentItem.itemId));
         if (result.isSuccess)
         {
+            panelLoading.SetActive(false);
+
             coin -= currentItem.cost;
             txtCoin.text = coin.ToString();
 
@@ -143,7 +146,9 @@ public class ShopUICanvas : UICanvas
     }
     public async void OnEquip()
     {
-        if(currentEquippedItem != null)
+        panelLoading.SetActive(true);
+
+        if (currentEquippedItem != null)
         {
             var result1 = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/unequip", new ShopRequest(currentEquippedItem.itemId));
             if (result1.isSuccess)
@@ -159,6 +164,8 @@ public class ShopUICanvas : UICanvas
         var result = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/equip", new ShopRequest(currentItem.itemId));
         if (result.isSuccess)
         {
+            panelLoading.SetActive(false);
+
             currentItem.OnEquipped();
             currentEquippedItem = currentItem;
             UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == currentItem.itemId);
@@ -168,9 +175,13 @@ public class ShopUICanvas : UICanvas
     }
     public async void OnUnequip()
     {
+        panelLoading.SetActive(true);
+
         var result = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/unequip", new ShopRequest(currentItem.itemId));
         if (result.isSuccess)
         {
+            panelLoading.SetActive(false);
+
             currentItem.OnUnequip();
             UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == currentItem.itemId);
             status.isEquip = false;
