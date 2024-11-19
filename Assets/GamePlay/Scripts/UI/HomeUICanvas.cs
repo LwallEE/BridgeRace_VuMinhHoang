@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,20 +38,20 @@ public class HomeUICanvas : UICanvas
     }
     public void OnPlayOnlineClick()
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
 
         SceneManager.LoadScene(Constants.GAME_ONLINE_SCENE);
     }
 
     public void OnPlayOfflineClick()
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
 
         SceneManager.LoadScene(Constants.GAME_OFFLINE_SCENE);
     }
     public void OnShopButtonClick()
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
 
         GameController.Instance.ChangeCameraState(GameController.CameraState.Shop);
         UIManager.Instance.OpenUI<ShopUICanvas>().InitPlayerInfor(txtName.text, int.Parse(txtCoin.text));
@@ -59,8 +59,11 @@ public class HomeUICanvas : UICanvas
     }
     public void OnSettingButtonClick()
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
-
+        PlayButtonSfx();
         UIManager.Instance.OpenUI<SettingUICanvas>();
+    }
+    private void PlayButtonSfx()
+    {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
     }
 }

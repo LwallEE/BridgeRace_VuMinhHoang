@@ -22,6 +22,7 @@ public class NetworkClient : Singleton<NetworkClient>
     public string token;
 
     public bool isTest;
+    public bool IsLogged { get; private set; }
     [field: SerializeField] public GameRoomNetwork GameRoomNetwork { get; private set; }
     private ColyseusClient client;
     private ColyseusLobby lobbyRoom;
@@ -117,6 +118,7 @@ public class NetworkClient : Singleton<NetworkClient>
 
     public void SetToken(string token)
     {
+        IsLogged = true;
         client.Http.AuthToken = token;
     }
     public async Task ConnectToLobbyRoom()

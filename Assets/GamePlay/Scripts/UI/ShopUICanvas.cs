@@ -16,7 +16,7 @@ public class ShopUICanvas : UICanvas
     }
     public async void BackToHome()
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
 
         GameController.Instance.ChangeCameraState(GameController.CameraState.Home);
         await UIManager.Instance.OpenUI<HomeUICanvas>().InitUserData();
@@ -60,7 +60,7 @@ public class ShopUICanvas : UICanvas
     }
     public void OnSelecetItemType(EquipmentType type)
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
 
         if (currentType != type)
         {
@@ -108,7 +108,7 @@ public class ShopUICanvas : UICanvas
     }
     public void OnSelectedItem(ItemFrame item)
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
 
         if (item == currentItem) return;
         if(currentItem != null)
@@ -132,7 +132,7 @@ public class ShopUICanvas : UICanvas
     }
     public async void OnBuy()
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
 
         int coin = int.Parse(txtCoin.text);
         if (coin < currentItem.cost) return;
@@ -154,7 +154,7 @@ public class ShopUICanvas : UICanvas
     }
     public async void OnEquip()
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
 
         panelLoading.SetActive(true);
 
@@ -185,7 +185,7 @@ public class ShopUICanvas : UICanvas
     }
     public async void OnUnequip()
     {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
 
         panelLoading.SetActive(true);
 
@@ -199,5 +199,9 @@ public class ShopUICanvas : UICanvas
             status.isEquip = false;
             InitButton();
         }
+    }
+    private void PlayButtonSfx()
+    {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
     }
 }

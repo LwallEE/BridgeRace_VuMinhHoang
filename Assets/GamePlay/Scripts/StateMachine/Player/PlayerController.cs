@@ -144,6 +144,7 @@ namespace StateMachineNP
         {
             if (CanFillTheBridge())
             {
+                SoundManager.Instance.PlayShotOneTime(ESound.BuildBridge);
                 bridge.SetColor(GetColor());
                 RemoveBrick();
                 return true;

@@ -10,14 +10,14 @@ public class SettingUICanvas : UICanvas
     [SerializeField] Sprite[] soundSprites, musicSprites;
     [SerializeField] Slider soundSlider, musicSlider;
 
-    private bool isPlaying => GameController.Instance.IsInState(GameState.GameStart);
+    private bool isInHome => GameController.Instance.IsInState(GameState.Home);
 
     public override void Open()
     {
         base.Open();
 
-        credit.SetActive(!isPlaying);
-        button.SetActive(isPlaying);
+        credit.SetActive(isInHome);
+        button.SetActive(!isInHome);
 
         soundSlider.value = SoundManager.Instance.SoundVolume;
         musicSlider.value = SoundManager.Instance.MusicVolume;
@@ -27,21 +27,29 @@ public class SettingUICanvas : UICanvas
     }
     public void OnRestartButtonClick()
    {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+        PlayButtonSfx();
+
         GameController.Instance.RestartLevel();
    }
 
    public void OnContinueButtonClick()
    {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
-        GameController.Instance.SetGameState(GameState.GameStart);
-   }
+        PlayButtonSfx();
+
+        if (isInHome)
+        {
+            CloseDirectly();
+        }
+        else
+        {
+            GameController.Instance.SetGameState(GameState.GameStart);
+        }
+    }
 
    public void OnBackToMainMenuClick()
    {
-        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
-
-        if (isPlaying)
+        PlayButtonSfx();
+        if (!isInHome)
         {
             GameController.Instance.BackToMainMenu();
         }
@@ -61,6 +69,10 @@ public class SettingUICanvas : UICanvas
         float volume = musicSlider.value;
         musicImage.sprite = volume <= 0 ? musicSprites[0] : musicSprites[1];
         SoundManager.Instance.ChangeMusicVolume(volume);
+    }
+    private void PlayButtonSfx()
+    {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
     }
     private void OnDisable()
     {

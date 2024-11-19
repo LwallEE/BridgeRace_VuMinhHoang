@@ -686,6 +686,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 1729860575}
+  currentGameState: 0
+  cameraPos: []
 --- !u!1 &2063400567
 GameObject:
   m_ObjectHideFlags: 0

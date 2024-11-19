@@ -61,7 +61,10 @@ namespace StateMachineNP
 
         public virtual void PlayAnimation(string animName, bool value)
         {
-            
+            if (animName.CompareTo("fall") == 0)
+            {
+                SoundManager.Instance.PlayShotOneTime(ESound.PlayerFall);
+            }
             Anim.SetBool(animName, value);
             if (value)
             {
@@ -89,6 +92,7 @@ namespace StateMachineNP
 
         protected void AddBrick()
         {
+            SoundManager.Instance.PlayShotOneTime(ESound.CollectBrick);
             var brickVisual = LazyPool.Instance.GetObj<BrickVisual>(GameAssets.Instance.brickVisual);
             brickVisual.transform.SetParent(brickContainer);
             if (brickList == null)

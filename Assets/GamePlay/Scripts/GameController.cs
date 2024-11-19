@@ -1,14 +1,14 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using StateMachineNP;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public enum GameState
 {
-    None,
     Home,
     GameStart,
     GamePause,
@@ -21,11 +21,17 @@ public class GameController : Singleton<GameController>
     [SerializeField] private GameState currentGameState;
     private PlayerController mainPlayer;
 
-    public bool IsLogged;
-
     private void Start()
     {
-        StartGame();
+        SoundManager.Instance.PlayLoop(ESound.GameMusic);
+
+        if (NetworkClient.Instance.IsLogged) { 
+            OnStartGame();
+        }
+        else
+        {
+            UIManager.Instance.OpenUI<LoginUICanvas>();
+        }
     }
 
     private void SetUpPlayer()
@@ -35,18 +41,11 @@ public class GameController : Singleton<GameController>
         mainPlayer.InitPlayerReference(FindObjectOfType<FloatingJoystick>());
     }
 
-    private void StartGame()
+    private void OnStartGame()
     {
-        if(currentGameState == GameState.None)
-        {
-            LevelManager.Instance.LoadCurrentSaveLevel();
-            SetGameState(GameState.GameStart);
-            SetUpPlayer();
-        }
-        if (!IsLogged)
-        {
-            UIManager.Instance.OpenUI<LoginUICanvas>();
-        }
+        LevelManager.Instance.LoadCurrentSaveLevel();
+        SetGameState(GameState.GameStart);
+        SetUpPlayer();
     }
     
     public void SetGameState(GameState state)
@@ -62,11 +61,13 @@ public class GameController : Singleton<GameController>
         }
         else if (currentGameState == GameState.GameEndWin)
         {
+            SoundManager.Instance.PlayShotOneTime(ESound.PlayerWin);
             var gameResultUI = UIManager.Instance.OpenUI<GameResultUICanvas>(2f);
             gameResultUI.Init(true);
         }
         else if (currentGameState == GameState.GameEndLose)
         {
+            SoundManager.Instance.PlayShotOneTime(ESound.PlayerLose);
             var gameResultUI = UIManager.Instance.OpenUI<GameResultUICanvas>();
             gameResultUI.Init(false);
         }
@@ -96,6 +97,7 @@ public class GameController : Singleton<GameController>
     }
     public void BackToMainMenu()
     {
+        currentGameState = GameState.Home;
         SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
     }
 

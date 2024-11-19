@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using static Unity.Barracuda.TextureAsTensorData;
 
 public enum ESound
@@ -37,6 +38,8 @@ public class SoundManager : Singleton<SoundManager>
         
         SoundVolume = PlayerPrefs.GetFloat(Constants.KEY_VOLUME_SOUND, 1f);
         MusicVolume = PlayerPrefs.GetFloat(Constants.KEY_VOLUME_MUSIC, 1f);
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public SoundSO GetSoundDataOfType(ESound soundType, bool isRandom)
@@ -78,6 +81,10 @@ public class SoundManager : Singleton<SoundManager>
     {
         MusicVolume = volume;
         musicSource.volume = volume;
+        for(int i = 0; i < soundLoops.Length; i++)
+        {
+            soundLoops[i].SetVolume(volume);
+        }
     }
 
     public void SaveVolume()

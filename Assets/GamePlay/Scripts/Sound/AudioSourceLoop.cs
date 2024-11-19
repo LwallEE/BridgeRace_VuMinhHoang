@@ -36,5 +36,8 @@ public class AudioSourceLoop : MonoBehaviour
     {
         return data[0].soundType == type;
     }
-    
+    public void SetVolume(float volume)
+    {
+        source.volume = volume;
+    }
 }

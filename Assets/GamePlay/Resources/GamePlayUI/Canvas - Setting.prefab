@@ -1387,7 +1387,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 291211343238721071}
         m_TargetAssemblyTypeName: SettingUICanvas, Assembly-CSharp
-        m_MethodName: OnBackToMainMenuClick
+        m_MethodName: OnContinueButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

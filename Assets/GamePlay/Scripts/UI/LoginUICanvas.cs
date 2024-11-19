@@ -45,8 +45,6 @@ public class LoginUICanvas : UICanvas
         if (result.isSuccess)
         {
             NetworkClient.Instance.SetToken(result.token);
-            //SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
-            GameController.Instance.IsLogged = true;
             await UIManager.Instance.OpenUI<HomeUICanvas>().InitUserData();
             Close(0);
         }

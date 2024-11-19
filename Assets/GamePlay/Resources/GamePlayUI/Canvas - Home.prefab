@@ -1206,6 +1206,7 @@ MonoBehaviour:
   txtName: {fileID: 2422570399068736481}
   txtHightScore: {fileID: 2732967482759161443}
   txtCoin: {fileID: 2422570398204655256}
+  characterVisual: {fileID: 0}
 --- !u!1001 &2732967483703236798
 PrefabInstance:
   m_ObjectHideFlags: 0
