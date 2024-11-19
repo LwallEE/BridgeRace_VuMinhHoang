@@ -20,7 +20,9 @@ public class GameController : Singleton<GameController>
     [SerializeField] private CameraFollow camera;
     [SerializeField] private GameState currentGameState;
     private PlayerController mainPlayer;
-    
+
+    public bool IsLogged;
+
     private void Start()
     {
         StartGame();
@@ -40,6 +42,10 @@ public class GameController : Singleton<GameController>
             LevelManager.Instance.LoadCurrentSaveLevel();
             SetGameState(GameState.GameStart);
             SetUpPlayer();
+        }
+        if (!IsLogged)
+        {
+            UIManager.Instance.OpenUI<LoginUICanvas>();
         }
     }
     

@@ -14,10 +14,12 @@ public class ShopUICanvas : UICanvas
         txtName.text = name;
         txtCoin.text = coin.ToString();
     }
-    public void BackToHome()
+    public async void BackToHome()
     {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         GameController.Instance.ChangeCameraState(GameController.CameraState.Home);
-        UIManager.Instance.OpenUI<HomeUICanvas>();
+        await UIManager.Instance.OpenUI<HomeUICanvas>().InitUserData();
         CloseDirectly();
     }
 
@@ -58,7 +60,9 @@ public class ShopUICanvas : UICanvas
     }
     public void OnSelecetItemType(EquipmentType type)
     {
-        if(currentType != type)
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
+        if (currentType != type)
         {
             if(currentType != EquipmentType.None)
             {
@@ -104,6 +108,8 @@ public class ShopUICanvas : UICanvas
     }
     public void OnSelectedItem(ItemFrame item)
     {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         if (item == currentItem) return;
         if(currentItem != null)
         {
@@ -126,6 +132,8 @@ public class ShopUICanvas : UICanvas
     }
     public async void OnBuy()
     {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         int coin = int.Parse(txtCoin.text);
         if (coin < currentItem.cost) return;
 
@@ -146,6 +154,8 @@ public class ShopUICanvas : UICanvas
     }
     public async void OnEquip()
     {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         panelLoading.SetActive(true);
 
         if (currentEquippedItem != null)
@@ -175,6 +185,8 @@ public class ShopUICanvas : UICanvas
     }
     public async void OnUnequip()
     {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         panelLoading.SetActive(true);
 
         var result = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/unequip", new ShopRequest(currentItem.itemId));

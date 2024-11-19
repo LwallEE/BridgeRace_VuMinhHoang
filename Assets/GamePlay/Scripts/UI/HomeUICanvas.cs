@@ -38,21 +38,29 @@ public class HomeUICanvas : UICanvas
     }
     public void OnPlayOnlineClick()
     {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         SceneManager.LoadScene(Constants.GAME_ONLINE_SCENE);
     }
 
     public void OnPlayOfflineClick()
     {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         SceneManager.LoadScene(Constants.GAME_OFFLINE_SCENE);
     }
     public void OnShopButtonClick()
     {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         GameController.Instance.ChangeCameraState(GameController.CameraState.Shop);
         UIManager.Instance.OpenUI<ShopUICanvas>().InitPlayerInfor(txtName.text, int.Parse(txtCoin.text));
         CloseDirectly();
     }
     public void OnSettingButtonClick()
     {
+        SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
+
         UIManager.Instance.OpenUI<SettingUICanvas>();
     }
 }

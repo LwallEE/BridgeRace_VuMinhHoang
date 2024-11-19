@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Barracuda.TextureAsTensorData;
 
 public enum ESound
 {
@@ -25,11 +26,17 @@ public class SoundManager : Singleton<SoundManager>
     public AudioSource[] soundSources;
     private Queue<AudioSource> _queueSources;
     private Dictionary<ESound, List<SoundSO>> numberOfEachEsoundDict;
-    
+
+    public float SoundVolume {  get; private set; }
+    public float MusicVolume { get; private set; }
+
     protected override void Awake()
     {
         base.Awake();
         OnInit();
+        
+        SoundVolume = PlayerPrefs.GetFloat(Constants.KEY_VOLUME_SOUND, 1f);
+        MusicVolume = PlayerPrefs.GetFloat(Constants.KEY_VOLUME_MUSIC, 1f);
     }
 
     public SoundSO GetSoundDataOfType(ESound soundType, bool isRandom)
@@ -44,8 +51,6 @@ public class SoundManager : Singleton<SoundManager>
     {
         _queueSources = new Queue<AudioSource>(soundSources);
         InitNumberOfEachSoundDict();
-        ChangeSoundVolume();
-        ChangeMusicVolume();
     }
 
     void InitNumberOfEachSoundDict()
@@ -64,12 +69,21 @@ public class SoundManager : Singleton<SoundManager>
             }
         }
     }
-    public void ChangeSoundVolume()
+    public void ChangeSoundVolume(float volume)
     {
+        SoundVolume = volume;
     }
 
-    public void ChangeMusicVolume()
+    public void ChangeMusicVolume(float volume)
     {
+        MusicVolume = volume;
+        musicSource.volume = volume;
+    }
+
+    public void SaveVolume()
+    {
+        PlayerPrefs.SetFloat(Constants.KEY_VOLUME_SOUND, SoundVolume);
+        PlayerPrefs.SetFloat(Constants.KEY_VOLUME_MUSIC, MusicVolume);
     }
 
     public void PlayShotOneTime(SoundSO clip, float volume = 1f)
@@ -97,8 +111,12 @@ public class SoundManager : Singleton<SoundManager>
     }
     public void PlayShotOneTime(ESound type, float volume = 1f)
     {
-        SoundSO so = GetSoundDataOfType(type, false);
-        PlayShotOneTime(so, volume);
+        SoundSO clip = GetSoundDataOfType(type, false);
+        if (clip == null)
+        {
+            return;
+        }
+        PlayShot(clip, volume);
     }
     public void PlayShot(SoundSO clip, float volume = 1f)
     {
@@ -113,7 +131,7 @@ public class SoundManager : Singleton<SoundManager>
             return;
         }
 
-        //source.volume = volume;
+        source.volume = volume * SoundVolume;
         source.clip = clip.soundClip;
         source.Play();
         //source.PlayOneShot(clip.soundClip);
