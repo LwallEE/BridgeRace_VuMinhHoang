@@ -49,6 +49,7 @@ public class Brick : MonoBehaviour
         {
             LazyPool.Instance.AddObjectToPool(this.gameObject);
         }
+        ParticleManager.Instance.PlayFxCollect(transform.position, colorData.brickColor);
     }
 
     protected virtual void Update()

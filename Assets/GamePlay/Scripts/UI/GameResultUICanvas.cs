@@ -6,28 +6,13 @@ using UnityEngine.UI;
 
 public class GameResultUICanvas : UICanvas
 {
-    [SerializeField] private TextMeshProUGUI winLoseTxt;
-    [SerializeField] private Image winLoseImage;
-
-    [SerializeField] private Color winColor;
-    [SerializeField] private Color loseColor;
-    [SerializeField] private TextMeshProUGUI btnNextLevelTxt;
+    [SerializeField] private GameObject panelWin, panelLose;
     private bool isWinning;
     public void Init(bool isWin)
     {
         isWinning = isWin;
-        if (isWin)
-        {
-            winLoseTxt.text = "WIN";
-            winLoseImage.color = winColor;
-            btnNextLevelTxt.text = "Next Level";
-        }
-        else
-        {
-            winLoseTxt.text = "LOSE";
-            winLoseImage.color = loseColor;
-            btnNextLevelTxt.text = "Replay Level";
-        }
+        panelLose.SetActive(!isWinning);
+        panelWin.SetActive(isWinning);
     }
 
     public void OnNextLevelClick()

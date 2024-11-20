@@ -25,7 +25,8 @@ public class GameController : Singleton<GameController>
     {
         SoundManager.Instance.PlayLoop(ESound.GameMusic);
 
-        if (NetworkClient.Instance.IsLogged) { 
+        if (NetworkClient.Instance.IsLogged)
+        {
             OnStartGame();
         }
         else

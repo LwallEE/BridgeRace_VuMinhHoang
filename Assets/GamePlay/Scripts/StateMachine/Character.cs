@@ -61,9 +61,10 @@ namespace StateMachineNP
 
         public virtual void PlayAnimation(string animName, bool value)
         {
-            if (animName.CompareTo("fall") == 0)
+            if (animName.CompareTo("fall") == 0 && value)
             {
                 SoundManager.Instance.PlayShotOneTime(ESound.PlayerFall);
+                ParticleManager.Instance.PlayFxCollide(transform.position);
             }
             Anim.SetBool(animName, value);
             if (value)
