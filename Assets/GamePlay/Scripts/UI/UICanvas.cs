@@ -58,12 +58,12 @@ public class UICanvas : MonoBehaviour
     public virtual void Open()
     {
         gameObject.SetActive(true);
-        Debug.Log("open UI");
+        //Debug.Log("open UI");
     }
 
     public virtual void OpenDelay(float time)
     {
-        Debug.Log("open UI delay");
+        //Debug.Log("open UI delay");
         gameObject.SetActive(false);
         Invoke(nameof(Open),time);
     }

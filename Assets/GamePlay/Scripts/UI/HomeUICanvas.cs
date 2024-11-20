@@ -62,6 +62,11 @@ public class HomeUICanvas : UICanvas
         PlayButtonSfx();
         UIManager.Instance.OpenUI<SettingUICanvas>();
     }
+    public void OnRankingButtonClick()
+    {
+        PlayButtonSfx();
+        UIManager.Instance.OpenUI<RankingUICanvas>();
+    }
     private void PlayButtonSfx()
     {
         SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
