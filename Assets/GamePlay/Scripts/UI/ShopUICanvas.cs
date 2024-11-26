@@ -48,7 +48,6 @@ public class ShopUICanvas : UICanvas
         var itemStatusData = await NetworkClient.Instance.HttpGet<AllItemStatusResponse>("shop/user-items");
         if (itemStatusData.isSuccess)
         {
-            Debug.Log("lo");
             itemStatus = itemStatusData.items;
 
             itemTypeButtons[0].Selected();
