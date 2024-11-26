@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class HomeUICanvas : UICanvas
 {
@@ -20,6 +21,8 @@ public class HomeUICanvas : UICanvas
         sequence.Append(txtHighScoreHightlight.DOColor(Color.white, 1f));
         sequence.SetLoops(-1, LoopType.Restart);
     }
+
+    // -----------------------------User Data----------------------------------
     public async Task InitUserData()
     {
         await GetUserData();
@@ -34,8 +37,43 @@ public class HomeUICanvas : UICanvas
             txtName.text = result.userName;
 
             characterVisual.ChangeAllSkin(result.hatEquippedId, result.pantEquippedId, result.leftHandEquippedId);
+
+            int avatarType = 0;
+            try
+            {
+                avatarType = int.Parse(result.avatar);
+            }
+            catch { }
+            currentAvatarType = (AvatarType)avatarType;
+            ChangeAvatar(currentAvatarType);
         }
     }
+    // ------------------------------------------------------------------------
+
+
+    // ------------------------------Avatar------------------------------------
+    [SerializeField] private Image avatar;
+    [SerializeField] private AvatarData avatarData;
+    [SerializeField] AvatarFrame[] avatarFrames;
+
+    AvatarType currentAvatarType;
+
+    public void OnAvartarSelected(AvatarType avatarType)
+    {
+        if (avatarType == currentAvatarType) return;
+
+        avatarFrames[(int)currentAvatarType].OnUnselected();
+        ChangeAvatar(avatarType);
+    }
+    private void ChangeAvatar(AvatarType avatarType)
+    {
+        currentAvatarType = avatarType;
+        avatar.sprite = avatarData.GetAvatarByType(avatarType);
+    }
+    // ------------------------------------------------------------------------
+
+
+    #region button click
     public void OnPlayOnlineClick()
     {
         PlayButtonSfx();
@@ -71,4 +109,5 @@ public class HomeUICanvas : UICanvas
     {
         SoundManager.Instance.PlayShotOneTime(ESound.ButtonClick);
     }
+    #endregion
 }
