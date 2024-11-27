@@ -20,24 +20,21 @@ public class GameController : Singleton<GameController>
     [SerializeField] private CameraFollow camera;
     [SerializeField] private GameState currentGameState;
     private PlayerController mainPlayer;
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Start()
     {
-        SoundManager.Instance.PlayLoop(ESound.GameMusic);
-
-        if (NetworkClient.Instance.IsLogged)
-        {
-            OnStartGame();
-        }
-        else
-        {
-            UIManager.Instance.OpenUI<LoginUICanvas>();
-        }
+        InitializeGameMenu();
     }
 
     private void SetUpPlayer()
     {
         mainPlayer = FindObjectOfType<PlayerController>();
+        if (camera == null) camera = FindObjectOfType<CameraFollow>();
         camera.SetTarget(mainPlayer.transform);
         mainPlayer.InitPlayerReference(FindObjectOfType<FloatingJoystick>());
     }
@@ -99,7 +96,41 @@ public class GameController : Singleton<GameController>
     public void BackToMainMenu()
     {
         currentGameState = GameState.Home;
-        SceneManager.LoadScene(Constants.MAIN_MENU_SCENE);
+        StartCoroutine(LoadMainMenuCoroutine());
+    }
+
+    IEnumerator LoadMainMenuCoroutine()
+    {
+        yield return SceneManager.LoadSceneAsync(Constants.MAIN_MENU_SCENE);
+        InitializeGameMenu();
+    }
+
+    private void InitializeGameMenu()
+    {
+        SoundManager.Instance.PlayLoop(ESound.GameMusic);
+
+        
+        if (NetworkClient.Instance.IsLogged)
+        {
+            //open game home canvas here
+        }
+        else
+        {
+            UIManager.Instance.OpenUI<LoginUICanvas>();
+        }
+
+
+    }
+
+    public void ChangeToOfflineGame()
+    {
+        StartCoroutine(ChangeToOfflineGameCoroutine());
+    }
+
+    IEnumerator ChangeToOfflineGameCoroutine()
+    {
+        yield return SceneManager.LoadSceneAsync(Constants.GAME_OFFLINE_SCENE);
+        OnStartGame();
     }
 
     //---------------------HOME---------------------------

@@ -94,7 +94,7 @@ public class LobbyRoomNetworkUI : UINetworkBase
     public void OnExitButtonClick()
     {
         GameNetworkManager.Instance.Client.LeaveLobbyRoom();
-        GameNetworkManager.Instance.BackToMainMenuScene();
+        GameController.Instance.BackToMainMenu();
     }
 
     public void JoinRoom(RoomLayoutUI room)

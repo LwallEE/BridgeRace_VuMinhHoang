@@ -85,7 +85,7 @@ public class HomeUICanvas : UICanvas
     {
         PlayButtonSfx();
 
-        SceneManager.LoadScene(Constants.GAME_OFFLINE_SCENE);
+        GameController.Instance.ChangeToOfflineGame();
     }
     public void OnShopButtonClick()
     {

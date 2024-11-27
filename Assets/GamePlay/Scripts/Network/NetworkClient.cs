@@ -153,11 +153,11 @@ public class NetworkClient : Singleton<NetworkClient>
         }
     }
 
-    public void LeaveLobbyRoom()
+    public async void LeaveLobbyRoom()
     {
         if (lobbyRoom != null)
         {
-            lobbyRoom.LeaveRoom();
+            await lobbyRoom.LeaveRoom();
         }
     }
     public async Task CreateGameRoom(string userName,string roomName)
