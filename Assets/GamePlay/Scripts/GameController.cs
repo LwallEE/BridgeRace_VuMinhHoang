@@ -109,7 +109,11 @@ public class GameController : Singleton<GameController>
     {
         SoundManager.Instance.PlayLoop(ESound.GameMusic);
 
-        
+        if (NetworkClient.Instance == null)
+        {
+            OnStartGame();
+            return;
+        }
         if (NetworkClient.Instance.IsLogged)
         {
             //open game home canvas here
