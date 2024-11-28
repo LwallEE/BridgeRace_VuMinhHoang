@@ -117,6 +117,7 @@ public class GameController : Singleton<GameController>
         if (NetworkClient.Instance.IsLogged)
         {
             //open game home canvas here
+            UIManager.Instance.OpenUI<HomeUICanvas>();
         }
         else
         {

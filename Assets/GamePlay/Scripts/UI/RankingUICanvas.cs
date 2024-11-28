@@ -15,8 +15,9 @@ public class RankingUICanvas : UICanvas
     private MiniPool<RankingSlot> pool = new MiniPool<RankingSlot>();
     private RankingMode currentMode;
 
-    private UserRankingDto[] topUserRank;
-    private UserRankingDto playerRank;
+    private UserRankingDto[] topUserRankScore, topUserRankCoin;
+    private UserRankingDto playerRankScore, playerRankCoin;
+
     private void Awake()
     {
         pool.OnInit(slotPrefab, 10, contentPanel);
@@ -24,18 +25,29 @@ public class RankingUICanvas : UICanvas
     public override async void Open()
     {
         base.Open();
-        var rank = await NetworkClient.Instance.HttpGet<UserRankingResponse>("shop/user-items");
+        var rank = await NetworkClient.Instance.HttpGet<UserRankingResponse>("ranking/point");
         if (rank.isSuccess)
         {
-            playerRank = rank.senderUserRanking;
-            topUserRank = rank.topUsers;
+            topUserRankScore = rank.topUsers;
+            playerRankScore = rank.senderUserRanking;
         }
         else
         {
             Debug.LogError(rank.message);
         }
 
-        OnSwitchMode((int)currentMode);
+        rank = await NetworkClient.Instance.HttpGet<UserRankingResponse>("ranking/coin");
+        if (rank.isSuccess)
+        {
+            topUserRankCoin = rank.topUsers;
+            playerRankCoin = rank.senderUserRanking;
+        }
+        else
+        {
+            Debug.LogError(rank.message);
+        }
+        currentMode = RankingMode.Gold;
+        OnSwitchMode(0);
     }
 
     public void OnBackButtonClick()
@@ -62,13 +74,28 @@ public class RankingUICanvas : UICanvas
     private void InitData()
     {
         pool.Collect();
-
-        playerRankSlot.Init(playerRank, currentMode);
-        for(int i = 0; i < topUserRank.Length; i++)
+        switch (currentMode)
         {
-            RankingSlot slot = ObjectPoolDictArray.Instance.GetGameObject(slotPrefab);
-            slot.Init(topUserRank[i], currentMode);
+            case RankingMode.Gold:
+                playerRankSlot.Init(playerRankCoin, currentMode);
+                for (int i = 0; i < topUserRankCoin.Length; i++)
+                {
+                    RankingSlot slot = pool.Spawn();
+
+                    slot.Init(topUserRankCoin[i], currentMode);
+                }
+                break;
+            case RankingMode.Score:
+                playerRankSlot.Init(playerRankScore, currentMode);
+                for (int i = 0; i < topUserRankScore.Length; i++)
+                {
+                    RankingSlot slot = pool.Spawn();
+
+                    slot.Init(topUserRankScore[i], currentMode);
+                }
+                break;
         }
+
     }
 }
 public enum RankingMode

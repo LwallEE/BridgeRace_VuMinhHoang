@@ -10,7 +10,9 @@ using UnityEngine.UI;
 public class HomeUICanvas : UICanvas
 {
     [SerializeField] private TextMeshProUGUI txtHighScoreHightlight;
-    [SerializeField] private TextMeshProUGUI txtName, txtHightScore, txtCoin;
+    [SerializeField] private TextMeshProUGUI txtHightScore;
+    [SerializeField] private PlayerInfor playerInfor;
+
     [SerializeField] CharacterVisual characterVisual;
 
     private void Start()
@@ -32,9 +34,7 @@ public class HomeUICanvas : UICanvas
         var result = await NetworkClient.Instance.HttpGet<UserInfoResponse>("user-info");
         if (result.isSuccess)
         {
-            txtCoin.text = result.currentCoin.ToString();
             txtHightScore.text = result.currentPoint.ToString();
-            txtName.text = result.userName;
 
             characterVisual.ChangeAllSkin(result.hatEquippedId, result.pantEquippedId, result.leftHandEquippedId);
 
@@ -45,35 +45,43 @@ public class HomeUICanvas : UICanvas
             }
             catch { }
             currentAvatarType = (AvatarType)avatarType;
-            ChangeAvatar(currentAvatarType);
+            playerInfor.OnInit(result.userName, result.currentCoin, currentAvatarType);
+            avatarFrames[avatarType].OnFocus();
+
         }
     }
     // ------------------------------------------------------------------------
 
 
     // ------------------------------Avatar------------------------------------
-    [SerializeField] private Image avatar;
-    [SerializeField] private AvatarData avatarData;
+    [SerializeField] GameObject panelAvatar;
     [SerializeField] AvatarFrame[] avatarFrames;
 
     AvatarType currentAvatarType;
 
-    public void OnAvartarSelected(AvatarType avatarType)
+    public async void OnAvartarSelected(AvatarType avatarType)
     {
         if (avatarType == currentAvatarType) return;
 
-        avatarFrames[(int)currentAvatarType].OnUnselected();
-        ChangeAvatar(avatarType);
+        var result = await NetworkClient.Instance.HttpPost<GeneralResponse>("user-info/avatar", new SetAvatarRequest((int)avatarType + ""));
+        if (result.isSuccess) {
+            avatarFrames[(int)currentAvatarType].OnUnselected();
+            ChangeAvatar(avatarType);
+        }
+        else
+        {
+            Debug.LogError(result.message);
+        }
     }
     private void ChangeAvatar(AvatarType avatarType)
     {
         currentAvatarType = avatarType;
-        avatar.sprite = avatarData.GetAvatarByType(avatarType);
+        playerInfor.ChangeAvatar(currentAvatarType);
     }
     // ------------------------------------------------------------------------
 
 
-    #region button click
+    #region Button click
     public void OnPlayOnlineClick()
     {
         PlayButtonSfx();
@@ -92,7 +100,7 @@ public class HomeUICanvas : UICanvas
         PlayButtonSfx();
 
         GameController.Instance.ChangeCameraState(GameController.CameraState.Shop);
-        UIManager.Instance.OpenUI<ShopUICanvas>().InitPlayerInfor(txtName.text, int.Parse(txtCoin.text));
+        UIManager.Instance.OpenUI<ShopUICanvas>().InitPlayerInfor(playerInfor);
         CloseDirectly();
     }
     public void OnSettingButtonClick()
@@ -104,6 +112,16 @@ public class HomeUICanvas : UICanvas
     {
         PlayButtonSfx();
         UIManager.Instance.OpenUI<RankingUICanvas>();
+    }
+    public void OnAvatarClick()
+    {
+        PlayButtonSfx();
+        panelAvatar.SetActive(true);
+    }
+    public void OnCloseAvatarPanel()
+    {
+        PlayButtonSfx();
+        panelAvatar.SetActive(false);
     }
     private void PlayButtonSfx()
     {

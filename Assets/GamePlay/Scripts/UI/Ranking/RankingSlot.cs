@@ -13,10 +13,10 @@ public class RankingSlot : MonoBehaviour
 
     public void Init(UserRankingDto data, RankingMode mode)
     {
-        if(data.userRank < 3)
+        if(data.userRank <= 3)
         {
             medalIcon.gameObject.SetActive(true);
-            medalIcon.sprite = medals[data.userRank];
+            medalIcon.sprite = medals[data.userRank-1];
 
             txtRank.gameObject.SetActive(false);
         }
@@ -35,7 +35,7 @@ public class RankingSlot : MonoBehaviour
         {
 
         }
-        avatar.sprite = avatarData.GetAvatarByType((AvatarType)data.userRank);
+        avatar.sprite = avatarData.GetAvatarByType((AvatarType)avatarType);
 
         txtName.text = data.userName;
         txtScore.text = data.userScore.ToString();

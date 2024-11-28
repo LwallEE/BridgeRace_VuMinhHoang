@@ -8,11 +8,10 @@ using UnityEngine.UI;
 
 public class ShopUICanvas : UICanvas
 {
-    [SerializeField] TextMeshProUGUI txtName, txtCoin;
-    public void InitPlayerInfor(string name, int coin)
+    [SerializeField] PlayerInfor playerInfor;
+    public void InitPlayerInfor(PlayerInfor infor)
     {
-        txtName.text = name;
-        txtCoin.text = coin.ToString();
+        playerInfor.CloneInfor(infor);
     }
     public async void BackToHome()
     {
@@ -133,7 +132,7 @@ public class ShopUICanvas : UICanvas
     {
         PlayButtonSfx();
 
-        int coin = int.Parse(txtCoin.text);
+        int coin = playerInfor.GetCoin();
         if (coin < currentItem.cost) return;
 
         panelLoading.SetActive(true);
@@ -143,7 +142,7 @@ public class ShopUICanvas : UICanvas
             panelLoading.SetActive(false);
 
             coin -= currentItem.cost;
-            txtCoin.text = coin.ToString();
+            playerInfor.SetCoin(coin);
 
             currentItem.OnBought();
             UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == currentItem.itemId);

@@ -8,15 +8,19 @@ public class AvatarFrame : MonoBehaviour
     [SerializeField] AvatarType type;
     [SerializeField] HomeUICanvas canvas;
 
-    private void OnEnable()
-    {
-        focus.SetActive(false);
-    }
+    //private void OnEnable()
+    //{
+    //    focus.SetActive(false);
+    //}
 
     public void OnSelected()
     {
-        focus.SetActive(true);
+        OnFocus();
         canvas.OnAvartarSelected(type);
+    }
+    public void OnFocus()
+    {
+        focus.SetActive(true);
     }
     public void OnUnselected()
     {
