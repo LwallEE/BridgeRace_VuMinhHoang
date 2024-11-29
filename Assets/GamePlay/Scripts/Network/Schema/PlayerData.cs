@@ -26,6 +26,15 @@ namespace MyGame.Schema {
 		[Type(8, "boolean")] public bool isFall = default(bool);
 
 		[Type(9, "float32")] public float speed = default(float);
+        
+		
+        [Type(10, "uint8")] public byte pantEquippedId = default(byte);
+        
+		
+		[Type(11, "uint8")] public byte leftHandEquippedId = default(byte);
+        
+		[Type(12, "uint8")] public byte hairEquippedId = default(byte);
+          
 		
 		/*
 		 * Support for individual property change callbacks below...

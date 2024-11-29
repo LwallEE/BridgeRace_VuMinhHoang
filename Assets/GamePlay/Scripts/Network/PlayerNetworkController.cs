@@ -123,6 +123,8 @@ public class PlayerNetworkController : PlayerController,IDispose
         {
             RigidbodyObj.useGravity = false;
         }
+        //Debug.Log("");
+        EquipSkin(data.hairEquippedId,data.pantEquippedId, data.leftHandEquippedId);
         //apply name
         playerNameFollow = LazyPool.Instance.GetObj<PlayerNameFollow>(playerNameFollowPrefab);
         playerNameFollow.SetTarget(transform,data.name, characterColor.characterColor);

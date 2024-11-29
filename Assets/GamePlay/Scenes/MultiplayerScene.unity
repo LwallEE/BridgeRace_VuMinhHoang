@@ -2737,7 +2737,7 @@ MonoBehaviour:
   hostName: localhost
   portName: 2567
   isHttps: 0
-  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlckFjY291bnQiOiJjb25sb25jb24iLCJpYXQiOjE3MzA0NTcxNjUsImV4cCI6MTczMDQ2MDc2NX0.8yx3iYp5plksFsFd0OMhOLN-UlJ0fxb0jdzaFetaq3c
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlckFjY291bnQiOiJjb25sb25jb24iLCJpYXQiOjE3MzI4NTQ5OTQsImV4cCI6MTczMjg1ODU5NH0.i-BjOU0lDA1MzF_X6YPpL5Q6olwxRw5_M-XJYYnladw
   isTest: 0
   <GameRoomNetwork>k__BackingField: {fileID: 1272898088}
 --- !u!4 &754739880
@@ -3300,9 +3300,6 @@ MonoBehaviour:
   - {fileID: 1640994200}
   - {fileID: 1993994735}
   - {fileID: 255111888}
-  sfxAudioSource: {fileID: 0}
-  sfxClips:
-  - {fileID: 8300000, guid: 53cb1abbe9b7aab40889f032a5c2ea58, type: 3}
 --- !u!4 &890536638
 Transform:
   m_ObjectHideFlags: 0
@@ -5293,7 +5290,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 136ee6bc539c1d643981ca9074590e6c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
