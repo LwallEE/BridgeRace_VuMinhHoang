@@ -175,6 +175,11 @@ namespace StateMachineNP
         {
             this.joyStickInput = joystick;
         }
+
+        public void ChangeSkin(int hatId, int pantId, int leftHandId)
+        {
+            characterVisual.ChangeAllSkin(hatId, pantId, leftHandId);
+        }
     }
 }
 

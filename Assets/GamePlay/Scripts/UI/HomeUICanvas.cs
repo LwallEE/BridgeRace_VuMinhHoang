@@ -15,6 +15,8 @@ public class HomeUICanvas : UICanvas
 
     [SerializeField] CharacterVisual characterVisual;
 
+    UserInfoResponse userData;
+
     private void Start()
     {
         characterVisual = FindAnyObjectByType<CharacterVisual>();
@@ -52,6 +54,7 @@ public class HomeUICanvas : UICanvas
             playerInfor.OnInit(result.userName, result.currentCoin, currentAvatarType);
             avatarFrames[avatarType].OnFocus();
 
+            userData = result;
         }
     }
     // ------------------------------------------------------------------------
@@ -97,7 +100,7 @@ public class HomeUICanvas : UICanvas
     {
         PlayButtonSfx();
 
-        GameController.Instance.ChangeToOfflineGame();
+        GameController.Instance.ChangeToOfflineGame(userData.hatEquippedId, userData.pantEquippedId, userData.leftHandEquippedId);
     }
     public void OnShopButtonClick()
     {

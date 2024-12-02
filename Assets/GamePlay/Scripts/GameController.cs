@@ -6,6 +6,7 @@ using StateMachineNP;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 public enum GameState
 {
@@ -20,6 +21,7 @@ public class GameController : Singleton<GameController>
     [SerializeField] private CameraFollow camera;
     [SerializeField] private GameState currentGameState;
     private PlayerController mainPlayer;
+
     protected override void Awake()
     {
         base.Awake();
@@ -127,15 +129,16 @@ public class GameController : Singleton<GameController>
 
     }
 
-    public void ChangeToOfflineGame()
+    public void ChangeToOfflineGame(int hatId, int pantId, int leftHandId)
     {
-        StartCoroutine(ChangeToOfflineGameCoroutine());
+        StartCoroutine(ChangeToOfflineGameCoroutine(hatId, pantId, leftHandId));
     }
 
-    IEnumerator ChangeToOfflineGameCoroutine()
+    IEnumerator ChangeToOfflineGameCoroutine(int hatId, int pantId, int leftHandId)
     {
         yield return SceneManager.LoadSceneAsync(Constants.GAME_OFFLINE_SCENE);
         OnStartGame();
+        mainPlayer.ChangeSkin(hatId, pantId, leftHandId);
     }
 
     //---------------------HOME---------------------------
