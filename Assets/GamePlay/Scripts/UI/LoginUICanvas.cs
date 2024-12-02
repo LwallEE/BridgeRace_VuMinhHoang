@@ -22,14 +22,14 @@ public class LoginUICanvas : UICanvas
         int usernameLenght = txtUsername.text.Trim().Length;
         if (usernameLenght < 6 || usernameLenght > 30)
         {
-            popupNotice.StartNotice("Invalid username");
+            popupNotice.StartNotice("Username must have number character between 6 and 30");
             txtUsername.text = "";
             return;
         }
         int passwordLenght = txtPassword.text.Trim().Length;
         if (passwordLenght < 6 || passwordLenght > 30)
         {
-            popupNotice.StartNotice("Invalid password");
+            popupNotice.StartNotice("Password must have number character between 6 and 30");
             txtPassword.text = "";
             return;
         }
