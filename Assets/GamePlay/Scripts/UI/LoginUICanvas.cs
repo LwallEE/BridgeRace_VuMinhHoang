@@ -45,7 +45,7 @@ public class LoginUICanvas : UICanvas
         if (result.isSuccess)
         {
             NetworkClient.Instance.SetToken(result.token);
-            await UIManager.Instance.OpenUI<HomeUICanvas>().InitUserData();
+            UIManager.Instance.OpenUI<HomeUICanvas>();
             Close(0);
         }
         else

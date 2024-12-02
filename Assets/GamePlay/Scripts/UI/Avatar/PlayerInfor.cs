@@ -27,6 +27,21 @@ public class PlayerInfor : MonoBehaviour
     {
         txtCoin.text = coin.ToString();
     }
+    public void AddCoin(int coinPlus)
+    {
+        int num = Mathf.Abs(coinPlus);
+        int dir = num / coinPlus;
+        StartCoroutine(CoinAnim(num, dir));
+    }
+    private IEnumerator CoinAnim(int num, int dir)
+    {
+        int coin = int.Parse(txtCoin.text);
+        for (int i = 0; i < num; i++)
+        {
+            txtCoin.text = (coin + dir).ToString();
+            yield return new WaitForSeconds(.1f);
+        }
+    }
     public void ChangeAvatar(AvatarType avatarType)
     {
         this.avatarType = avatarType;

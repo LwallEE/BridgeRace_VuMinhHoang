@@ -115,6 +115,22 @@ public class NetworkClient : Singleton<NetworkClient>
             return (T)Activator.CreateInstance(typeof(T), false, e.Message);;
         }
     }
+    public async Task<T> HttpPost<T>(string uriPath) where T : GeneralResponse
+    {
+
+        if (client == null) return default;
+        Dictionary<string, object> dataDictionary = new Dictionary<string, object>();
+
+        try
+        {
+            return await client.Http.Post<T>(uriPath, dataDictionary);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+            return (T)Activator.CreateInstance(typeof(T), false, e.Message); ;
+        }
+    }
 
     public void SetToken(string token)
     {

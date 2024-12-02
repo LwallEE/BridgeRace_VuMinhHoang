@@ -147,6 +147,19 @@ public class GameController : Singleton<GameController>
     [SerializeField] Transform[] cameraPos;
     public void ChangeCameraState(CameraState state)
     {
+        if (cameraPos[(int)state] == null)
+        {
+            switch (state)
+            {
+                case CameraState.Home:
+                    cameraPos[0] = GameObject.Find("Home").transform;
+                    break;
+                case CameraState.Shop:
+                    cameraPos[1] = GameObject.Find("Shop").transform;
+                    break;
+            }
+        }
+
         Transform target = cameraPos[(int)state];
         Camera.main.transform.DOMove(target.position, .5f);
         Camera.main.transform.DORotate(target.eulerAngles, .5f);

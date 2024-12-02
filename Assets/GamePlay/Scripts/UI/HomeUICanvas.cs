@@ -25,6 +25,10 @@ public class HomeUICanvas : UICanvas
     }
 
     // -----------------------------User Data----------------------------------
+    public void OnEnable()
+    {
+        InitUserData();
+    }
     public async Task InitUserData()
     {
         await GetUserData();

@@ -13,12 +13,12 @@ public class ShopUICanvas : UICanvas
     {
         playerInfor.CloneInfor(infor);
     }
-    public async void BackToHome()
+    public void BackToHome()
     {
         PlayButtonSfx();
 
         GameController.Instance.ChangeCameraState(GameController.CameraState.Home);
-        await UIManager.Instance.OpenUI<HomeUICanvas>().InitUserData();
+        UIManager.Instance.OpenUI<HomeUICanvas>();
         CloseDirectly();
     }
 
