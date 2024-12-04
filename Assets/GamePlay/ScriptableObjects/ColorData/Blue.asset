@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Blue
   m_EditorClassIdentifier: 
   brickColorE: 2
-  characterColor: {r: 0, g: 0.627451, b: 1, a: 1}
-  brickColor: {r: 0, g: 0.627451, b: 1, a: 1}
+  characterColor: {r: 0, g: 0.6901961, b: 1, a: 1}
+  brickColor: {r: 0, g: 0.6901961, b: 1, a: 1}
