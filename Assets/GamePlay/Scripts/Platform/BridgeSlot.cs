@@ -16,7 +16,7 @@ public class BridgeSlot : MonoBehaviour
   public void SetColor(BrickColor color)
   {
     this.currentBridgeColor = GameAssets.Instance.GetColorData(color);
-    this.meshRenderer.material.color = currentBridgeColor.brickColor;
+    this.meshRenderer.material = currentBridgeColor.brickMaterial;
   }
 
   public bool CanGoingThroughBridge(BrickColor color)

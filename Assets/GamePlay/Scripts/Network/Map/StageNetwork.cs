@@ -9,6 +9,8 @@ public class StageNetwork : MonoBehaviour
     [SerializeField] private GameObject brickPrefab;
     [SerializeField] private Transform brickContainer;
     [SerializeField] private List<GameObject> downBoxCollider;
+    [SerializeField] private List<GameObject> decorations;
+    
     private List<BridgeNetwork> bridgeNetworks;
     private Dictionary<string,BrickNetwork> brickNetworks;
     public void InitStage(StageData data)
@@ -45,6 +47,14 @@ public class StageNetwork : MonoBehaviour
             {
                 downBoxCollider[i].SetActive(false);
             }
+        }
+    }
+
+    public void UpdateDecorations(int index)
+    {
+        for (int i = 0; i < decorations.Count; i++)
+        {
+           decorations[i].SetActive(i == index);
         }
     }
 

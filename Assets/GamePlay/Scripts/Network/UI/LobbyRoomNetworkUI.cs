@@ -99,7 +99,7 @@ public class LobbyRoomNetworkUI : UINetworkBase
 
     public void JoinRoom(RoomLayoutUI room)
     {
-        var userName = userNameField.text;
+        /*var userName = userNameField.text;
         if (string.IsNullOrEmpty(userName))
         {
             //<TO DO> pop up message "user name must be filled"
@@ -108,8 +108,8 @@ public class LobbyRoomNetworkUI : UINetworkBase
                 UINetworkManager.Instance.GetPopUpMessageUI().Close();
             });
             return;
-        }
-        JoinRoomAsync(room.RoomId,userName);
+        }*/
+        JoinRoomAsync(room.RoomId,"");
     }
 
     private async Task JoinRoomAsync(string roomId,string userName)
@@ -121,10 +121,10 @@ public class LobbyRoomNetworkUI : UINetworkBase
     {
         var userName = userNameField.text;
         var roomName = roomNameField.text;
-        if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(roomName))
+        if ( string.IsNullOrEmpty(roomName))
         {
             //<TO DO> Show dialog message here with message {user name and room name must be non empty}
-            UINetworkManager.Instance.OpenPopUpMessage("Username and room's name must be non empty", () =>
+            UINetworkManager.Instance.OpenPopUpMessage("Room's name must be non empty", () =>
             {
                 UINetworkManager.Instance.GetPopUpMessageUI().Close();
             });

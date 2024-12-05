@@ -82,7 +82,7 @@ public class Brick : MonoBehaviour
     protected void SetColor(ColorData data)
     {
         colorData = data;
-        meshRenderer.material.color = data.brickColor;
+        meshRenderer.material = data.brickMaterial;
     }
 
     public void InitBrickStatic(BrickColor color, Vector3 position)

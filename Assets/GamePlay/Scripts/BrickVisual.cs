@@ -11,7 +11,7 @@ public class BrickVisual : MonoBehaviour
    {
       this.color = color;
       transform.localRotation = Quaternion.identity;
-      meshRenderer.material.color = this.color.brickColor;
+      meshRenderer.material = this.color.brickMaterial;
       transform.localPosition = new Vector3(0, yPos, 0);
    }
 }

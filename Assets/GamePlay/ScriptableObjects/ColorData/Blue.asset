@@ -15,3 +15,4 @@ MonoBehaviour:
   brickColorE: 2
   characterColor: {r: 0, g: 0.6901961, b: 1, a: 1}
   brickColor: {r: 0, g: 0.6901961, b: 1, a: 1}
+  brickMaterial: {fileID: 2100000, guid: a0dc436c060a6d843b6686d2aaef758a, type: 2}

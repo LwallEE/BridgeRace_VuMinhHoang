@@ -27,6 +27,7 @@ public class MapNetwork : MonoBehaviour
             stageNetworks.Add(stageElement);
             int numberOfBridge = i == 0 ? 0 : stageNetworks[i - 1].GetNumberOfBridge();
             stageElement.UpdateDownCollider(numberOfBridge);
+            stageElement.UpdateDecorations(i);
             i++;
         });
         winPos = Instantiate(winPosPrefab, transform).transform;

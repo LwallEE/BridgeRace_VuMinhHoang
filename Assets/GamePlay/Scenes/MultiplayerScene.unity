@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.30060953, g: 0.72114474, b: 0.8820032, a: 1}
+  m_IndirectSpecularColor: {r: 0.28141987, g: 0.6501539, b: 0.79132265, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1859,7 +1859,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -45, y: 53}
+  m_AnchoredPosition: {x: -45, y: 138.7561}
   m_SizeDelta: {x: 314.5689, y: 58.1239}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &505182483
@@ -2695,7 +2695,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.498108, y: -189.65173}
+  m_AnchoredPosition: {x: -4.498047, y: -189.65173}
   m_SizeDelta: {x: -145.4409, y: 249.2734}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &710788137 stripped
@@ -2737,7 +2737,7 @@ MonoBehaviour:
   hostName: localhost
   portName: 2567
   isHttps: 0
-  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlckFjY291bnQiOiJjb25sb25jb24iLCJpYXQiOjE3MzI4NTQ5OTQsImV4cCI6MTczMjg1ODU5NH0.i-BjOU0lDA1MzF_X6YPpL5Q6olwxRw5_M-XJYYnladw
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlckFjY291bnQiOiJjb25sb25jb24iLCJpYXQiOjE3MzMzNzQxMzUsImV4cCI6MTczMzM3NzczNX0.4yK1kyPFQBPM6hdNUe6D8Papmeg5wmtWt7hMKpufwDI
   isTest: 0
   <GameRoomNetwork>k__BackingField: {fileID: 1272898088}
 --- !u!4 &754739880
@@ -4042,7 +4042,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1249743895
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4551,7 +4551,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1439092618
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5794,7 +5794,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 139.12189, y: 44.243896}
+  m_AnchoredPosition: {x: 139.12189, y: 130}
   m_SizeDelta: {x: 278.2438, y: 88.4878}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1737255185
@@ -6302,7 +6302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4261787784887655891, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4261787784887655893, guid: a76a1f445153fed4a9fb3133d90e2ec3, type: 3}
       propertyPath: m_RootOrder
