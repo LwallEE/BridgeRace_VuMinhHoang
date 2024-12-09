@@ -3472,18 +3472,18 @@ Transform:
   - {fileID: 1895073171}
   - {fileID: 993488026}
   - {fileID: 1096368193}
-  - {fileID: 1919172821}
   - {fileID: 1520296692}
   - {fileID: 1709298911}
+  - {fileID: 1919172821}
   - {fileID: 1586248171}
+  - {fileID: 904145407}
   - {fileID: 915071977}
   - {fileID: 1918794749}
   - {fileID: 1396768892}
   - {fileID: 1293831022}
-  - {fileID: 904145407}
-  - {fileID: 310993629}
   - {fileID: 1028985580}
   - {fileID: 345472144}
+  - {fileID: 310993629}
   - {fileID: 303368158}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -3517,7 +3517,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.75
+  m_Intensity: 0.9
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
