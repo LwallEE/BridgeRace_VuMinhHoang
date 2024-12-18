@@ -16,7 +16,6 @@ namespace StateMachineNP
         [SerializeField] protected CharacterVisual characterVisual;
         [SerializeField] protected CharacterData data;
         [SerializeField] protected Transform checkGroundPoint;
-        [SerializeField] private SkinnedMeshRenderer meshRenderer;
         [SerializeField] private Transform brickContainer;
         
         //Fall State
@@ -80,7 +79,6 @@ namespace StateMachineNP
         protected void SetColor(BrickColor color)
         {
             this.characterColor = GameAssets.Instance.GetColorData(color);
-            this.meshRenderer.material.color = characterColor.characterColor ;
             characterVisual.SetColor(this.characterColor.characterColor);
         }
 
@@ -139,7 +137,17 @@ namespace StateMachineNP
             brickList.Clear();
             UpdateBrickVisual();
         }
+        public void DropOneBrick()
+        {
+            if(brickList.Count < 1) return;
 
+            characterVisual.OnHitColor();
+
+            var brick = LazyPool.Instance.GetObj<Brick>(GameAssets.Instance.brickPrefab);
+            brick.InitBrickDynamic(brickList[brickList.Count - 1].transform.position);
+
+            RemoveBrick();
+        }
         #endregion
 
         #region HandleBridge
@@ -177,6 +185,8 @@ namespace StateMachineNP
         }
         public virtual void Fall(Vector3 fallDirection)
         {
+            characterVisual.OnHitColor();
+
             FallAllBrick();
             //fallDirection.y = 0f;
             fallState.SetFallDirection(fallDirection);

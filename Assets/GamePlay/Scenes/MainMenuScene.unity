@@ -1512,7 +1512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a4ed3d645624bc49bca40ce456ca390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSource: {fileID: 2073502602}
+  musicSource: {fileID: 0}
   soundData:
   - {fileID: 11400000, guid: 2622d8ec83cf0d64a841f08c2f93fc17, type: 2}
   - {fileID: 11400000, guid: e316df6cef36c534591b5f334a6a27cd, type: 2}
@@ -1528,14 +1528,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 34ab6f52d85e1104fb03b709144d4f12, type: 2}
   - {fileID: 11400000, guid: d78470f34e37a814ca5533b1aaa01b30, type: 2}
   - {fileID: 11400000, guid: 1db3a29009722d14a8af066ea80e04d0, type: 2}
+  - {fileID: 11400000, guid: 27e22cbe306b07442ad0735263a5bfdf, type: 2}
+  - {fileID: 11400000, guid: 5b044b2930d7f994489eb8403f60ecd3, type: 2}
   soundLoops:
-  - {fileID: 2141530904}
-  - {fileID: 1692996273}
+  - {fileID: 0}
+  - {fileID: 0}
   soundSources:
-  - {fileID: 95656952}
-  - {fileID: 843391564}
-  - {fileID: 1787109775}
-  - {fileID: 2114688816}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!4 &976334348
 Transform:
   m_ObjectHideFlags: 0
