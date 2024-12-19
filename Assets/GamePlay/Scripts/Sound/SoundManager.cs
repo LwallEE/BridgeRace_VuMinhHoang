@@ -17,6 +17,8 @@ public enum ESound
     GameCountDownEnd = 8,
     ButtonClick= 9,
     OnHit = 10,
+    ButtonStep = 11,
+    Correct = 12,
 }
 
 

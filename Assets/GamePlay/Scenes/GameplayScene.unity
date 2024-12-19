@@ -170,6 +170,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1db3a29009722d14a8af066ea80e04d0, type: 2}
   - {fileID: 11400000, guid: 27e22cbe306b07442ad0735263a5bfdf, type: 2}
   - {fileID: 11400000, guid: 5b044b2930d7f994489eb8403f60ecd3, type: 2}
+  - {fileID: 11400000, guid: 0fbea14257311b54ab919f72668f8c24, type: 2}
+  - {fileID: 11400000, guid: f452be39fdccf3b4d9115065783289f7, type: 2}
   soundLoops:
   - {fileID: 1063168448}
   - {fileID: 1675952785}
