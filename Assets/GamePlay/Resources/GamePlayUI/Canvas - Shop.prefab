@@ -437,7 +437,6 @@ MonoBehaviour:
   - {fileID: 6046213184509366361}
   - {fileID: 3125591633096948400}
   - {fileID: 5788506125465998929}
-  - {fileID: 5972789057905201122}
 --- !u!1 &3079989236661182043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1237,7 +1236,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -2536,7 +2535,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1874153563572004661, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1874153563572004661, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
       propertyPath: m_AnchorMin.x
@@ -2544,7 +2543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1874153563572004661, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1874153563572004661, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2584,11 +2583,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1874153563572004661, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 943.6516
       objectReference: {fileID: 0}
     - target: {fileID: 1874153563572004661, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -59.66205
       objectReference: {fileID: 0}
     - target: {fileID: 1874153563572004661, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2609,6 +2608,10 @@ PrefabInstance:
     - target: {fileID: 7984967412669424165, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
       propertyPath: m_Name
       value: Button-ItemType (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7984967412669424165, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8037626680698316671, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
       propertyPath: m_Sprite
@@ -2645,17 +2648,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1874153563572004661, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
   m_PrefabInstance: {fileID: 6553216048525165582}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5972789057905201122 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 581579281029450732, guid: cf6354a71368c294c95533a2879a4d80, type: 3}
-  m_PrefabInstance: {fileID: 6553216048525165582}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cefdac0db53735e47913ae17f8e2f66d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6627708333489527733
 PrefabInstance:
   m_ObjectHideFlags: 0
