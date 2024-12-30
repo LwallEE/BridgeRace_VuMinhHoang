@@ -6,6 +6,7 @@ using UnityEngine;
 public class GamePlayUICanvas : UICanvas
 {
     [SerializeField] private TextMeshProUGUI levelTxt;
+    [SerializeField] private TextMeshProUGUI txtTimer;
 
     public override void Setup()
     {
@@ -16,5 +17,11 @@ public class GamePlayUICanvas : UICanvas
     public void OnSettingButtonClick()
     {
         GameController.Instance.SetGameState(GameState.GamePause);
+    }
+
+    public void SetTimer(string time)
+    {
+        txtTimer.gameObject.SetActive(true);
+        txtTimer.text = time;
     }
 }
