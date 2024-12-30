@@ -148,6 +148,11 @@ namespace StateMachineNP
 
             RemoveBrick();
         }
+        public void DropAllBrick()
+        {
+            characterVisual.OnHitColor();
+            FallAllBrick();
+        }
         #endregion
 
         #region HandleBridge
