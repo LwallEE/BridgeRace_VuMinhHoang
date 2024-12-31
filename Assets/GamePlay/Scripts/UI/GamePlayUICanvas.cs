@@ -7,7 +7,8 @@ public class GamePlayUICanvas : UICanvas
 {
     [SerializeField] private TextMeshProUGUI levelTxt;
     [SerializeField] private TextMeshProUGUI txtTimer;
-
+    [SerializeField] GameObject[] hpDisplay;
+    private int hp;
     public override void Setup()
     {
         base.Setup();
@@ -23,5 +24,19 @@ public class GamePlayUICanvas : UICanvas
     {
         txtTimer.gameObject.SetActive(true);
         txtTimer.text = time;
+    }
+    public void InitHp()
+    {
+        hp = hpDisplay.Length;
+        for (int i = 0; i < hpDisplay.Length; i++)
+        {
+            hpDisplay[i].SetActive(true);
+        }
+    }
+    public void OnHit()
+    {
+        hp--;
+        hpDisplay[hp].SetActive(false);
+        if (hp <= 0) GameController.Instance.SetGameState(GameState.GameEndLose);
     }
 }

@@ -33,12 +33,16 @@ public class Rocket : MonoBehaviour
 
         if(Vector2.Distance(transform.position, golem.targetPos.position) < 2.5f)
         {
+            SoundManager.Instance.PlayShotOneTime(ESound.Explose);
             Despawn();
             golem.OnDamage();
         }
     }
     public void OnActive()
     {
+        if (isActive) return;
+
+        SoundManager.Instance.PlayShotOneTime(ESound.Rocket);
         isActive = true;
     }
     private void Despawn()

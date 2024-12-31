@@ -151,7 +151,18 @@ namespace StateMachineNP
         public void DropAllBrick()
         {
             characterVisual.OnHitColor();
-            FallAllBrick();
+
+            RemoveAllBrick();
+
+            fallState.SetFallDirection(GetMoveDirection());
+            StateMachine.ChangeState(fallState);
+        }
+        public void DeleteOneBrick()
+        {
+            characterVisual.OnHitColor();
+
+            if (brickList.Count < 1) return;
+            RemoveBrick();
         }
         #endregion
 

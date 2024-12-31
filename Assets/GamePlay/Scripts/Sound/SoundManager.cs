@@ -19,6 +19,9 @@ public enum ESound
     OnHit = 10,
     ButtonStep = 11,
     Correct = 12,
+    Explose = 13,
+    Impact = 14,
+    Rocket = 15,
 }
 
 
