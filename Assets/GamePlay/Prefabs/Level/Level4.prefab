@@ -185,7 +185,7 @@ Transform:
   - {fileID: 4824864408034532570}
   - {fileID: 2823737680685659936}
   m_Father: {fileID: 3722358984766423753}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &726737454877543556
 GameObject:
@@ -654,7 +654,7 @@ Transform:
   - {fileID: 7240696348665572110}
   - {fileID: 51701727151258054}
   m_Father: {fileID: 365188762101484506}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1623768571321623513
 BoxCollider:
@@ -1549,7 +1549,7 @@ Transform:
   - {fileID: 8027900260686567481}
   - {fileID: 2988791810230820954}
   m_Father: {fileID: 1715467300370472631}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5220703321595558419
 GameObject:
@@ -3762,7 +3762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8145281333280440464, guid: 3bfa0a88d0e13fb4bb868975a3ce4562, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 9198287915698244249, guid: 3bfa0a88d0e13fb4bb868975a3ce4562, type: 3}
       propertyPath: m_LocalScale.z
