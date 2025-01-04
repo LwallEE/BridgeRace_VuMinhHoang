@@ -168,6 +168,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 34ab6f52d85e1104fb03b709144d4f12, type: 2}
   - {fileID: 11400000, guid: d78470f34e37a814ca5533b1aaa01b30, type: 2}
   - {fileID: 11400000, guid: 1db3a29009722d14a8af066ea80e04d0, type: 2}
+  - {fileID: 11400000, guid: 27e22cbe306b07442ad0735263a5bfdf, type: 2}
+  - {fileID: 11400000, guid: 5b044b2930d7f994489eb8403f60ecd3, type: 2}
+  - {fileID: 11400000, guid: 0fbea14257311b54ab919f72668f8c24, type: 2}
+  - {fileID: 11400000, guid: f452be39fdccf3b4d9115065783289f7, type: 2}
+  - {fileID: 11400000, guid: 92981f8201e5ab74ea2b0fe430cfab26, type: 2}
+  - {fileID: 11400000, guid: 151d704438403d24ba33db1977120160, type: 2}
+  - {fileID: 11400000, guid: 1256ec0eae6a79940a62158e57279272, type: 2}
   soundLoops:
   - {fileID: 1063168448}
   - {fileID: 1675952785}
@@ -1364,9 +1371,9 @@ MonoBehaviour:
   mapList:
   - {fileID: 2992854136601878097, guid: 498b2799227f21a42a16efc80f81cf03, type: 3}
   - {fileID: 3505152929891354473, guid: 9bde6cc8ba9331d4a962a0594acbce3d, type: 3}
-  - {fileID: 4574887061729804550, guid: 7d57254d9fd46a140896c49c73b3b3ba, type: 3}
-  - {fileID: 8443189050574173227, guid: 6fb96cbc86c376e4cb2ac99949cc53f4, type: 3}
   - {fileID: 3771135587526259194, guid: c4ad1815f062b234fa6554296f1402d3, type: 3}
+  - {fileID: 8443189050574173227, guid: 6fb96cbc86c376e4cb2ac99949cc53f4, type: 3}
+  - {fileID: 4574887061729804550, guid: 7d57254d9fd46a140896c49c73b3b3ba, type: 3}
 --- !u!1 &1675952784
 GameObject:
   m_ObjectHideFlags: 0

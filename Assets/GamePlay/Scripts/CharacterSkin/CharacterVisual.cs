@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using ReuseSystem.Helper;
 using ReuseSystem.Helper.Extensions;
 using UnityEngine;
@@ -17,8 +18,10 @@ public class CharacterVisual : MonoBehaviour
     
     //Color random for bot
     [SerializeField] private List<Color> colorToRandom;
-    
-    
+
+
+    private Color characterColor;
+
     public Color GetColor()
     {
         return bodySkinnedMeshRenderer.material.color;
@@ -32,8 +35,19 @@ public class CharacterVisual : MonoBehaviour
     {
         bodySkinnedMeshRenderer.material.color = color;
         pantSkinMeshRender.material.color = color;
+
+        characterColor = color;
     }
 
+    [SerializeField]Color hitColor;
+    float hitDuration = 0.1f;
+    public void OnHitColor()
+    {
+        SoundManager.Instance.PlayShotOneTime(ESound.OnHit, Random.Range(0.1f, .8f));
+
+        bodySkinnedMeshRenderer.material.DOColor(hitColor, hitDuration);
+        bodySkinnedMeshRenderer.material.DOColor(characterColor, hitDuration).SetDelay(hitDuration);
+    }
     private SkinItem GetItem(int itemId, EquipmentType type)
     {
         if (type == EquipmentType.Hat)

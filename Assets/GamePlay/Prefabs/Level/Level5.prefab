@@ -789,6 +789,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage
       objectReference: {fileID: 0}
+    - target: {fileID: 3943201610038117996, guid: 3bfa0a88d0e13fb4bb868975a3ce4562, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.67
+      objectReference: {fileID: 0}
     - target: {fileID: 3943201610038117997, guid: 3bfa0a88d0e13fb4bb868975a3ce4562, type: 3}
       propertyPath: numberOfRow
       value: 10
@@ -1044,6 +1048,14 @@ PrefabInstance:
     - target: {fileID: 3791644159757810761, guid: 3bfa0a88d0e13fb4bb868975a3ce4562, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3943201610038117996, guid: 3bfa0a88d0e13fb4bb868975a3ce4562, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3943201610038117996, guid: 3bfa0a88d0e13fb4bb868975a3ce4562, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -35.5
       objectReference: {fileID: 0}
     - target: {fileID: 3943201610038117997, guid: 3bfa0a88d0e13fb4bb868975a3ce4562, type: 3}
       propertyPath: numberOfRow

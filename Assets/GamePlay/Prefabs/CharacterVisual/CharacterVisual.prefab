@@ -698,6 +698,7 @@ MonoBehaviour:
   bodySkinnedMeshRenderer: {fileID: 7763127290982341734}
   normalPlayerColor: {r: 1, g: 0.7176471, b: 0, a: 1}
   colorToRandom: []
+  hitColor: {r: 1, g: 0.39215684, b: 0.40930855, a: 1}
 --- !u!114 &8702993492011570022
 MonoBehaviour:
   m_ObjectHideFlags: 0

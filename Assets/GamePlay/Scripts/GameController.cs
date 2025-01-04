@@ -39,6 +39,7 @@ public class GameController : Singleton<GameController>
         if (camera == null) camera = FindObjectOfType<CameraFollow>();
         camera.SetTarget(mainPlayer.transform);
         mainPlayer.InitPlayerReference(FindObjectOfType<FloatingJoystick>());
+        mainPlayer.ChangeSkin(hatId, pantId, leftHandId);
     }
 
     private void OnStartGame()
@@ -129,16 +130,20 @@ public class GameController : Singleton<GameController>
 
     }
 
+    int hatId, pantId, leftHandId;
+
     public void ChangeToOfflineGame(int hatId, int pantId, int leftHandId)
     {
-        StartCoroutine(ChangeToOfflineGameCoroutine(hatId, pantId, leftHandId));
+        this.hatId = hatId;
+        this.pantId = pantId;
+        this.leftHandId = leftHandId;
+        StartCoroutine(ChangeToOfflineGameCoroutine());
     }
 
-    IEnumerator ChangeToOfflineGameCoroutine(int hatId, int pantId, int leftHandId)
+    IEnumerator ChangeToOfflineGameCoroutine()
     {
         yield return SceneManager.LoadSceneAsync(Constants.GAME_OFFLINE_SCENE);
         OnStartGame();
-        mainPlayer.ChangeSkin(hatId, pantId, leftHandId);
     }
 
     //---------------------HOME---------------------------
