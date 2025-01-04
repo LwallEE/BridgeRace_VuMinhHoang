@@ -156,11 +156,13 @@ public class ShopUICanvas : UICanvas
 
         panelLoading.SetActive(true);
 
-        currentEquippedItem.OnUnequip();
-        UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == currentEquippedItem.itemId);
-        status.isEquip = false;
-        currentEquippedItem = null;
-
+        if(currentEquippedItem != null)
+        {
+            currentEquippedItem.OnUnequip();
+            UserItemStatus status = itemStatus.FirstOrDefault(r => r.itemId == currentEquippedItem.itemId);
+            status.isEquip = false;
+            currentEquippedItem = null;
+        }
 
         var result = await NetworkClient.Instance.HttpPost<ItemStatusResponse>("shop/equip", new ShopRequest(currentItem.itemId));
         if (result.isSuccess)
