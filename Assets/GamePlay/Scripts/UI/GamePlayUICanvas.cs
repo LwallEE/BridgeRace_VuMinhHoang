@@ -37,6 +37,7 @@ public class GamePlayUICanvas : UICanvas
     }
     public void OnHit()
     {
+        if (hp <= 0) return;
         hp--;
         hpDisplay[hp].SetActive(false);
         if (hp <= 0) GameController.Instance.SetGameState(GameState.GameEndLose);

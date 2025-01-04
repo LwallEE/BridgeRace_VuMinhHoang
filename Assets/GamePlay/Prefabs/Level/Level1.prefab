@@ -33286,6 +33286,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8747872460435856083, guid: 3ab297b33193f824ea064732a65686de, type: 3}
+      propertyPath: limitBrickNumber
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8846059876064402039, guid: 3ab297b33193f824ea064732a65686de, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.000000014633956
