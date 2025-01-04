@@ -14,6 +14,7 @@ public class WaitingNetworkUI : UINetworkBase
 
     [SerializeField] private Image readyButton;
     [SerializeField] private TextMeshProUGUI numberOfPlayerCanStartTxt;
+    [SerializeField] private AvatarData avatarData;
     private bool isPlayerReady;
     private int currentNumberOfPlayer;
     private int minNumberOfPlayerToStart;
@@ -32,7 +33,12 @@ public class WaitingNetworkUI : UINetworkBase
         {
             var playerWait = FindPlayerInActive();
             if (playerWait == null) return;
-            playerWait.Init(data.userName, (int)data.score, currentNumberOfPlayer+1,data.userId);
+            int avatarType = 0;
+            if (!int.TryParse(data.avatar, out avatarType))
+            {
+                avatarType = 0;
+            }
+            playerWait.Init(data.userName, (int)data.score, currentNumberOfPlayer+1,data.userId, avatarData.GetAvatarByType((AvatarType)avatarType));
             currentNumberOfPlayer++;
             playerWait.gameObject.SetActive(true);
             UpdateVisual();

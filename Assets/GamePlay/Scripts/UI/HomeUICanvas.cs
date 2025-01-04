@@ -50,6 +50,8 @@ public class HomeUICanvas : UICanvas
                 avatarType = int.Parse(result.avatar);
             }
             catch { }
+
+            PlayerSaveData.CurrentLevelIndex = result.currentLevelIndex;
             currentAvatarType = (AvatarType)avatarType;
             playerInfor.OnInit(result.userName, result.currentCoin, currentAvatarType);
             avatarFrames[avatarType].OnFocus();
@@ -92,7 +94,7 @@ public class HomeUICanvas : UICanvas
     public void OnPlayOnlineClick()
     {
         PlayButtonSfx();
-
+        
         SceneManager.LoadScene(Constants.GAME_ONLINE_SCENE);
     }
 

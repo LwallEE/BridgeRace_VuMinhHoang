@@ -13,18 +13,18 @@ public class PlayerWaitingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreTxt;
 
     [SerializeField] private Image activeBg;
-    
+    [SerializeField] private Image playerIconAvatar;
     [SerializeField] private Sprite readySprite;
     [SerializeField] private Sprite unReadySprite;
     public string PlayerId { get; private set; }
     public bool IsReady { get; private set; }
-    public void Init(string playerName, int playerScore,int number,string playerId)
+    public void Init(string playerName, int playerScore,int number,string playerId, Sprite iconSprite)
     {
         this.PlayerId = playerId;
         this.numberTxt.text = number.ToString();
         this.namePlayerTxt.text = playerName;
         this.scoreTxt.text = playerScore.ToString();
-        
+        this.playerIconAvatar.sprite = iconSprite;
         Ready(false);
     }
 

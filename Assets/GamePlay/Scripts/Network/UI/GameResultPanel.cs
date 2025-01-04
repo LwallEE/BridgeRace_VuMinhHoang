@@ -12,8 +12,10 @@ public class GameResultPanel : UINetworkBase
    [SerializeField] private TextMeshProUGUI winPlayerNameTxt;
    [SerializeField] private TextMeshProUGUI scorePlayerTxt;
    [SerializeField] private TextMeshProUGUI scoreResultTxt;
+   [SerializeField] private Image playerAvatarImage;
    [SerializeField] private Image winLoseImage;
 
+   [SerializeField] private AvatarData avatarData;
    [SerializeField] private Color winColor;
    [SerializeField] private Color loseColor;
 
@@ -31,11 +33,18 @@ public class GameResultPanel : UINetworkBase
          winLoseImage.color = loseColor;
       }
 
-      scoreResultTxt.text = response.scoreBonusResult.ToString();
+      scoreResultTxt.text = (response.scoreBonusResult > 0 ? "+" : "") + response.scoreBonusResult.ToString();
       var user = GameNetworkManager.Instance.Client.GameRoomNetwork.GetNetworkUserData(response.winUserId);
       if (user == null) return;
+      int avatarType = 0;
+      if (!int.TryParse(user.avatar, out avatarType))
+      {
+         avatarType = 0;
+      }
+
+      playerAvatarImage.sprite = avatarData.GetAvatarByType((AvatarType)avatarType);
       winPlayerNameTxt.text = user.userName;
-      scorePlayerTxt.text = (response.isWin ? "+" : "") + user.score;
+      scorePlayerTxt.text = user.score.ToString();
    }
 
    public void OnBackButtonClick()

@@ -74,6 +74,7 @@ public class GameRoomNetwork : MonoBehaviour
         });
         gameRoom.OnMessage<ResultGameResponse>("game-result", message =>
         {
+            Debug.Log("game-result");
             GameNetworkManager.Instance.GameResult(message);
         });
         gameRoom.State.OnGameStateChange((value, previousValue) =>
