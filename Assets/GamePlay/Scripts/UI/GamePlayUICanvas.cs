@@ -32,6 +32,8 @@ public class GamePlayUICanvas : UICanvas
         {
             hpDisplay[i].SetActive(true);
         }
+
+        txtTimer.gameObject.SetActive(false);
     }
     public void OnHit()
     {

@@ -22,14 +22,12 @@ public class Golem : MonoBehaviour
     private int hitCount = 0;
     private float cooldown = 10f;
     private bool isAttacking = false, isDown = false;
-    StateMachineNP.Character character;
+    [SerializeField] StateMachineNP.Character character;
 
     void Start()
     {
         Camera.main.transform.position -= Camera.main.transform.forward * 3f;
         Camera.main.fieldOfView = 90;
-
-        character = FindAnyObjectByType<StateMachineNP.Character>();
 
         OnAttack();
     }
@@ -73,6 +71,7 @@ public class Golem : MonoBehaviour
                 SoundManager.Instance.PlayShotOneTime(ESound.Impact);
                 yield return new WaitForSeconds(1f);
                 gameObject.SetActive(false);
+                warning2.gameObject.SetActive(false);
             }
             else
             {
