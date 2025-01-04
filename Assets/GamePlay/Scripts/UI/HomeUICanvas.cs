@@ -51,7 +51,7 @@ public class HomeUICanvas : UICanvas
             }
             catch { }
 
-            PlayerSaveData.CurrentLevelIndex = result.currentLevelIndex;
+            PlayerSaveData.CurrentLevelIndex = (result.currentLevelIndex - 1) % 5;
             currentAvatarType = (AvatarType)avatarType;
             playerInfor.OnInit(result.userName, result.currentCoin, currentAvatarType);
             avatarFrames[avatarType].OnFocus();
