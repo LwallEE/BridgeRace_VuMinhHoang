@@ -170,6 +170,10 @@ namespace StateMachineNP
             if (brickList.Count < 1) return;
             RemoveBrick();
         }
+        public void UnlimitBrick()
+        {
+            limitBrickNumber = 0;
+        }
         #endregion
 
         #region HandleBridge

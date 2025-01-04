@@ -18,7 +18,7 @@ public class LevelManager : Singleton<LevelManager>
          LazyPool.Instance.ReleaseAll();
          currentLevel = null;
       }
-
+      level %= 5;
       currentLevel = Instantiate(mapList[level].gameObject).GetComponent<Map>();
       currentLevelIndex = level;
       PlayerSaveData.CurrentLevelIndex = level;
