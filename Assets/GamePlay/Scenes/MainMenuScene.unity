@@ -291,7 +291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomType: game_room
   lobbyRoomName: lobby
-  hostName: 26.53.215.253
+  hostName: 14.225.36.243
   portName: 2567
   isHttps: 0
   token: 
