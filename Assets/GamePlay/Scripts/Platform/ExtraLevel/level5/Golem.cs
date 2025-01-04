@@ -74,9 +74,6 @@ public class Golem : MonoBehaviour
                 character.UnlimitBrick();
                 gameObject.SetActive(false);
                 warning2.gameObject.SetActive(false);
-
-                Camera.main.transform.DOMove(Camera.main.transform.forward * 3f + Camera.main.transform.position, 1f);
-                Camera.main.DOOrthoSize(60, 1f);
             }
             else
             {

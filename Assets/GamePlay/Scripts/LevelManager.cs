@@ -18,7 +18,6 @@ public class LevelManager : Singleton<LevelManager>
          LazyPool.Instance.ReleaseAll();
          currentLevel = null;
       }
-      level %= 5;
       currentLevel = Instantiate(mapList[level].gameObject).GetComponent<Map>();
       currentLevelIndex = level;
       PlayerSaveData.CurrentLevelIndex = level;
@@ -26,8 +25,13 @@ public class LevelManager : Singleton<LevelManager>
 
    public void LoadNextLevel()
    {
-      currentLevelIndex = (currentLevelIndex + 1) % mapList.Count;
-      LoadLevel(currentLevelIndex);
+        if (currentLevelIndex >= 4)
+        {
+            GameController.Instance.BackToMainMenu();
+            return;
+        }
+        currentLevelIndex = (currentLevelIndex + 1) % mapList.Count;
+        LoadLevel(currentLevelIndex);
    }
 
    public void LoadCurrentSaveLevel()
