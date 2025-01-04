@@ -16,8 +16,9 @@ namespace MyGame.Schema
 		
 		[Colyseus.Schema.Type(3, "boolean")]
 		public bool isReady = default(bool);
-		
-		
+
+		[Colyseus.Schema.Type(4, "string")]
+		public string avatar = default(string);
 		/*
 		 * Support for individual property change callbacks below...
 		 */

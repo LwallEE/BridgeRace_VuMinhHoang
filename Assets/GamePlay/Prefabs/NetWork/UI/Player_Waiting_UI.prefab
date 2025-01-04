@@ -386,6 +386,7 @@ MonoBehaviour:
   namePlayerTxt: {fileID: 4213194065254974621}
   scoreTxt: {fileID: 4213194066550284388}
   activeBg: {fileID: 4213194065709494866}
+  playerIconAvatar: {fileID: 4213194066025637759}
   readySprite: {fileID: 21300000, guid: 840a54519d139421686eb868f94c36fc, type: 3}
   unReadySprite: {fileID: 21300000, guid: 1c2eec4f264c34c92b06e3c5ad8dc5ed, type: 3}
 --- !u!1 &4213194065999850945
