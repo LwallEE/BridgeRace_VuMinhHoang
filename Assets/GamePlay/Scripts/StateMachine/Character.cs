@@ -13,6 +13,8 @@ namespace StateMachineNP
         public Rigidbody RigidbodyObj { get; private set; }
         public StateMachine StateMachine { get; private set; }
 
+        [SerializeField] int limitBrickNumber;
+
         [SerializeField] protected CharacterVisual characterVisual;
         [SerializeField] protected CharacterData data;
         [SerializeField] protected Transform checkGroundPoint;
@@ -28,12 +30,16 @@ namespace StateMachineNP
         protected List<BrickVisual> brickList;
 
         protected string previousAnimName;
+
+        public bool IsMaxBrick => limitBrickNumber > 0 && brickList.Count >= limitBrickNumber;
         public virtual void Awake()
         {
             Anim = GetComponentInChildren<Animator>();
             RigidbodyObj = GetComponent<Rigidbody>();
             StateMachine = new StateMachine();
             fallState.OnInit(this, StateMachine, data);
+
+            brickList = new List<BrickVisual>();
         }
 
         protected virtual void Start()
@@ -243,7 +249,7 @@ namespace StateMachineNP
             if (other.CompareTag(Constants.BRICK_TAG))
             {
                 var brick = other.GetComponent<Brick>();
-                if (brick.CanCollect(characterColor.brickColorE))
+                if (brick.CanCollect(characterColor.brickColorE) && !IsMaxBrick)
                 {
                     brick.CollectBrick();
                     AddBrick();
