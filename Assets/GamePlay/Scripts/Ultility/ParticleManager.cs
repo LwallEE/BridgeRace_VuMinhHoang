@@ -24,10 +24,16 @@ public class ParticleManager : Singleton<ParticleManager>
         Vector3 dir = (Camera.main.transform.position - fx.transform.position).normalized;
         fx.transform.position += dir * 5f;
     }
+    public void PlayFxExplode(Vector3 position)
+    {
+        ParticleSystem fx = ObjectPoolDictArray.Instance.GetParticle(prefabs[(int)ParticleType.Explode]);
+        fx.transform.position = position + Vector3.up * 1f;
+    }
 }
 
 public enum ParticleType
 {
     Collect = 0,
     Collide = 1,
+    Explode = 2,
 }

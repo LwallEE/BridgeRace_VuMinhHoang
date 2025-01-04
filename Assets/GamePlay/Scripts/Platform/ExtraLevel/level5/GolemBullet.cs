@@ -42,6 +42,7 @@ public class GolemBullet : MonoBehaviour
 
         if(Vector3.Distance(transform.position, target) < 1.5f)
         {
+            ParticleManager.Instance.PlayFxExplode(transform.position);
             ObjectPoolDictArray.Instance.ReleaseGameObject(gameObject);
         }
     }
