@@ -156,6 +156,8 @@ public class ShopUICanvas : UICanvas
 
         panelLoading.SetActive(true);
 
+        characterVisual.ChangeSkin(currentType, currentItem.itemId);
+
         if(currentEquippedItem != null)
         {
             currentEquippedItem.OnUnequip();
@@ -192,6 +194,7 @@ public class ShopUICanvas : UICanvas
             status.isEquip = false;
             InitButton();
         }
+        characterVisual.ChangeSkin(currentType, 0);
     }
     private void PlayButtonSfx()
     {
