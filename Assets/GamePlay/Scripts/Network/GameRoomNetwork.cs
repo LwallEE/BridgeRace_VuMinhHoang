@@ -82,6 +82,7 @@ public class GameRoomNetwork : MonoBehaviour
             GameNetworkManager.Instance.SetGameState((GameNetworkStateEnum)value);
         });
         gameRoom.State.players.OnAdd(OnAddPlayer);
+        gameRoom.State.players.OnRemove(OnRemovePlayer);
         gameRoom.State.map.OnChange(OnMapChange);
         gameRoom.State.OnCountDownTimeChange((value, previousValue) =>
         {
@@ -125,6 +126,12 @@ public class GameRoomNetwork : MonoBehaviour
         {
             GameNetworkManager.Instance.AddOtherPlayer(player);
         }
+    }
+
+    private void OnRemovePlayer(string key, PlayerData player)
+    {
+       
+        GameNetworkManager.Instance.OnRemovePlayer(key);
     }
     
     private async void GameRoomOnLeave(int code)

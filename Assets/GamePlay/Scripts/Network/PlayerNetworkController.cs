@@ -234,6 +234,18 @@ public class PlayerNetworkController : PlayerController,IDispose
     public void Dispose()
     {
         LazyPool.Instance.AddObjectToPool(playerNameFollow.gameObject);
+       
         networkEventHandler.UnRegister();
+    }
+
+    public void OnRemove()
+    {
+        LazyPool.Instance.AddObjectToPool(playerNameFollow.gameObject);
+        GameNetworkManager.Instance.RemoveFromDisposeList(this);
+        foreach (var brickVisual in brickList)
+        {
+            LazyPool.Instance.AddObjectToPool(brickVisual.gameObject);
+        }
+        Destroy(gameObject);
     }
 }

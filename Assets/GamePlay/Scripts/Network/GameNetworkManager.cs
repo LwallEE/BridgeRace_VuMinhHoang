@@ -63,6 +63,11 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
     {
         this.elementToDispose.Add(item);
     }
+
+    public void RemoveFromDisposeList(IDispose item)
+    {
+        this.elementToDispose.Remove(item);
+    }
     private PlayerNetworkController GetPlayer(string key)
     {
         PlayerNetworkController playerr ;
@@ -148,6 +153,18 @@ public class GameNetworkManager : Singleton<GameNetworkManager>
         otherPlayer.InitPlayerNetwork(data, false);
         otherPlayers.TryAdd(data.entityId, otherPlayer);
        
+    }
+
+    public void OnRemovePlayer(string playerId)
+    {
+        foreach (var item in otherPlayers.Keys)
+        {
+            Debug.Log("player " + item);
+        }
+        if (otherPlayers == null || !otherPlayers.ContainsKey(playerId)) return;
+        Debug.Log("remove player " + playerId);
+        otherPlayers[playerId].OnRemove();
+        otherPlayers.Remove(playerId);
     }
 
     public void FixPlayerPosition(Vect3 position)
