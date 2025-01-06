@@ -7,6 +7,11 @@ public class RotateBlock : MonoBehaviour
 {
     public bool IsRotating;
     private Vector3 vector = new Vector3(0, 0, 90f);
+
+    private void Start()
+    {
+        transform.eulerAngles = Random.Range(0, 5) * vector;
+    }
     public void OnRotate(bool rotateRight = true)
     {
         IsRotating = true;
