@@ -232,10 +232,16 @@ public class NetworkClient : Singleton<NetworkClient>
             }));
         }
     }
-    void OnApplicationQuit()
+    async void OnApplicationQuit()
     {
-        if(GameRoomNetwork.IsGameRoomConnect())
+        if (GameRoomNetwork.IsGameRoomConnect())
+        {
             GameRoomNetwork.LeaveGameRoom();
+        }
+        if(!string.IsNullOrEmpty(client.Http.AuthToken))
+        {
+            await HttpPost<GeneralResponse>("logout");
+        }
     }
 
     internal async Task HttpPost<T>(string v, LoginRequest loginRequest, CancellationToken token)
