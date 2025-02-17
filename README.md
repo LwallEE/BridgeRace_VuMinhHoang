@@ -12,4 +12,4 @@ In Online mode, you compete with other Player. The Online is made by Colyseus in
 
 +, Reconnection when drop WIFI.
 
-You can try this game in: https://lwallee.itch.io/bridge-race-multiplayer
+
